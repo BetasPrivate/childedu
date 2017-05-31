@@ -20,6 +20,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <!DOCTYPE html>
 <html>
 <head>
+	<title>
+		<?php echo $this->fetch('title'); ?>
+	</title>
 	<?php echo $this->Html->charset(); ?>
 	<?php
 		echo $this->Html->meta('icon');
