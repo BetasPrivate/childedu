@@ -3,6 +3,7 @@ class CallbackController extends AppController
 {
 	public $uses = [
 		'User',
+		'WxLog',
 	];
 
 	function entrance()
