@@ -11,9 +11,13 @@ class CallbackController extends AppController
         $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $eventKey = trim((string)$postObj->EventKey);
-        if ($eventKey == '123'){
+        $event = trim((string)$postObj->Event);
+
+        if ($eventKey == '1'){
             $msg = '报名地址：http://childwelfare.zhanshen1.com/registration';
-            $this->sendMsg($postObj, $msg);
+            $this->sendTextMsg($postObj, $msg);
+        } else if ($event == 'CLICK') {
+            $this->dealWithClickEvents($postObj);
         }
         
         $signature = isset($this->request->query['signature']) ? $this->request->query['signature'] : null;
@@ -22,7 +26,7 @@ class CallbackController extends AppController
         }
     }
 
-    function sendMsg($obj, $msg)
+    function sendTextMsg($obj, $msg)
     {
         $toUserName = (string)$obj->ToUserName;
         $fromUsername = (string)$obj->FromUserName;
@@ -53,5 +57,42 @@ class CallbackController extends AppController
             echo $echoStr;
             exit();
         }
+    }
+
+    function dealWithClickEvents($obj)
+    {
+        $eventKey = trim((string)$postObj->EventKey);
+        switch ($eventKey) {
+            case 'WX_PLAYER_REG':
+                $this->sendPicMsg($obj, $mediaId);
+                break;
+            case 'WX_PLAYER_INTRO':
+                $this->sendPicMsg($obj, $mediaId);
+                break;
+            case 'WX_COMPANY_INTRO':
+                $this->sendPicMsg($obj, $mediaId);
+                break;
+            case 'WX_CONTACT_US':
+                $this->sendPicMsg($obj, $mediaId);
+                break;
+        }
+    }
+
+    function sendPicMsg($obj, $mediaId)
+    {
+        $toUserName = (string)$obj->ToUserName;
+        $fromUsername = (string)$obj->FromUserName;
+        $createTime = time();
+        $textTpl = "<xml>
+            <ToUserName><![CDATA[%s]]></ToUserName>
+            <FromUserName><![CDATA[%s]]></FromUserName>
+            <CreateTime>$createTime</CreateTime>
+            <MsgType><![CDATA[image]]></MsgType>
+            <Image>
+            <MediaId><![CDATA[%s]]></MediaId>
+            </Image>
+            </xml>";
+        echo sprintf($textTpl, $fromUsername, $toUserName, $mediaId);
+        exit();
     }
 }
