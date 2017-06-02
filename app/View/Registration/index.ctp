@@ -5,6 +5,7 @@
         <meta name="viewport" content="initial-scale=1.0,user-scalable=yes,maximum-scale=3.0,minimum-scale=1.0,width=device-width,height=device-height" />
         <meta name="format-detection" content="telephone=no" />
         <title>注册</title>
+        <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
         <link rel="stylesheet" href="/css/common.css" type="text/css" />
         <style>
             body {

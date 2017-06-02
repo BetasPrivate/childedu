@@ -25,6 +25,29 @@ class Utility {
         return $result;
     }
 
+    public function getFileGetContents($url)
+    {
+        return (array) json_decode(file_get_contents($url));
+    }
+
+    public function postFileGetContents($url, $data)
+    {
+        $postdata = $data;
+
+        $opts = array('http' => array(
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata,
+            ),
+        );
+
+        $context = stream_context_create($opts);
+        $results = (array) json_decode(file_get_contents($url, false, $context));
+
+        return $results;
+    }
+
+    //get scene ticket for QR
     public function getSceneTicket($token, $expireSeconds, $scendId, $isTemp = true)
     {
         $url = sprintf("https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=%s", $token);
@@ -41,7 +64,10 @@ class Utility {
         } else {
             $data['action_name'] = 'QR_LIMIT_SCENE';
         }
-        $resultStr = $this->customizeCurl($url, 1, $data);
+
+        $data = json_encode($data);
+
+        $resultStr = $this->postFileGetContents($url, $data);
 
         $result = json_decode($resultStr, true);
         $ticket = isset($result['ticket']) ? $result['ticket'] : '';
@@ -49,69 +75,61 @@ class Utility {
         return $ticket;
     }
 
+    public function getToken()
+    {
+        $url = sprintf("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", APP_ID, APP_SECRET);
+        $result = $this->getFileGetContents($url);
+        
+        return $result;
+    }
+
+    //edit the menu to what u want.
     public function editMenu($token = '')
     {
-        $token = 'GPyLUiLXLJOVfU8p3U7RD9IYaxUb5kecVCg9lAsjVzdGp-EGSSKJZwn9Za5TKElQV2_HWrPIslGjZ72k6U6zAcro9PuR8qZw0c5-6y_a5vHtn5ldk6kP9Q_xdu9ZZhxhJQScADATAC';
         $url = sprintf("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s", $token);
           $data = [
             'button' => [
                 0 => [
-                    "name" => urlencode('陪玩师'),
-                    'type' => 'click',
-                    'key' => 'DO_NOTHING',
-                    'sub_button' => [
-                        0 => [
-                            'name' => urlencode('陪玩师报名'),
-                            'type' => 'view',
-                            // 'key' => 'WX_PLAYER_REG',
-                            'url' => 'http://childwelfare.zhanshen1.com/pic1.jpg',
-                        ],
-                        1 => [
-                            'name' => urlencode('陪玩师简介'),
-                            'type' => 'view',
-                            // 'key' => 'WX_PLAYER_INTRO',
-                            'url' => 'http://childwelfare.zhanshen1.com/pic2.jpg',
-                        ],
-                    ],
-                ],
-                1 => [
                     "name" => urlencode('小玩子'),
                     'type' => 'click',
                     'key' => 'DO_NOTHING',
                     'sub_button' => [
                         0 => [
-                            'name' => urlencode('小玩子简介'),
-                            'type' => 'view',
-                            'url' => 'http://mp.weixin.qq.com/s?__biz=MzIwODY1NDI0MQ==&mid=2247483757&idx=1&sn=d2803d29a64ea920ae4e19edf397ba27&chksm=977e9ba3a00912b539a0cafc23d33b50845ab4c55e38d89705ed38b31f5bd3997bf3d0a74d83&scene=18#wechat_redirect',
-                        ],
-                        1 => [
-                            'name' => urlencode('小玩子报名'),
-                            'type' => 'view',
-                            'url' => 'https://wj.qq.com/s/993617/73e1/',
-                        ],
-                        2 => [
-                            'name' => urlencode('活动报名'),
+                            'name' => urlencode('玩子报名'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/registration',
                         ],
+                        1 => [
+                            'name' => urlencode('陪伴打卡'),
+                            'type' => 'view',
+                            'url' => 'http://childwelfare.zhanshen1.com/pic1.jpg',
+                        ],
                     ],
                 ],
+                1 => [
+                    "name" => urlencode('玩趣活动'),
+                    'type' => 'view',
+                    'url' => 'http://childwelfare.zhanshen1.com/pic2.jpg',
+                ],
                 2 => [
-                    "name" => urlencode('玩趣童年'),
+                    "name" => urlencode('联系我们'),
                     'type' => 'click',
                     'key' => 'DO_NOTHING',
                     'sub_button' => [
                         0 => [
                             'name' => urlencode('公司简介'),
                             'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/pic3.jpg',
-                            // 'key' => 'WX_COMPANY_INTRO',
+                            'url' => 'http://childwelfare.zhanshen1.com/pic5.jpg',
                         ],
                         1 => [
-                            'name' => urlencode('联系我们'),
+                            'name' => urlencode('岗位招聘'),
+                            'type' => 'view',
+                            'url' => 'http://childwelfare.zhanshen1.com/pic3.jpg',
+                        ],
+                        2 => [
+                            'name' => urlencode('合作洽谈'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/pic4.jpg',
-                            // 'key' => 'WX_CONTACT_US',
                         ],
                     ],
                 ],
@@ -120,7 +138,7 @@ class Utility {
         $data = json_encode($data);
         $data = urldecode($data);
 
-        var_dump($this->customizeCurl($url, 1, $data));
+        var_dump($this->postFileGetContents($url, $data));
     }
 
     public function addMedia($token = '')

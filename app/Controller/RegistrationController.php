@@ -9,6 +9,10 @@ class RegistrationController extends AppController
 	function index()
 	{
 		$this->set('title_for_layout', '报名入口');
+
+		// $ticket = $this->Token->getJsApiTicket();
+		$timeStamp = time();
+		$noncestr = 'zhanshenkeji';
 	}
 
 	function submitReg()
