@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1.0,user-scalable=yes,maximum-scale=3.0,minimum-scale=1.0,width=device-width,height=device-height" />
 		<meta name="format-detection" content="telephone=no" />
-		<link rel="stylesheet" href="css/common.css" type="text/css" />
+		<link rel="stylesheet" href="/css/common.css" type="text/css" />
 		<title>会员中心</title>
 		<style>
 			@font-face {
@@ -124,7 +124,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="/users/myPunchRecords">
 								<i class="i_3"></i>我的打卡记录
 							</a>
 						</li>

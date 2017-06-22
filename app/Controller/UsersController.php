@@ -16,6 +16,12 @@ class UsersController extends AppController
 
     public function myPoints()
     {
+        
+    }
+
+    public function myPunchRecords()
+    {
+
     }
 
     public function login()
