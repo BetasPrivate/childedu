@@ -1,0 +1,145 @@
+@font-face {
+	font-family:"DFPHannotateW5-GB";
+	src: url("../font/DFPHannotateW5-GB.ttf");
+}
+body {
+	max-width: 750px;
+	min-width: 320px;
+	margin:0 auto;
+	font-family: "DFPHannotateW5-GB";
+}
+.home {
+	width:90%;
+	margin:0 auto;
+}
+header {
+	margin-top:1.3rem;
+	position:relative;
+}
+#imagePreview {
+	width:100%;
+	height:338px;
+	background: url(../img/five_pic_header.jpg);
+	background-size: 100%;
+	-webkit-background-size: 100%;
+}
+#imageInput {
+	width:100%;
+	height:338px;
+	border:none;
+	outline: none;
+	box-sizing: border-box;
+	opacity: 0;
+	position: absolute;
+	top:0;
+	left:0;
+	padding:0;
+	margin:0;
+}
+@media screen and (max-device-width:400px) {
+	#imagePreview {
+		height:169px;	
+	}
+	#imageInput {
+		height:169px;
+	}
+	}
+@media screen and (min-device-width:400px) and (max-device-width:500px) {
+	#imagePreview {
+		height:188px;	
+	}
+	#imageInput {
+		height:188px;
+	}
+	}
+@media screen and (min-device-width:500px) and (max-device-width:600px) {
+	#imagePreview {
+		height:235px;	
+	}
+	#imageInput {
+		height:235px;
+	}
+	}
+@media screen and (min-device-width:600px) and (max-device-width:700px) {
+	#imagePreview {
+		height:282px;	
+	}
+	#imageInput {
+		height:282px;
+	}
+	}
+@media screen and (min-device-width:700px) {
+	#imagePreview {
+		height:338px;	
+	}
+	#imageInput {
+		height:338px;
+	}
+}
+.main h2 {
+	font-size:0.8rem;
+	line-height:2.7rem;
+	height:2.6rem;
+	color:#333333;
+}
+.main h3 textarea {
+	height:8.875rem;
+	width:100%;
+	display:block;
+	margin:0 auto;
+	resize: none;
+	box-sizing: border-box;
+	outline: none;
+	border:0.1rem solid #8f591b;
+	border-radius: 0.5rem;
+	font-size:0.7rem;
+	font-family: "DFPHannotateW5-GB";
+	padding:3%;
+}
+.main h4 {
+	padding-top: 0.7rem;
+	padding-bottom: 0.7rem;
+	font-size:0.7rem;
+	line-height:2rem;
+	color:#676767;
+}
+.main h4 span {
+	display:block;
+	width:30%;
+	float: left;
+}
+.main h4 select {
+	display:block;
+	height:2rem;
+	width:70%;
+	float: left;
+	background-color: #f2f2f2;
+	border-radius: 0.5rem;
+	border:none;
+	outline: none;
+	box-sizing: border-box;
+	margin:0;
+	padding:0;
+	text-indent: 0.5rem;
+	font-size:0.7rem;
+	color:#333333;
+}
+.main h4 select option {
+	border:none;
+	outline: none;
+	box-sizing: border-box;
+	margin:0;
+	padding:0;
+	font-size:0.7rem;
+}
+.main h5 button {
+	background:url(../img/button_bg.jpg);
+	width:100%;
+	height:2.7rem;
+	background-size: 100%;
+	-webkit-background-size: 100%;
+	-moz-background-size: 100%;
+	border:none;
+	box-sizing: border-box;
+	outline: none;
+}

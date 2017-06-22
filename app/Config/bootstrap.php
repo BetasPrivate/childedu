@@ -24,16 +24,31 @@ require('../Lib/Utility.php');
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+define("ROOT_URL", isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'childwelfare.zhanshen1.com');
+
 // Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));
 
-//online
-define('APP_ID', 'wx980130202f6060c5');
-define('APP_SECRET', '96f8b5d6dc3f834a76bee0eb573e9a40');
+//选择当前环境
+if (ROOT_URL == 'childedu.com') {
+	define("ENV_OPT", "dev");
+	define("DB_LOGIN", "cary");
+	define("DB_PWD", "1");
+	//dev
+	define('APP_ID', 'wx59ba851ee8a8feb0');
+	define('APP_SECRET', '461f3b9bce3fe284d8d7ead55f0d846a');
+} else {
+	define("ENV_OPT", "online");
+	define("IS_DEV", false);
+	define("DB_LOGIN", "root");
+	define("DB_PWD", "win1011");
+	//online
+	define('APP_ID', 'wx980130202f6060c5');
+	define('APP_SECRET', '96f8b5d6dc3f834a76bee0eb573e9a40');
+}
+
 
 //dev
-// define('APP_ID', 'wx59ba851ee8a8feb0');
-// define('APP_SECRET', '461f3b9bce3fe284d8d7ead55f0d846a');
 
 /**
  * The settings below can be used to set additional paths to models, views and controllers.
