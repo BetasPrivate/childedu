@@ -1,9 +1,11 @@
 <?php
+App::uses('PunchRecord', 'Model');
 class CallbackController extends AppController
 {
     public $uses = [
         'User',
         'WxLog',
+        'PunchRecord',
     ];
 
     function entrance()
@@ -13,11 +15,15 @@ class CallbackController extends AppController
         $eventKey = trim((string)$postObj->EventKey);
         $event = trim((string)$postObj->Event);
 
+        $this->WxLog->create();
+        $this->WxLog->save(['data' => $postStr]);
         if ($eventKey == '1'){
             $msg = '报名地址：http://childwelfare.zhanshen1.com/registration';
             $this->sendTextMsg($postObj, $msg);
         } else if ($event == 'CLICK') {
             $this->dealWithClickEvents($postObj);
+        } elseif ($event == 'SCAN') {
+            $this->dealWithScanEvents($postObj);
         }
         
         $signature = isset($this->request->query['signature']) ? $this->request->query['signature'] : null;
@@ -78,6 +84,28 @@ class CallbackController extends AppController
         }
     }
 
+    function dealWithScanEvents($obj)
+    {
+        $ticket = trim((string)$obj->Ticket);
+        $eventKey = trim((string)$obj->EventKey);
+
+        $isPunch = $this->PunchRecord->find('first', [
+            'conditions' => [
+                'qr_scene_ticket' => $ticket,
+            ]
+        ]);
+
+        if ($isPunch) {
+            if ($isPunch['PunchRecord']['id'] == $eventKey) {
+                $this->PunchRecord->addPunchPointsScan($isPunch);
+                $msg = '助力成功！对方会增加 '.\PunchRecord::$punchTypePointRelation[\PunchRecord::SCAN_ASSISTANT].' 积分';
+                $this->sendTextMsg($obj, $msg);
+            }
+        }
+        echo 'success';
+        exit;
+    }
+
     function sendPicMsg($obj, $mediaId)
     {
         $toUserName = (string)$obj->ToUserName;
@@ -94,5 +122,10 @@ class CallbackController extends AppController
             </xml>";
         echo sprintf($textTpl, $fromUsername, $toUserName, $mediaId);
         exit();
+    }
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow('entrance');
     }
 }

@@ -48,14 +48,14 @@ class Utility {
     }
 
     //get scene ticket for QR
-    public function getSceneTicket($token, $expireSeconds, $scendId, $isTemp = true)
+    public static function getSceneTicket($token, $expireSeconds = 604800, $scendId, $isTemp = true)
     {
         $url = sprintf("https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=%s", $token);
         $data = [
-            'expire_seconds' => 604800,
+            'expire_seconds' => $expireSeconds,
             'action_info' => [
                 'scene' => [
-                    'scene_id' => 1,
+                    'scene_id' => $scendId,
                 ],
             ],
         ];
@@ -67,12 +67,25 @@ class Utility {
 
         $data = json_encode($data);
 
-        $resultStr = $this->postFileGetContents($url, $data);
+        $util = new Utility();
+        $result = $util->postFileGetContents($url, $data);
 
-        $result = json_decode($resultStr, true);
         $ticket = isset($result['ticket']) ? $result['ticket'] : '';
 
         return $ticket;
+    }
+
+    public static function getSceneTicketUrl($token, $expireSeconds = 604800, $scendId, $isTemp = true)
+    {
+        $ticket = self::getSceneTicket($token, $expireSeconds, $scendId, $isTemp);
+        $url = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket;
+
+        $result = [
+            'ticket' => $ticket,
+            'url' => $url,
+        ];
+
+        return $result;
     }
 
     public function getToken()
@@ -82,6 +95,23 @@ class Utility {
         
         return $result;
     }
+
+    public function getAccessToken()
+    {
+        $url = sprintf("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", APP_ID, APP_SECRET);
+        $result = $this->getFileGetContents($url);
+        
+        return $result;
+    }
+
+    public function getJsApiTicket($token)
+    {
+        $url = sprintf("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", $token);
+        $result = $this->getFileGetContents($url);
+
+        return $result;
+    }
+
 
     //edit the menu to what u want.
     public function editMenu($token = '')
@@ -161,5 +191,26 @@ class Utility {
         $data = json_encode($data);
 
         var_dump($this->customizeCurl($postUrl, 1, $data));
+    }
+
+    public function ToUrlParams($urlObj)
+    {
+        $buff = "";
+        foreach ($urlObj as $k => $v)
+        {
+            if($k != "sign"){
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+        
+        $buff = trim($buff, "&");
+        return $buff;
+    }
+
+    public static function getTmpMediaUrl($serverId)
+    {
+        $url = sprintf("https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s", ClassRegistry::init('Token')->getToken(1), $serverId);
+
+        return $url;
     }
 }

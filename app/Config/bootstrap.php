@@ -46,8 +46,6 @@ if (ROOT_URL == 'childedu.com') {
 	define('APP_ID', 'wx980130202f6060c5');
 	define('APP_SECRET', '96f8b5d6dc3f834a76bee0eb573e9a40');
 }
-
-
 //dev
 
 /**

@@ -39,7 +39,8 @@
 			var a= document.getElementById('imagePreview');
 			function punch() {
 				var data = {
-					url: a.firstChild.src
+					punch_type: $('#punch_type').val(),
+					punch_text: $('#inner_feeling').val(),
 				};
 				$.ajax({
 					'url': '/punch/submitPunchRequest',
@@ -48,13 +49,20 @@
 					'data': data,
 					success:function(response) {
 						if (response.status == 1) {
+							var postData = {
+								url: a.firstChild.src,
+								punch_id: response.id,
+								punch_text: $('#inner_feeling').val(),
+								qr_scene_url: response.qr_scene_url,
+								punch_type: response.punch_type,
+							};
 							var mapForm = document.createElement("form");
 						    mapForm.method = "POST"; // or "post" if appropriate
 						    mapForm.action = "/punch/punchImg";
 						    var mapInput = document.createElement("input");
 						    mapInput.type = "hidden";
-						    mapInput.name = "url";
-						    mapInput.value = a.firstChild.src;
+						    mapInput.name = "urlAndPunchIdAndText";
+						    mapInput.value = JSON.stringify(postData);
 						    mapForm.appendChild(mapInput);
 						    document.body.appendChild(mapForm);
 						    mapForm.submit();
