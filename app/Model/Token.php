@@ -18,7 +18,7 @@ class Token extends AppModel
 		return $result;
 	}
 
-	public function getToken($tokenId)
+	public function getToken($tokenId=1)
 	{
 		$util = new Utility();
 	        

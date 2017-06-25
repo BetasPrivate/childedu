@@ -11,7 +11,7 @@
 	<body>
 		<header>
 			<h2>
-				<img src="img/logo.jpg" />
+				<img src="/img/logo.jpg" />
 				<span>后台设置</span>
 			</h2>
 		</header>
@@ -103,18 +103,11 @@
 					<h3>
 						<div class="sign_menu">
 							<ul class="sign_show">
+								<?php foreach($result['punch_types'] as $key => $punchType):?>
 								<li class="clearfix">
-									<span>陪伴阅读打卡</span><button class="look">查看打卡</button><button class="revise">修改</button><em><i></i>删除</em>
+									<span><?php echo $punchType['PunchType']['name'];?></span><button class="look" onclick="getCurrentPunchType(<?php echo $key;?>)">查看打卡</button><button class="revise" onclick="getCurrentPunchType(<?php echo $key;?>)">修改</button><em onclick="getCurrentPunchType(<?php echo $key;?>)"><i></i>删除</em>
 								</li>
-								<li class="clearfix">
-									<span>活动打卡</span><button class="look">查看打卡</button><button class="revise">修改</button><em><i></i>删除</em>
-								</li>
-								<li class="clearfix">
-									<span>课堂打卡</span><button class="look">查看打卡</button><button class="revise">修改</button><em><i></i>删除</em>
-								</li>
-								<li class="clearfix">
-									<span>助教打卡</span><button class="look">查看打卡</button><button class="revise">修改</button><em><i></i>删除</em>
-								</li>
+								<?php endforeach;?>
 							</ul>
 							<ul class="sign_hidden" style="display:none">
 								<li class="clearfix">
@@ -126,28 +119,28 @@
 							<form action="" method="" onsubmit="return false">
 								<dl>
 									<dd class="sign_name">
-										<span>打卡名称</span><input type="text" name="sign_name" />
+										<span>打卡名称</span><input type="text" name="sign_name" id="punch_name" />
 									</dd>
 									<dd>
-										<span>打卡积分</span><input type="text" name="sign_name" />
+										<span>打卡积分</span><input type="text" name="sign_name" id="punch_point" />
 									</dd>
 									<dd>
-										<span>分享积分</span><input type="text" name="sign_name" />
+										<span>分享积分</span><input type="text" name="sign_name" id="punch_share_point" />
 									</dd>
 									<dd>
-										<span>单次助力积分</span><input type="text" name="sign_name" />
+										<span>单次助力积分</span><input type="text" name="sign_name" id="punch_assistant_point" />
 									</dd>
 									<dd>
-										<span>助力积分最大额度</span><input type="text" name="sign_name" />
+										<span>助力积分最大额度</span><input type="text" name="sign_name" id="punch_assistant_total" />
 									</dd>
-									<dd class="clearfix">
+									<!-- <dd class="clearfix">
 										<span>上传背景图</span>
 										<em id="imagePreview">
 											<input id="imageInput" type="file" name="myPhoto" onchange="loadImageFile();" />
 										</em>
-									</dd>
+									</dd> -->
 									<dd>
-										<input type="submit" value="保存"/> 
+										<input type="submit" value="保存" onclick="savePunchType(1)" /> 
 									</dd>
 								</dl>
 							</form>
@@ -156,29 +149,29 @@
 							<form action="" method="" onsubmit="return false">
 								<dl>
 									<dd class="sign_name">
-										<span>打卡名称</span><input type="text" name="sign_name" />
+										<span>打卡名称</span><input type="text" name="sign_name" id="punch_name2" />
 									</dd>
 									<dd>
-										<span>打卡积分</span><input type="text" name="sign_name" />
+										<span>打卡积分</span><input type="text" name="sign_name" id="punch_point2" />
 									</dd>
 									<dd>
-										<span>分享积分</span><input type="text" name="sign_name" />
+										<span>分享积分</span><input type="text" name="sign_name" id="punch_share_point2" />
 									</dd>
 									<dd>
-										<span>单次助力积分</span><input type="text" name="sign_name" />
+										<span>单次助力积分</span><input type="text" name="sign_name" id="punch_assistant_point2" />
 									</dd>
 									<dd>
-										<span>助力积分最大额度</span><input type="text" name="sign_name" />
+										<span>助力积分最大额度</span><input type="text" name="sign_name" id="punch_assistant_total2" />
 									</dd>
-									<dd class="clearfix">
+									<!-- <dd class="clearfix">
 										<span>上传背景图</span>
 										<em id="imagePreview">
 											<input id="imageInput" type="file" name="myPhoto" onchange="loadImageFile();" />
 										</em>
-									</dd>
-									<dd>
-										<input type="submit" value="保存"/> 
-									</dd>
+									</dd> -->
+									<!-- <dd>
+										<input type="submit" value="保存" onclick="savePunchType(2)"/> 
+									</dd> -->
 								</dl>
 							</form>
 						</div>
@@ -186,28 +179,28 @@
 							<form action="" method="" onsubmit="return false">
 								<dl>
 									<dd class="sign_name">
-										<span>打卡名称</span><input type="text" name="sign_name" />
+										<span>打卡名称</span><input type="text" name="sign_name" id="punch_name3" />
 									</dd>
 									<dd>
-										<span>打卡积分</span><input type="text" name="sign_name" />
+										<span>打卡积分</span><input type="text" name="sign_name" id="punch_point3" />
 									</dd>
 									<dd>
-										<span>分享积分</span><input type="text" name="sign_name" />
+										<span>分享积分</span><input type="text" name="sign_name" id="punch_share_point3" />
 									</dd>
 									<dd>
-										<span>单次助力积分</span><input type="text" name="sign_name" />
+										<span>单次助力积分</span><input type="text" name="sign_name" id="punch_assistant_point3" />
 									</dd>
 									<dd>
-										<span>助力积分最大额度</span><input type="text" name="sign_name" />
+										<span>助力积分最大额度</span><input type="text" name="sign_name" id="punch_assistant_total3" />
 									</dd>
-									<dd class="clearfix">
+									<!-- <dd class="clearfix">
 										<span>上传背景图</span>
 										<em id="imagePreview">
 											<input id="imageInput" type="file" name="myPhoto" onchange="loadImageFile();" />
 										</em>
-									</dd>
+									</dd> -->
 									<dd>
-										<input type="submit" value="保存"/> 
+										<input type="submit" value="保存" onclick="savePunchType(3)"/> 
 									</dd>
 								</dl>
 							</form>
@@ -382,6 +375,73 @@
 		</section>
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script>
+		var punchTypes = <?php echo json_encode($result['punch_types']);?>;
+		var currentPunchType;
+
+		function getCurrentPunchType(id) {
+			currentPunchType = punchTypes[id];
+		}
+
+		function initPunchPanel() {
+			$("#punch_name").val(currentPunchType.PunchType.name);
+			$("#punch_point").val(currentPunchType.PunchType.punch_point);
+			$("#punch_share_point").val(currentPunchType.PunchType.share_point);
+			$("#punch_assistant_point").val(currentPunchType.PunchType.assistant_point);
+			$("#punch_assistant_total").val(currentPunchType.PunchType.assistant_point_total);
+			$("#punch_name2").val(currentPunchType.PunchType.name);
+			$("#punch_point2").val(currentPunchType.PunchType.punch_point);
+			$("#punch_share_point2").val(currentPunchType.PunchType.share_point);
+			$("#punch_assistant_point2").val(currentPunchType.PunchType.assistant_point);
+			$("#punch_assistant_total2").val(currentPunchType.PunchType.assistant_point_total);
+			$("#punch_name3").val(currentPunchType.PunchType.name);
+			$("#punch_point3").val(currentPunchType.PunchType.punch_point);
+			$("#punch_share_point3").val(currentPunchType.PunchType.share_point);
+			$("#punch_assistant_point3").val(currentPunchType.PunchType.assistant_point);
+			$("#punch_assistant_total3").val(currentPunchType.PunchType.assistant_point_total);
+		}
+
+		function savePunchType(typeId) {
+			if (typeId == 1) {
+				var data = {
+					name: $("#punch_name").val(),
+					punch_point: $("#punch_point").val(),
+					share_point: $("#punch_share_point").val(),
+					assistant_point: $("#punch_assistant_point").val(),
+					assistant_point_total: $("#punch_assistant_total").val(),
+				};
+				var url = '/punch/editPunchType';
+			} else if (typeId == 3) {
+				var data = {
+					id:currentPunchType.PunchType.id,
+					name: $("#punch_name3").val(),
+					punch_point: $("#punch_point3").val(),
+					share_point: $("#punch_share_point3").val(),
+					assistant_point: $("#punch_assistant_point3").val(),
+					assistant_point_total: $("#punch_assistant_total3").val(),
+				};
+				var url = '/punch/createNewPunchType';
+			} else {
+				alert('禁止的操作');
+				return;
+			}
+			$.ajax({
+				'url': url,
+				'method': 'POST',
+				'dataType': 'json',
+				'data': data,
+				success:function(res) {
+					if (res.status == 1) {
+						alert('保存成功(*^__^*) 嘻嘻……');
+					} else {
+						alert(res.msg);
+					}
+				},
+				error:function(res) {
+
+				}
+			})
+		}
+
 		$(document).ready(function(){
 			//点击导航跳转到对应页面
 			$("nav ul li:even").click(function(){
@@ -467,18 +527,20 @@
 			})
 			//点击查看详情，跳转打卡详细页
 			$(".sign h3 .look").click(function(){
+				initPunchPanel();
 				start="off";
 				$(".sign_menu").css({display:"none"});
 				$(".sign_details2").css({display:"block"});
-				$(".sign_details2 .sign_name input").val($(this).parent().children("span").html());
+				// $(".sign_details2 .sign_name input").val($(this).parent().children("span").html());
 				$(".sign_details2 input:text,.sign_details input:file").attr("disabled",true);
 			})
 			//点击修改，跳转打卡详情页
 			$(".sign h3 .revise").click(function(){
+				initPunchPanel();
 				start="off";
 				$(".sign_menu").css({display:"none"});
 				$(".sign_details3").css({display:"block"});
-				$($(".sign_details3 input:text")[0]).val($(this).parent().children("span").html());
+				// $($(".sign_details3 input:text")[0]).val($(this).parent().children("span").html());
 			})
 			//点击详细页1保存，跳回打卡记录页面，并新建一个打卡类型
 			$(".sign_details1 input:submit").click(function(){
@@ -509,7 +571,30 @@
 			})
 			//点击删除按钮，删除当前列
 			$(".sign_menu li em").click(function(){
-				$(this).parents("li").remove();
+				if (confirm('确认删除？')) {
+					$(this).parents("li").remove();
+					var url = '/punch/editPunchType';
+					var data = {
+						id: currentPunchType.PunchType.id,
+						is_deleted: 1,
+					};
+					$.ajax({
+						'url': url,
+						'method': 'POST',
+						'dataType': 'json',
+						'data': data,
+						success:function(res) {
+							if (res.status == 1) {
+								alert('保存成功(*^__^*) 嘻嘻……');
+							} else {
+								alert(res.msg);
+							}
+						},
+						error:function(res) {
+
+						}
+					})
+				}
 			})
 			
 			
@@ -562,8 +647,9 @@
 			})
 		})
 		
-		
-		
+		function showTips(tipNote) {
+	        $("body").find(".tips").remove().end().append("<div class='tips'>"+tipNote+"</div>"),setTimeout(function(){$(".tips").fadeOut(500)},500);
+	    }
 		
 		
 		</script>

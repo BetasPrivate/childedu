@@ -132,7 +132,7 @@ class Utility {
                         1 => [
                             'name' => urlencode('陪伴打卡'),
                             'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/pic1.jpg',
+                            'url' => 'http://childwelfare.zhanshen1.com/punch',
                         ],
                     ],
                 ],

@@ -6,6 +6,7 @@ class PunchController extends AppController {
 		'Point',
 		'PointLog',
 		'Token',
+		'PunchType',
 	];
 
 	public function index()
@@ -28,13 +29,13 @@ class PunchController extends AppController {
 
 	public function responseToShareInWeixin()
 	{
-		// $data = $this->request->data;
+		$data = $this->request->data;
 
-		// $punchId = $data['punchId'];
-		// $punchType = $data['punchType'];
-		// $imgUrl = $data['imgUrl'];
+		$punchId = $data['punchId'];
+		$punchType = $data['punchType'];
+		$imgUrl = $data['imgUrl'];
 
-		$this->PunchRecord->saveResponseToShareInWeixin(88);
+		$this->PunchRecord->saveResponseToShareInWeixin($punchId);
 
 		exit();
 
@@ -124,6 +125,40 @@ class PunchController extends AppController {
 		$result['share_link'] = ROOT_URL.'/punch/view/'.$punchId;
 
 		$this->set(compact('result'));
+	}
+
+	public function editPunchType()
+	{
+		$data = $this->request->data;
+
+		$res = $this->PunchType->save($data);
+
+		if ($res) {
+			$result['status'] = 1;
+		} else {
+			$result['status'] = 0;
+			$result['msg'] = '稍后再试';
+		}
+
+		echo json_encode($result);
+		exit();
+	}
+
+	public function createNewPunchType()
+	{
+		$data = $this->request->data;
+
+		$this->PunchType->create();
+		$res = $this->PunchType->save($data);
+
+		if ($res) {
+			$result['status'] = 1;
+		} else {
+			$result['status'] = 0;
+			$result['msg'] = '稍后再试';
+		}
+		echo json_encode($result);
+		exit();
 	}
 
 	public function upLoadImage()

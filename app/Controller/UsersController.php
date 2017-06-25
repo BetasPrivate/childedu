@@ -1,5 +1,6 @@
 <?php
 App::uses('PunchRecord', 'Model');
+App::uses('PunchType', 'Model');
 class UsersController extends AppController
 {
     public $uses = [
@@ -26,6 +27,10 @@ class UsersController extends AppController
             ],
         ]);
 
+        if (!$points) {
+            $points['Point']['total'] = 0;
+        }
+
         $this->set(compact('points'));
     }
 
@@ -42,7 +47,7 @@ class UsersController extends AppController
 
         foreach ($punchRecords as &$punchRecord) {
             $punchRecord['total_point'] = $this->PunchRecord->getTotalPointPerPunchRecord($punchRecord['PointLog']);
-            $punchRecord['punch_text'] = \PunchRecord::text($punchRecord['PunchRecord']['type_id']);
+            $punchRecord['punch_text'] = \PunchType::getPunchTypeDetail($punchRecord['PunchRecord']['type_id'])['name'];
         }
 
         $this->set(compact('punchRecords'));
