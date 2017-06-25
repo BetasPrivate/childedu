@@ -1,30 +1,29 @@
 <?php
 App::uses('PointLog', 'Model');
+App::uses('PunchType', 'Model');
 class PunchRecord extends AppModel {
 	public $hasMany = [
 		'PointLog',
 	];
-	const ACCOMPANY_READ_PUNCH = 1;
-	const ACTIVITY_PUNCH = 2;
-	const CLZ_PUNCH = 3;
-	const ASSISTANT_PUNCH = 4;
-	const SCAN_ASSISTANT = 5;
 
-	public static $texts = [
-		self::ACCOMPANY_READ_PUNCH  => '陪伴阅读打卡',
-		self::ACTIVITY_PUNCH => '活动打卡',
-		self::CLZ_PUNCH => '课堂打卡',
-		self::ASSISTANT_PUNCH => '助教打卡',
-		self::SCAN_ASSISTANT => '扫码助力',
+	public $belongsTo = [
+		'PunchType' => [
+			'className' => 'PunchType',
+			'foreignKey' => 'type_id',
+		],
 	];
 
-	public static $punchTypePointRelation = [
-		self::ACCOMPANY_READ_PUNCH  => 20,
-		self::ACTIVITY_PUNCH => 20,
-		self::CLZ_PUNCH => 20,
-		self::ASSISTANT_PUNCH => 20,
-		self::SCAN_ASSISTANT => 10,
-	];
+	public $pointReasonType = null;
+
+	public static function text($index)
+	{
+		$result = '未知打卡类型';
+		if (isset(self::$texts[$index])) {
+			$result = self::$texts[$index];
+		}
+
+		return $result;
+	}
 
 	public function createNewPunchRecord($punchType, $punchText, $userId, $imgUrl = null)
 	{
@@ -42,26 +41,78 @@ class PunchRecord extends AppModel {
 
 	public function addPunchPointsScan($punch)
 	{
-		$saveData = [];
+		$this->id = $punch['PunchRecord']['id'];
+		
+		$this->pointReasonType = \PointLog::SCAN_ASSISTANT;
 
-		$saveData['user_id'] = $punch['PunchRecord']['user_id'];
-		$saveData['type_id'] = self::SCAN_ASSISTANT;
-		$saveData['text'] = self::$texts[self::SCAN_ASSISTANT];
+		$this->save(['updated' => date('Y-m-d H:i:s')]);
+	}
 
-		$this->create();
+	public function saveResponseToShareInWeixin($punchId)
+	{
+		$saveData = [
+			'id' => $punchId,
+			'updated' => date('Y-m-d H:i:s'),
+			'point_reason_type' => \PointLog::SHARE_TO_FRIENDS,
+		];
 		$this->save($saveData);
+	}
+
+	public function canContinueScan($punch)
+	{
+		$punchId = $punch['PunchRecord']['id'];
+		$punchTypeId = $punch['PunchRecord']['type_id'];
+
+		$pointLogsAll = $punch['PointLog'];
+		$pointLogsAss = [];
+		foreach($pointLogsAll as $pointLog) {
+			if ($pointLog['reason_type_id'] == \PointLog::SCAN_ASSISTANT) {
+				array_push($pointLogsAss, $pointLog);
+			}
+		}
+		$total = $this->getTotalPointPerPunchRecord($pointLogsAss);
+		if ($total < \PunchType::getPunchTypeDetail($punchTypeId)['assistant_point_total']) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function getTotalPointPerPunchRecord($pointLogs)
+	{
+		$total = 0;
+		foreach ($pointLogs as $pointLog) {
+			$actionType = $pointLog['action_type'];
+			$point = $pointLog['point'];
+			if ($actionType == \PointLog::ADD) {
+				$total += $point;
+			} elseif ($actionType == \PointLog::MINUS) {
+				$total -= $point;
+			}
+		}
+
+		return $total;
 	}
 
 	//新建打卡记录加积分（新增打卡、朋友助力扫码），分享到朋友圈加积分（更新打卡记录），
 	function afterSave($created, $options=[])
 	{
+		if (empty($this->pointReasonType)) {
+			if (isset($this->data['PunchRecord']['point_reason_type'])) {
+				$this->pointReasonType = $this->data['PunchRecord']['point_reason_type'];
+			} else {
+				$this->pointReasonType = \PointLog::PUNCH;
+			}
+		}
+
 		if ($created) {
 			$this->savePointRecord();
 		} else {
-			if (!isset($this->data['PunchRecord']['qr_scene_ticket'])) {
+			//更新该二项时不需要统计分数
+			if (!isset($this->data['PunchRecord']['qr_scene_ticket']) && !isset($this->data['PunchRecord']['img_url'])) {
 				$this->data = $this->find('first', [
 					'conditions' => [
-						'id' => $this->id,
+						'PunchRecord.id' => $this->id,
 					],
 				]);
 				$this->savePointRecord();
@@ -71,14 +122,18 @@ class PunchRecord extends AppModel {
 
 	function savePointRecord()
 	{
-		$this->PointLog->create();
+		$pointId = ClassRegistry::init('Point')->getPointByUserId($this->data['PunchRecord']['user_id'])['Point']['id'];
+
 		$saveData = [
 			'action_type' => \PointLog::ADD,
 			'user_id' => $this->data['PunchRecord']['user_id'],
 			'punch_record_id' => $this->data['PunchRecord']['id'],
-			'point' => self::$punchTypePointRelation[$this->data['PunchRecord']['type_id']],
+			'point' => \PunchType::getPunchTypeDetail($this->data['PunchRecord']['type_id'])['punch_point'],
+			'reason_type_id' => $this->pointReasonType,
+			'point_collect_id' => $pointId,
 		];
 
+		$this->PointLog->create();
 		$this->PointLog->save($saveData);
 	}
 }

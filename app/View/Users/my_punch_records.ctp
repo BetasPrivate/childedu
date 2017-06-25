@@ -31,30 +31,11 @@
 	<body>
 		<section class="home">
 			<ul>
+				<?php foreach ($punchRecords as $punchRecord): ?>
 				<li>
-					陪伴阅读打卡<span>30积分</span>
+					<?php echo $punchRecord['punch_text'];?><span><?php echo $punchRecord['total_point'];?>积分</span>
 				</li>
-				<li>
-					活动打卡<span>30积分</span>
-				</li>
-				<li>
-					课堂打卡<span>30积分</span>
-				</li>
-				<li>
-					助教打卡<span>30积分</span>
-				</li>
-				<li>
-					陪伴阅读打卡<span>30积分</span>
-				</li>
-				<li>
-					活动打卡<span>30积分</span>
-				</li>
-				<li>
-					课堂打卡<span>30积分</span>
-				</li>
-				<li>
-					助教打卡<span>30积分</span>
-				</li>
+				<?php endforeach;?>
 			</ul>
 		</section>
 	</body>

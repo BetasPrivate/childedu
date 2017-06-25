@@ -1,9 +1,10 @@
 <?php
+App::uses('PointLog', 'Model');
 class PunchController extends AppController {
 	public $uses = [
 		'PunchRecord',
 		'Point',
-		'PonitLog',
+		'PointLog',
 		'Token',
 	];
 
@@ -16,7 +17,7 @@ class PunchController extends AppController {
 	{
 		$punchRecord = $this->PunchRecord->find('first', [
 			'conditions' => [
-				'id' => $punchId,
+				'PunchRecord.id' => $punchId,
 			],
 		]);
 
@@ -27,19 +28,13 @@ class PunchController extends AppController {
 
 	public function responseToShareInWeixin()
 	{
-		$data = $this->request->data;
+		// $data = $this->request->data;
 
-		$punchId = $data['punchId'];
-		$punchType = $data['punchType'];
-		$imgUrl = $data['imgUrl'];
+		// $punchId = $data['punchId'];
+		// $punchType = $data['punchType'];
+		// $imgUrl = $data['imgUrl'];
 
-		$saveData = [
-			'id' => $punchId,
-			'type_id' => $punchType,
-			'updated' => date('Y-m-d H:i:s'),
-		];
-
-		$this->PunchRecord->save($saveData);
+		$this->PunchRecord->saveResponseToShareInWeixin(88);
 
 		exit();
 
@@ -67,6 +62,7 @@ class PunchController extends AppController {
 			$qrSceneUrlOnline = $qrSceneRes['url'];
 			$ticket = $qrSceneRes['ticket'];
 
+			//保存二维码图片，方便后续canvas
 			$content = file_get_contents($qrSceneUrlOnline);
 			$fileName = 'tmp/'.$ticket.'.jpg';
 			$fp = fopen($fileName, 'w');
@@ -153,7 +149,7 @@ class PunchController extends AppController {
 
 		$result = [
 			'status' => 1,
-			'img_url' => '/'.$imgUrl,
+			'img_url' => 'http://'.ROOT_URL.'/'.$imgUrl,
 		];
 		echo json_encode($result);
 		exit();

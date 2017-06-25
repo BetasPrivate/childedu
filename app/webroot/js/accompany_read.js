@@ -1,4 +1,5 @@
-var loadImageFile = (function () {   
+//点击打卡管理中的选择背景图上传图片
+var loadImageFile = (function () {
 if (window.FileReader) {   
 var oPreviewImg = null, oFReader = new window.FileReader(),   
 rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;  

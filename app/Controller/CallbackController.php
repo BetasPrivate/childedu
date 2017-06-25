@@ -1,11 +1,13 @@
 <?php
 App::uses('PunchRecord', 'Model');
+App::uses('PunchType', 'Model');
 class CallbackController extends AppController
 {
     public $uses = [
         'User',
         'WxLog',
         'PunchRecord',
+        'Point',
     ];
 
     function entrance()
@@ -14,6 +16,7 @@ class CallbackController extends AppController
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $eventKey = trim((string)$postObj->EventKey);
         $event = trim((string)$postObj->Event);
+        echo 'success';
 
         $this->WxLog->create();
         $this->WxLog->save(['data' => $postStr]);
@@ -90,6 +93,9 @@ class CallbackController extends AppController
         $eventKey = trim((string)$obj->EventKey);
 
         $isPunch = $this->PunchRecord->find('first', [
+            'contain' => [
+                'PointRecord',
+            ],
             'conditions' => [
                 'qr_scene_ticket' => $ticket,
             ]
@@ -97,8 +103,12 @@ class CallbackController extends AppController
 
         if ($isPunch) {
             if ($isPunch['PunchRecord']['id'] == $eventKey) {
-                $this->PunchRecord->addPunchPointsScan($isPunch);
-                $msg = '助力成功！对方会增加 '.\PunchRecord::$punchTypePointRelation[\PunchRecord::SCAN_ASSISTANT].' 积分';
+                if ($this->PunchRecord->canContinueScan($isPunch)) {
+                    $this->PunchRecord->addPunchPointsScan($isPunch);
+                    $msg = '助力成功！对方会增加 '.\PunchType::getPunchTypeDetail($isPunch['PunchRecord']['type_id'])['assistant_point'].' 积分';
+                } else {
+                    $msg = '抱歉，该用户助力加油得积分次数已达上限';
+                }
                 $this->sendTextMsg($obj, $msg);
             }
         }

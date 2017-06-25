@@ -1,8 +1,12 @@
 <?php
+App::uses('PunchRecord', 'Model');
 class UsersController extends AppController
 {
     public $uses = [
         'User',
+        'Point',
+        'PunchRecord',
+        'PointLog',
     ];
 
     public function index()
@@ -16,12 +20,32 @@ class UsersController extends AppController
 
     public function myPoints()
     {
-        
+        $points = $this->Point->find('first', [
+            'conditions' => [
+                'user_id' => AuthComponent::user('id'),
+            ],
+        ]);
+
+        $this->set(compact('points'));
     }
 
     public function myPunchRecords()
     {
+        $punchRecords = $this->PunchRecord->find('all', [
+            'contain' => [
+                'PointLog',
+            ],
+            'conditions' => [
+                'user_id' => AuthComponent::user('id'),
+            ],
+        ]);
 
+        foreach ($punchRecords as &$punchRecord) {
+            $punchRecord['total_point'] = $this->PunchRecord->getTotalPointPerPunchRecord($punchRecord['PointLog']);
+            $punchRecord['punch_text'] = \PunchRecord::text($punchRecord['PunchRecord']['type_id']);
+        }
+
+        $this->set(compact('punchRecords'));
     }
 
     public function login()

@@ -8,6 +8,6 @@
 		<title>我的积分</title>
 	</head>
 	<body>
-		<p>总积分：<em>300</em></p>
+		<p>总积分：<em><?php echo $points['Point']['total'];?></em></p>
 	</body>
 </html>

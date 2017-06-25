@@ -1,14 +1,26 @@
 <?php
+App::uses('AppModel', 'Model');
 class PointLog extends AppModel {
+
 	public $belongsTo = [
 		'PointCollect' => [
 			'className' => 'Point',
 			'foreignKey' => 'point_collect_id',
 		],
+		'PunchRecord',
 	];
+
+	const PUNCH = 1;
+	const SHARE_TO_FRIENDS = 2;
+	const SCAN_ASSISTANT = 3;
 
 	const ADD = 1;
 	const MINUS = 0;
+
+	public static $reasonTypes = [
+		self::PUNCH => '一般打卡',
+		self::SCAN_ASSISTANT => '助力加油',
+	];
 
 	public static $text = [
 		self::ADD => '增加积分',
@@ -20,23 +32,14 @@ class PointLog extends AppModel {
 		parent::afterSave($created);
 
 		if ($created) {
-			$pointCollect = $this->PointCollect->find('first', [
+			$point = $this->PointCollect->find('first', [
 				'conditions' => [
-					'user_id' => $this->data['PointLog']['user_id'],
+					'id' => $this->data['PointLog']['point_collect_id'],
 				],
 			]);
 
-			if (!$pointCollect) {
-				$this->PointCollect->create();
-				$rec = $this->PointCollect->save(['user_id' => $this->data['PointLog']['user_id']]);
-				$pointId = $rec['PointCollect']['id'];
-				$total = $rec['PointCollect']['total'];
-			} else {
-				$pointId = $pointCollect['PointCollect']['id'];
-				$total = $pointCollect['PointCollect']['total'];
-			}
-			$this->save(['id' => $this->data['PointLog']['id'], 'point_collect_id' => $pointId]);
-
+			$pointId = $point['PointCollect']['id'];
+			$total = $point['PointCollect']['total'];
 			$pointPer = $this->data['PointLog']['point'];
 			$actionType = $this->data['PointLog']['action_type'];
 

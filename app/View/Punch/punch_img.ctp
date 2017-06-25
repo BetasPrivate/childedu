@@ -75,6 +75,7 @@
     <body>
         <!-- <a href="#" id="download">下载图片</a> -->
         <h3 onclick="saveImg()" id="save">长按保存图片到相册</h3>
+        <img src="" id='whole_img' style="display: none;" />
         <!-- <button onclick="uploadImage()">上传图片</button> -->
         <!-- <button onclick="selectImage()">选择图片</button> -->
         <!-- <input type="text" id="testUrl"> -->
@@ -127,17 +128,16 @@
             var localUrl;
             var serverUrl;
             function test(){
-                // $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
+                $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
                 html2canvas($("#container"), {
                     onrendered: function(canvas) {  
                         //把截取到的图片替换到a标签的路径下载  
                         localUrl = canvas.toDataURL();
 
-                        $("#download").attr('href',localUrl);
                         saveImgToServer(localUrl);
                         //下载下来的图片名字  
                         // $("#download").attr('download','share.png');
-                        document.body.appendChild(canvas);
+                        // document.body.appendChild(canvas);
                         $("#container").css('display','none');
                     }
                 });
@@ -193,6 +193,8 @@
                     'data': data,
                     success:function(res) {
                         serverUrl = res.img_url;
+                        $("#whole_img").attr("src", serverUrl);
+                        $("#whole_img").css('display', 'block');
                         getReadyToShare(serverUrl);
                     },
                     error:function(res) {
@@ -229,8 +231,6 @@
                 }
             });
             wx.ready(function(){
-
-
                 test();
             });
 
