@@ -3,7 +3,10 @@ App::uses('PointLog', 'Model');
 App::uses('PunchType', 'Model');
 class PunchRecord extends AppModel {
 	public $hasMany = [
-		'PointLog',
+		'PointLog' => [
+			'className' => 'PointLog',
+			'foreignKey' => 'record_id',
+		],
 	];
 
 	public $belongsTo = [
@@ -127,7 +130,7 @@ class PunchRecord extends AppModel {
 		$saveData = [
 			'action_type' => \PointLog::ADD,
 			'user_id' => $this->data['PunchRecord']['user_id'],
-			'punch_record_id' => $this->data['PunchRecord']['id'],
+			'record_id' => $this->data['PunchRecord']['id'],
 			'point' => \PunchType::getPunchTypeDetail($this->data['PunchRecord']['type_id'])['punch_point'],
 			'reason_type_id' => $this->pointReasonType,
 			'point_collect_id' => $pointId,

@@ -138,6 +138,9 @@
 								<i class="i_5"></i>我的核销二维码
 							</a>
 						</li>
+						<li>
+							<a href="/users/logout">退出登录</a>
+						</li>
 					</ul>
 				</h3>
 				<h4>

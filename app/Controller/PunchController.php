@@ -190,7 +190,7 @@ class PunchController extends AppController {
 		exit();
 	}
 
-	  public function beforeFilter() {
+	public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('view');
     }

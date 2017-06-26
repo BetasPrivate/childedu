@@ -4,6 +4,7 @@ class RegistrationController extends AppController
 	public $uses = [
 		'Center',
 		'RegInfo',
+		'ChildActivity',
 	];
 
 	function index()
@@ -42,5 +43,18 @@ class RegistrationController extends AppController
 		}
 
 		$this->set(compact('result'));
+	}
+
+	public function regSuccess($activityId)
+	{
+		$activity = $this->ChildActivity->find('first', [
+			'conditions' => [
+				'ChildActivity.id' => $activityId,
+			],
+		]);
+
+		$point = $activity['ChildActivity']['point_onsubmit'];
+
+		$this->set(compact('point'));
 	}
 }

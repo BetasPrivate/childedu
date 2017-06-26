@@ -17,6 +17,7 @@
 		</header>
 		<section class="content">
 			<nav>
+				<li><a href="/su/pointManager" target="blank">查看积分记录</a></li>
 				<ul>
 					<li class="even active">账号管理</li>
 					<li class="odd">修改密码</li>

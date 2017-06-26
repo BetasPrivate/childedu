@@ -125,21 +125,43 @@ class Utility {
                     'key' => 'DO_NOTHING',
                     'sub_button' => [
                         0 => [
+                            'name' => urlencode('公司简介'),
+                            'type' => 'view',
+                            'url' => 'http://childwelfare.zhanshen1.com/company',
+                        ],
+                        1 => [
                             'name' => urlencode('玩子报名'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/registration',
                         ],
-                        1 => [
+                        2 => [
                             'name' => urlencode('陪伴打卡'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/punch',
+                        ],
+                        3 => [
+                            'name' => urlencode('公益活动赚积分'),
+                            'type' => 'view',
+                            'url' => 'http://childwelfare.zhanshen1.com/activity/welfare',
+                        ],
+                        4 => [
+                            'name' => urlencode('玩子币兑换'),
+                            'type' => 'view',
+                            'url' => 'http://childwelfare.zhanshen1.com/product',
                         ],
                     ],
                 ],
                 1 => [
                     "name" => urlencode('玩趣活动'),
-                    'type' => 'view',
-                    'url' => 'http://childwelfare.zhanshen1.com/pic2.jpg',
+                    'type' => 'click',
+                    'key' => 'DO_NOTHING',
+                    'sub_button' => [
+                        0 => [
+                            'name' => urlencode('个人中心'),
+                            'type' => 'view',
+                            'url' => 'http://childwelfare.zhanshen1.com/',
+                        ],
+                    ],
                 ],
                 2 => [
                     "name" => urlencode('联系我们'),
