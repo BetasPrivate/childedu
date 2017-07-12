@@ -10,7 +10,7 @@
         <script src="/js/canvas2image.js"></script>
         <title>陪伴阅读打卡</title>
         <style>
-            @font-face {
+           @font-face {
                 font-family:"DFPHannotateW5-GB";
                 src: url("/font/DFPHannotateW5-GB.ttf");
             }
@@ -24,12 +24,14 @@
                 width:90%;
                 margin:0 auto;
             }
-            body {
+            /*7.10start*/
+            body>img {
+                position: fixed;
                 width:100%;
                 height:100%;
-                background: url(/img/ten_body_bg.jpg) no-repeat;
-                background-size:cover;
-                background-position: center;
+                top:0;
+                left:0;
+                z-index: -1;
             }
             header img {
                 width:100%;
@@ -41,58 +43,68 @@
                 font-size:0.7rem;
             }
             .main h3 {
-                font-size:0.8rem;
-                line-height: 4.35rem;
                 margin-top:0.5rem;
-                text-align: center;
-                font-weight: bold;
+                background: url(/img/ten_main_bg.png);
+                background-size: 100%;
+                -webkit-background-size: 100%;
             }
-            .main h4 {
-                position:relative;
+            .main h3 img {
+                width:31%;
+                margin:0 auto;
+                display: block;
             }
             .main h4 img.code {
                 width:38%;
                 display:block;
+                text-align: center;
+            }
+            .main h3 p {
+                text-align: center;
+                line-height: 2.05rem;
+                font-size: 0.65rem;
+                color: #999999;
+                font-weight: bold;
             }
             .main h4 ul {
-                width:59%;
-                position:absolute;
-                bottom: 0;
-                right:0;
+                width:90%;
+                margin-left: 5%;
             }
             .main h4 ul li {
                 float: left;
-                width:22%;
-                margin-left:3%;
-                margin-top:0.2rem;
+                width:23%;
+                margin-right:2%;
+                margin-top:0.1rem;
+                box-sizing: border-box;
+                border:solid 1px #d9d9d9;
             }
             .main h4 ul li img {
                 display: block;
                 width:100%;
             }
+            /*7.10 end*/
         </style>
     </head>
+    <!-- <button onclick="test()">test</button> -->
+    <!-- <a href="#" id="download">下载图片</a> -->
     <body>
-        <!-- <a href="#" id="download">下载图片</a> -->
-        <h3 onclick="saveImg()" id="save">长按保存图片到相册</h3>
         <img src="" id='whole_img' style="display: none;" />
         <!-- <button onclick="uploadImage()">上传图片</button> -->
         <!-- <button onclick="selectImage()">选择图片</button> -->
         <!-- <input type="text" id="testUrl"> -->
-        <section class="home" id="container">
+        <p id="saveImg">长按保存图片到相册</p>
+        <section class="home" id="canvasImg">
             <header>
                 <!-- <img src="/img/ten_header_pic.jpg" /> -->
                 <img src="<?php echo $result['url'];?>" id='punch_img'/>
             </header>
             <section class="main">
-                <!-- <h2>
-                    这次陪宝宝阅读《小王子》，宝宝很开心，我也收获了不一样的快乐，好喜欢这样的活动，希望可以越办越好。这次陪宝宝阅读《小王子》，宝宝很开心，我也收获了不一样的快乐，好喜欢这样的活动，希望可以越办越好。这次陪宝宝阅读！
-                </h2> -->
                 <h2>
                     <?php echo $result['punch_text'];?>
                 </h2>
-                <h4>
+                <h3>
                     <img src="<?php echo $result['qr_scene_url'];?>" class="code" id="qrScenePic"/>
+                </h3>
+                <h4>
                     <ul>
                         <li>
                             <img src="/img/ten_header_pic.jpg" />
@@ -128,8 +140,9 @@
             var localUrl;
             var serverUrl;
             function test(){
-                $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
-                html2canvas($("#container"), {
+                // $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
+                document.body.background = '/img/ten_body_bg.jpg';
+                html2canvas(document.body, {
                     onrendered: function(canvas) {  
                         //把截取到的图片替换到a标签的路径下载  
                         localUrl = canvas.toDataURL();
@@ -138,7 +151,8 @@
                         //下载下来的图片名字  
                         // $("#download").attr('download','share.png');
                         // document.body.appendChild(canvas);
-                        $("#container").css('display','none');
+                        $("#canvasImg").css('display','none');
+                        $("#saveImg").css("display","block");
                     }
                 });
             }

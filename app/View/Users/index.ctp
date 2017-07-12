@@ -129,12 +129,12 @@
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="/users/myAddress">
 								<i class="i_4"></i>我的地址
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="/users/personalCode">
 								<i class="i_5"></i>我的核销二维码
 							</a>
 						</li>

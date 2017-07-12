@@ -7,105 +7,84 @@
 <title>登录</title>
 <link rel="stylesheet" href="/css/common.css" type="text/css"/>
 <style>
-    body {
-        background-color:#f4f4f4;
-        color:#333;
-        }
-    .home {
-        width:100%;
-        max-width:750px;
-        min-width:320px;
-        margin:0 auto;
-        }
-    .user {
-        background-color:#fff;
-        }
-    input[type="text"],input[type="password"] {
-        width:87%;
-        display:block;
-        margin:0 auto;
-        height:2.5rem;
-        border:none;
-        outline:none;
-        font-size:0.8rem;
-        }
-    input[type="text"] {
-        border-bottom:solid 1px #d7d7d7;
-        }
-    input[type="submit"] {
-        width:86.38%;
-        height:2rem;
-        font-size:0.8rem;
-        text-align:center;
-        line-height:2rem;
-        border:none;
-        outline:none;
-        display:block;
-        margin:1.1rem auto;
-        background-color:#ffceb0;
-        border-radius:0.15rem;
-        -webkit-border-radius:0.15rem;
-        -moz-border-radius:0.15rem;
-        -o-border-radius:0.15rem;
-        color:#333;
-        }
-    ::-webkit-input-placeholder { /* WebKit browsers */
-        color:#333;
-        }
-        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color:#333;
-        }
-        ::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color:#333;
-        }
-        :-ms-input-placeholder { /* Internet Explorer 10+ */
-        color:#333;
-        }
-    h2 {
-        text-align:center;
-        font-size:0.7rem;
-        }
-    a {
-        color:#333;
-        }
-    a.a_1 {
-        padding-right:1.5rem;
-        }
-    a.a_2 {
-        padding-left:1.5rem;
-        }
+    @font-face {
+                font-family:"DFPHannotateW5-GB";
+                src: url("/font/DFPHannotateW5-GB.ttf");
+            }
+            body {
+                max-width: 750px;
+                min-width: 320px;
+                margin:0 auto;
+                font-family: "DFPHannotateW5-GB";
+                background-color: #FFFFFF;
+            }
+            .home {
+                width:100%;
+                background-color: #FFFFFF;
+            }
+            .home .top img {
+                width:57%;
+                display: block;
+                padding-top:3.9rem;
+                padding-bottom: 0.9rem;
+                margin:0 auto;
+            }
+            .home .message input[type=text],.home .message input[type=password] {
+                display: block;
+                width:70%;
+                height:1.9rem;
+                box-sizing: border-box;
+                border:none;
+                outline: none;
+                background-color: #e8e8e8;
+                margin: 0 auto;
+                font-size: 0.65rem;
+                text-indent: 4.4%;
+                margin-bottom: 0.4rem;
+                font-family:"DFPHannotateW5-GB";
+            }
+            .home .message input[type=submit] {
+                width:51%;
+                height: 1.6rem;
+                border-radius: 0.8rem;
+                -webkit-border-radius: 0.8rem;
+                margin:1.45rem auto 0.6rem;
+                display: block;
+                border:none;
+                outline: none;
+                box-sizing: border-box;
+                color:#FFFFFF;
+                background-color: #ff9601;
+                font-size: 0.8rem;
+                font-family:"DFPHannotateW5-GB";
+            }
+            .message h2 {
+                text-align: center;
+            }
+            .message a {
+                font-size: 0.6rem;
+                color:#666666;
+            }
 </style>
 </head>
 
 <body>
-    <div class="home">
-        <?php echo $this->Flash->render('auth'); ?>
-        <form action="/users/login" method="post">
-            <div class="user">
-            <input type="text" name="data[User][username]" placeholder="账户"/>
-            <input type="password" name="data[User][password]" placeholder="密码"/>
-            </div>
-            <input type="submit" value="确定"/>
-        </form>
-      <!--   <form action="/users/login" id="UserLoginForm" method="post" accept-charset="utf-8">
-            <div style="display:none;">
-                <input type="hidden" name="_method" value="POST">
-            </div>
-            <fieldset>
-                <legend>
-                    请输入账号密码
-                </legend>
-                <div class="user">
-                    <input type="text" name="data[User][username]" placeholder="账户" id = 'UserUsername'/>
-                    <input type="password" name="data[User][password]" placeholder="密码" id="UserPassword"/>
-                </div>
-            </fieldset>
-            <div class="submit"><input type="submit" value="确定"></div>
-        </form> -->
-        <h2>
-            <a href="#" class="a_1">找回密码</a>|<a href="/users/signIn" class="a_2">免费注册</a>
-            <!-- <a href="#" class="a_1">找回密码</a>|<a href="#" class="a_2">暂不开放注册</a> -->
-        </h2>
-    </div>
+    <section class="home">
+        <section class="top">
+            <img src="/img/login.jpg" />
+        </section>
+        <section class="message">
+            <?php echo $this->Flash->render('auth'); ?>
+            <?php echo $this->Flash->render();?>
+            <form action="/users/login" method="post">
+                <input type="text" name="data[User][username]" placeholder="账户"/>
+                <input type="password" name="data[User][password]" placeholder="密码"/>
+                <input type="submit" value="确定"/>
+            </form>
+            <h2>
+                <a href="#">忘记密码？</a>|<a href="/users/signIn" class="a_2">免费注册</a>
+            </h2>
+        </section>
+    </section>
 </body>
 </html>

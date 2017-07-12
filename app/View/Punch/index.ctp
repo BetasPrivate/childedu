@@ -15,10 +15,6 @@
 				<input id="imageInput" type="file" name="myPhoto" onclick="checkLogIn()" onchange="loadImageFile();" />
 			</header>
 			<section class="main">
-				<h2>输入此刻你的感受</h2>
-				<h3>
-					<textarea id="inner_feeling" onclick="checkLogIn()"></textarea>
-				</h3>
 				<h4 class="clearfix">
 					<span>选择打卡类型</span>
 					<select name="sign_type" id="punch_type" onclick="checkLogIn()">
@@ -28,14 +24,30 @@
 						<option value="4">助教打卡</option>
 					</select>
 				</h4>
+				<h3>
+					<textarea placeholder="请留下你的陪护感言" id="inner_feeling" onclick="checkLogIn()"></textarea>
+				</h3>
 				<h5>
-					<button onclick="punch()"></button>
+					<button onclick="punch()">提交打卡</button>
 				</h5>
 			</section>
 		</section>
 		<script src="/js/jquery-3.2.1.min.js"></script>
 		<script src="/js/accompany_read.js"></script>
 		<script type="text/javascript">
+			$(document).ready(function(){
+				reset();
+				window.onresize=function(){
+					reset();
+				}
+				function reset(){
+					var bei=338/638;
+					$("#imagePreview").height($("#imagePreview").width()*bei);
+					$("#imageInput").height($("#imagePreview").height());
+					$(".main h3 textarea").height($(".main h3 textarea").width()*(210/576));
+				}
+			})
+
 			<?php if (AuthComponent::user('id')):?>
 	        var isLogIn = true;
 	        <?php else:?>

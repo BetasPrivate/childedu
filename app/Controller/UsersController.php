@@ -1,4 +1,5 @@
 <?php
+require_once WX_PAY . "/example/WxPay.JsApiPay.php";
 App::uses('PunchRecord', 'Model');
 App::uses('PunchType', 'Model');
 class UsersController extends AppController
@@ -81,9 +82,23 @@ class UsersController extends AppController
         }
     }
 
-    public function signIn()
+    public function myAddress()
     {
 
+    }
+
+    public function personalCode()
+    {
+
+    }
+
+    public function signIn()
+    {
+        // $tools = new JsApiPay();
+        // $openId = $tools->GetOpenid();
+        $openId = 'o5FzDw2nQn9jY5eqHrOKOJZOdq6U';
+
+        $this->set(compact('openId'));
     }
 
     public function getVerficationCode()
@@ -124,12 +139,69 @@ class UsersController extends AppController
         $data = (array)json_decode($data['userInfo']);
         $phoneNum = $data['phoneNum'];
         $userName = $data['userName'];
+        $openId = $data['openId'];
 
         $result = [
             'phoneNum' => $phoneNum,
             'userName' => $userName,
+            'openId' => $openId,
         ];
         $this->layout = 'ajax';
+        $this->set(compact('result'));
+    }
+
+    public function findPasswd()
+    {
+        if (!$this->request->is('post')) {
+            // $tools = new JsApiPay();
+            // $openId = $tools->GetOpenid();
+            $openId = 'o5FzDw2nQn9jY5eqHrOKOJZOdq6U';
+            $result = [
+                'open_id' => $openId,
+            ];
+        } else {
+            $data = $this->request->data;
+
+            $userName = $data['userName'];
+            $openId = $data['open_id'];
+            $newKey = $data['newKey'];
+
+            $util = new Utility();
+            $token = $this->Token->getToken(\Token::ACCESS_TOKEN);
+            $userDetail = $util->getUserDetailInfo($token, $openId);
+            $nickName = isset($userDetail['nickname']) ? $userDetail['nickname'] : false;
+
+            $user = $this->User->getUserByName($userName);
+            if (!$user) {
+                $result = [
+                    'status' => 0,
+                    'msg' => '没有找到该用户，请重新注册',
+                ];
+            } else {
+                if ($user['User']['open_id'] == $openId) {
+                    $this->User->id = $user['User']['id'];
+                    $saveResult = $this->User->save(['passwd' => $newKey]);
+                    if ($saveResult) {
+                        $result = [
+                            'status' => 1,
+                        ];
+                    } else {
+                        $result = [
+                            'status' => 0,
+                            'msg' => '找回密码失败，请重试',
+                        ];
+                    }
+                } else {
+                    $result = [
+                        'status' => 0,
+                        'msg' => '请使用注册账号时候的微信号 '.$nickName.' 来找回密码',
+                    ];
+                }
+                echo json_encode($result);
+                exit();
+            }
+
+        }
         $this->set(compact('result'));
     }
 
@@ -140,23 +212,46 @@ class UsersController extends AppController
         $userName = $data['userName'];
         $phoneNum = $data['phoneNum'];
         $passwd = $data['passwd'];
+        $openId = $data['openId'];
         $result = [];
+        $isSaveUser = true;
 
-        $this->User->create();
+        $user = $this->User->find('first', [
+            'conditions' => [
+                'username' => $userName,
+            ],
+        ]);
 
-        $saveData = [
-            'username' => $userName,
-            'phone' => $phoneNum,
-            'password' => $passwd,
-        ];
-
-        $saveResult = $this->User->save($saveData);
-
-        if ($saveResult) {
-            $result['status'] = 1;
+        if ($user) {
+            if (!$user['User']['password']) {
+                $this->User->id = $user['User']['id'];
+            } else {
+                $result = [
+                    'status' => 0,
+                    'msg' => '已有该用户名的注册信息，请尝试登陆或找回密码',
+                ];
+                $isSaveUser = false;
+            }
         } else {
-            $result['status'] = 0;
-            $result['msg'] = '服务器忙，请稍后重试';
+            $this->User->create();
+        }
+
+        if ($isSaveUser) {
+            $saveData = [
+                'username' => $userName,
+                'phone' => $phoneNum,
+                'password' => $passwd,
+                'open_id' => $openId,
+            ];
+
+            $saveResult = $this->User->save($saveData);
+
+            if ($saveResult) {
+                $result['status'] = 1;
+            } else {
+                $result['status'] = 0;
+                $result['msg'] = '服务器忙，请稍后重试';
+            }
         }
 
         $this->layout = 'ajax';

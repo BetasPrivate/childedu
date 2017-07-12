@@ -159,6 +159,7 @@ input[type=submit]{
     		var data = {
     			phoneNum: phoneNum,
     			userName: userName,
+    			openId: '<?php echo $openId;?>',
     		};
     		var mapForm = document.createElement("form");
     		mapForm.style = 'display:none';

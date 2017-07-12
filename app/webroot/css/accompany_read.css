@@ -82,16 +82,15 @@ header {
 	height:2.6rem;
 	color:#333333;
 }
+/*7.12*/
 .main h3 textarea {
-	height:8.875rem;
-	width:100%;
+	height:5.25rem;
+	width:90%;
 	display:block;
-	margin:0 auto;
 	resize: none;
 	box-sizing: border-box;
 	outline: none;
-	border:0.1rem solid #8f591b;
-	border-radius: 0.5rem;
+	border:1px solid #d7d7d7;
 	font-size:0.7rem;
 	font-family: "DFPHannotateW5-GB";
 	padding:3%;
@@ -110,10 +109,9 @@ header {
 }
 .main h4 select {
 	display:block;
-	height:2rem;
-	width:70%;
-	float: left;
-	background-color: #f2f2f2;
+	height:1.75rem;
+	width:68%;
+	background-color:#f2f2f2;
 	border-radius: 0.5rem;
 	border:none;
 	outline: none;
@@ -132,14 +130,21 @@ header {
 	padding:0;
 	font-size:0.7rem;
 }
+.main h5 {
+	margin-top:2.85rem;
+}
 .main h5 button {
-	background:url(../img/button_bg.jpg);
-	width:100%;
-	height:2.7rem;
-	background-size: 100%;
-	-webkit-background-size: 100%;
-	-moz-background-size: 100%;
+	background-color: #ff9601;
+	display: block;
+	margin:0 auto;
+	width:64%;
+	height:1.55rem;
 	border:none;
 	box-sizing: border-box;
 	outline: none;
+	border-radius: 0.775rem;
+	color:#FFFFFF;
+	font-size: 0.85rem;
+	font-family:"DFPHannotateW5-GB";
 }
+/*7.12end*/

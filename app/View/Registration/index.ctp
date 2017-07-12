@@ -8,10 +8,15 @@
         <!-- <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
         <link rel="stylesheet" href="/css/common.css" type="text/css" />
         <style>
+            @font-face {
+                font-family:"DFPHannotateW5-GB";
+                src: url("/font/DFPHannotateW5-GB.ttf");
+            }
             body {
                 max-width: 750px;
                 min-width: 320px;
                 margin:0 auto;
+                font-family:"DFPHannotateW5-GB";
             }
             .home {
                 width:100%;
@@ -21,53 +26,48 @@
                 display: block;
             }
             .main {
-                width:90%;
+                width:89%;
                 margin:0 auto;
+            }
+            .main h2 {
+                font-size: 0.8rem;
+                text-align: center;
+                line-height: 2.75rem;
+                margin-top: 0.6rem;
             }
             .main li {
                 width:100%;
                 display: flex;
                 display: -webkit-flex;
                 display: -moz-box;
-                margin-bottom: 0.4rem;
-            }
-            .main li.first-item {
-                margin-top:1.2rem;
-            }
-            .main li.last-item {
-                margin-bottom: 1.8rem;
-            }
-            .main li img {
-                width:28%;
-                display:block;
-                float:left;
-                margin:auto 2% auto 0;
+                margin-bottom: 0.5rem;
             }
             .main li input[type="text"] {
-                width:70%;
+                width:100%;
                 height:2rem;
                 float:right;
                 border:none;
                 box-sizing: border-box;
                 outline: none;
                 background-color: #e8e8e8;
-                border-radius: 0.2rem;
-                -webkit-border-radius: 0.2rem;
-                -moz-border-radius: 0.2rem;
-                font-size: 0,8rem;
+                font-size: 0.8rem;
                 color:#333;
                 text-indent: 5%;
+                font-family:"DFPHannotateW5-GB";
             }
         .main button {
-            background:url(/img/button_bg.jpg);
-            width:100%;
-            height:2.7rem;
-            background-size: 100%;
-            -webkit-background-size: 100%;
-            -moz-background-size: 100%;
+            width:64%;
+            height:1.6rem;
+            display: block;
+            margin:1.25rem auto;
+            background-color: #ff9601;
             border:none;
             box-sizing: border-box;
             outline: none;
+            border-radius: 0.8rem;
+            color: #FFFFFF;
+            font-size: 0.85rem;
+            font-family:"DFPHannotateW5-GB";
         }
         </style>
     </head>
@@ -77,26 +77,23 @@
                 <img src="/img/header.jpg" alt="周末识趣，亲情不打烊"/> 
             </header>
             <div class="main">
+                <h2>注册信息填写</h2>
                 <form action="/registration/submitReg" method="post">
                     <ul>
                         <li class="clearfix first-item">
-                            <img src="/img/main_pic_one.jpg">
-                            <input type="text" name="adultName" onclick="checkLogIn()" /> 
+                            <input type="text" name="adultName" onclick="checkLogIn()" placeholder="家长姓名"/> 
                         </li>
                         <li class="clearfix">
-                            <img src="/img/main_pic_two.jpg">
-                            <input type="text" name="adultPhone" onclick="checkLogIn()"/> 
+                            <input type="text" name="adultPhone" onclick="checkLogIn()"  placeholder="联系方式"/> 
                         </li>
                         <li class="clearfix">
-                            <img src="/img/main_pic_three.jpg">
-                            <input type="text" name="childName" onclick="checkLogIn()"/> 
+                            <input type="text" name="childName" onclick="checkLogIn()"  placeholder="子女姓名"/> 
                         </li>
-                        <li class="clearfix last-item">
-                            <img src="/img/main_pic_four.jpg">
-                            <input type="text" name="childBirthday" onclick="checkLogIn()"/> 
+                        <li class="clearfix">
+                            <input type="text" name="childBirthday" onclick="checkLogIn()"  placeholder="子女出生年月"/> 
                         </li>
                     </ul>
-                    <button></button>
+                    <button>提交</button>
                 </form>
             </div>
         </section>

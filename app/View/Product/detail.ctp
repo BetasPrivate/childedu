@@ -229,10 +229,17 @@
 				width:100%;
 				background-color:rgba(255,255,255,0.66);
 			}
+			/*7.10start*/
+			.btn a {
+				width:56.2%;
+				margin:1.1rem auto;
+				display: block;
+			}
 			.btn img {
 				width:100%;
-				margin-top:0.4rem;
+				display: block;
 			}
+			/*7.10end*/
 			/*弹窗*/
 			.tips {
 				position: fixed;
@@ -241,7 +248,9 @@
 				left:0;
 				background-color: #FFFFFF;
 				width:100%;
-				bottom:-20rem;
+			/*7.10start*/
+				bottom:-22rem;
+			/*7.10end*/
 			}
 			.tips h2 {
 				padding-left: 40%;
@@ -335,14 +344,23 @@
 				color:#333333;
 				text-align: center;
 			}
+			/*7.10start*/
+			.tips h6 a {
+				display: block;
+				width:56.2%;
+				margin:0 auto;
+			}
 			.tips h6 {
 				height:3.75rem;
+				padding-top: 1.1rem;
+				box-sizing: border-box;
 				background-color:rgba(255,255,255,0.66);
 			}
 			.tips img {
-				margin-top:0.4rem;
 				width:100%;
+				display: block;
 			}
+			/*7.10end*/
 			.zhezhaoceng {
 				width:100%;
 				height:100%;
@@ -540,7 +558,8 @@
 					$(".tips").animate({bottom:"0"},500);
 				})
 				$(".zhezhaoceng").click(function(){
-					$(".tips").animate({bottom:"-20rem"},300,function(){
+					$(".tips").animate({bottom:"-22rem"},300,function(){
+					//7.10end
 						$(".zhezhaoceng").css({display:"none"});
 					});
 				})

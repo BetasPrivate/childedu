@@ -40,11 +40,6 @@ class User extends AppModel {
             ],
         ]);
 
-        if (!$user) {
-            $this->create();
-            $user = $this->save(['username' => $username]);
-        }
-
         return $user;
     }
 }

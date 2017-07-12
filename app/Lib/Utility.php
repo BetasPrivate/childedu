@@ -193,6 +193,13 @@ class Utility {
         var_dump($this->postFileGetContents($url, $data));
     }
 
+    public function getUserDetailInfo($token, $openId)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$token.'&openid='.$openId.'&lang=zh_CN';
+
+        return $this->getFileGetContents($url);
+    }
+
     public function addMedia($token = '')
     {
         $postUrl = sprintf("https://api.weixin.qq.com/cgi-bin/material/add_news?access_token=%s", '_gl-huotDRouGUtWzO8xKEB3xGuFHgOmJ6QgA2Eli0n6HHQTW8e8XTCWos8CAFmu47qB0lhOCwcIgC9MSCKE5JOQA1bXpivfN9rLfhZhHkyrEtrMXSQ3u7aHQcYJiw2DPVPaAHAAGA');

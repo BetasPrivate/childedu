@@ -25,6 +25,7 @@ require('../Lib/Utility.php');
  */
 
 define("ROOT_URL", isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'childwelfare.zhanshen1.com');
+define('WX_PAY', ROOT . DS . APP_DIR . DS .'Lib'. DS . 'Wxpay');
 
 // Setup a 'default' cache configuration for use in the application.
 Cache::config('default', array('engine' => 'File'));
