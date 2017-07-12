@@ -57,4 +57,10 @@ class RegistrationController extends AppController
 
 		$this->set(compact('point'));
 	}
+
+	public function beforeFilter()
+	{
+		parent::beforeFilter();
+		$this->Auth->allow('index');
+	}
 }

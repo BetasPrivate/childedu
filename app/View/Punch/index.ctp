@@ -12,16 +12,16 @@
 		<section class="home">
 			<header>
 				<div id="imagePreview"></div>
-				<input id="imageInput" type="file" name="myPhoto" onchange="loadImageFile();" />
+				<input id="imageInput" type="file" name="myPhoto" onclick="checkLogIn()" onchange="loadImageFile();" />
 			</header>
 			<section class="main">
 				<h2>输入此刻你的感受</h2>
 				<h3>
-					<textarea id="inner_feeling"></textarea>
+					<textarea id="inner_feeling" onclick="checkLogIn()"></textarea>
 				</h3>
 				<h4 class="clearfix">
 					<span>选择打卡类型</span>
-					<select name="sign_type" id="punch_type">
+					<select name="sign_type" id="punch_type" onclick="checkLogIn()">
 						<option value="1">陪伴阅读打卡</option>
 						<option value="2">活动打卡</option>
 						<option value="3">课堂打卡</option>
@@ -36,8 +36,23 @@
 		<script src="/js/jquery-3.2.1.min.js"></script>
 		<script src="/js/accompany_read.js"></script>
 		<script type="text/javascript">
+			<?php if (AuthComponent::user('id')):?>
+	        var isLogIn = true;
+	        <?php else:?>
+	        var isLogIn = false;
+	        <?php endif;?>
+	        function checkLogIn() {
+	            if (!isLogIn) {
+	                if (!confirm('系统检测到您尚未登录，现在登录？')) {
+	                    return;
+	                } else {
+	                    window.location.href = '/users/login';
+	                }
+	            }
+	        }
 			var a= document.getElementById('imagePreview');
 			function punch() {
+				checkLogIn();
 				var data = {
 					punch_type: $('#punch_type').val(),
 					punch_text: $('#inner_feeling').val(),

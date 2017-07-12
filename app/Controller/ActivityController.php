@@ -41,4 +41,10 @@ class ActivityController extends AppController {
 		echo json_encode($result);
 		exit();
 	}
+
+	public function beforeFilter()
+	{
+		parent::beforeFilter();
+		$this->Auth->allow('welfare');
+	}
 }

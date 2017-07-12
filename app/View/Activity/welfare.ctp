@@ -92,8 +92,8 @@
 					</li>
 				</ul>
 				<form action="/activity/respondToWelfareReg" method="post">
-					<h2>姓名<input type="text" name="user" id="user" /></h2>
-					<h3>手机<input type="tel" name="tel" id="mobile" /></h3>
+					<h2>姓名<input type="text" name="user" id="user" onclick="checkLogIn()" /></h2>
+					<h3>手机<input type="tel" name="tel" id="mobile" onclick="checkLogIn()" /></h3>
 					<button onclick="respondToWelfareReg()"></button>
 				</form>
 			</section>
@@ -101,7 +101,23 @@
 	</body>
 	<script src="/js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript">
+		<?php if (AuthComponent::user('id')):?>
+        var isLogIn = true;
+        <?php else:?>
+        var isLogIn = false;
+        <?php endif;?>
+        function checkLogIn() {
+            if (!isLogIn) {
+                if (!confirm('系统检测到您尚未登录，现在登录？')) {
+                    return;
+                } else {
+                    window.location.href = '/users/login';
+                }
+            }
+        }
+
 		function respondToWelfareReg() {
+			checkLogIn();
 			var data = {
 				user: $('#user').val(),
 				mobile: $('#mobile').val(),

@@ -144,11 +144,11 @@ class Utility {
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/activity/welfare',
                         ],
-                        4 => [
-                            'name' => urlencode('玩子币兑换'),
-                            'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/product',
-                        ],
+                        // 4 => [
+                        //     'name' => urlencode('玩子币兑换'),
+                        //     'type' => 'view',
+                        //     'url' => 'http://childwelfare.zhanshen1.com/product',
+                        // ],
                     ],
                 ],
                 1 => [

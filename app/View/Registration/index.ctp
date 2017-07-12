@@ -81,19 +81,19 @@
                     <ul>
                         <li class="clearfix first-item">
                             <img src="/img/main_pic_one.jpg">
-                            <input type="text" name="adultName" /> 
+                            <input type="text" name="adultName" onclick="checkLogIn()" /> 
                         </li>
                         <li class="clearfix">
                             <img src="/img/main_pic_two.jpg">
-                            <input type="text" name="adultPhone" /> 
+                            <input type="text" name="adultPhone" onclick="checkLogIn()"/> 
                         </li>
                         <li class="clearfix">
                             <img src="/img/main_pic_three.jpg">
-                            <input type="text" name="childName" /> 
+                            <input type="text" name="childName" onclick="checkLogIn()"/> 
                         </li>
                         <li class="clearfix last-item">
                             <img src="/img/main_pic_four.jpg">
-                            <input type="text" name="childBirthday" /> 
+                            <input type="text" name="childBirthday" onclick="checkLogIn()"/> 
                         </li>
                     </ul>
                     <button></button>
@@ -101,4 +101,20 @@
             </div>
         </section>
     </body>
+    <script type="text/javascript">
+        <?php if (AuthComponent::user('id')):?>
+        var isLogIn = true;
+        <?php else:?>
+        var isLogIn = false;
+        <?php endif;?>
+        function checkLogIn() {
+            if (!isLogIn) {
+                if (!confirm('系统检测到您尚未登录，现在登录？')) {
+                    return;
+                } else {
+                    window.location.href = '/users/login';
+                }
+            }
+        }
+    </script>
 </html>
