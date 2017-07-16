@@ -81,16 +81,16 @@
                 <form action="/registration/submitReg" method="post">
                     <ul>
                         <li class="clearfix first-item">
-                            <input type="text" name="adultName" onclick="checkLogIn()" placeholder="家长姓名"/> 
+                            <input type="text" name="user_name" onclick="checkLogIn()" placeholder="家长姓名"/> 
                         </li>
                         <li class="clearfix">
-                            <input type="text" name="adultPhone" onclick="checkLogIn()"  placeholder="联系方式"/> 
+                            <input type="text" name="mobile_phone" onclick="checkLogIn()"  placeholder="联系方式"/> 
                         </li>
                         <li class="clearfix">
-                            <input type="text" name="childName" onclick="checkLogIn()"  placeholder="子女姓名"/> 
+                            <input type="text" name="child_name" onclick="checkLogIn()"  placeholder="子女姓名"/> 
                         </li>
                         <li class="clearfix">
-                            <input type="text" name="childBirthday" onclick="checkLogIn()"  placeholder="子女出生年月"/> 
+                            <input type="text" name="child_birth" onclick="checkLogIn()"  placeholder="子女出生年月"/> 
                         </li>
                     </ul>
                     <button>提交</button>

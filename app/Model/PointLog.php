@@ -12,7 +12,7 @@ class PointLog extends AppModel {
 			'foreignKey' => 'record_id',
 		],
 		'Activity' => [
-			'className' => 'ChildActivity',
+			'className' => 'Activity',
 			'foreignKey' => 'record_id',
 		],
 		'User',

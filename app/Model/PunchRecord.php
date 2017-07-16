@@ -14,6 +14,7 @@ class PunchRecord extends AppModel {
 			'className' => 'PunchType',
 			'foreignKey' => 'type_id',
 		],
+		'User',
 	];
 
 	public $pointReasonType = null;
@@ -56,6 +57,7 @@ class PunchRecord extends AppModel {
 		$saveData = [
 			'id' => $punchId,
 			'updated' => date('Y-m-d H:i:s'),
+			//virtual
 			'point_reason_type' => \PointLog::SHARE_TO_FRIENDS,
 		];
 		$this->save($saveData);

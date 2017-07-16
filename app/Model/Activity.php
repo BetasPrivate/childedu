@@ -1,6 +1,6 @@
 <?php
 App::uses('PointLog', 'Model');
-class ChildActivity extends AppModel {
+class Activity extends AppModel {
 
 	const POINT_ON_SUBMIT = 0;
 	const POINT_ON_SCAN = 1;
@@ -9,6 +9,35 @@ class ChildActivity extends AppModel {
 		self::POINT_ON_SUBMIT => 'point_onsubmit',
 		self::POINT_ON_SCAN => 'point_onscan',
 	];
+
+	//与activiy_infos中的字段相对应
+	const USER_NAME = 'user_name';
+	const MOBILE_PHONE = 'mobile_phone';
+	const ADDRESS = 'address';
+	const VENUE_ID = 'venue_id';
+	const CHILD_NAME = 'child_name';
+	const CHILD_BIRTH = 'child_birth';
+
+	public static $fieldTexts = [
+		self::USER_NAME => '姓名',
+		self::MOBILE_PHONE => '手机号',
+		self::ADDRESS => '地址',
+		self::VENUE_ID => '场馆号',
+		self::CHILD_NAME => '子女姓名',
+		self::CHILD_BIRTH => '子女生日',
+	];
+
+	public static function getFieldArr($fields)
+	{
+		$fieldsArr = explode(',', $fields);
+
+		$fields = [];
+		foreach($fieldsArr as $v) {
+			$fields[$v] = self::$fieldTexts[$v];
+		}
+
+		return $fields;
+	}
 
 	public function saveActivityPointRecord($userId, $activityId, $typeId)
 	{
@@ -33,8 +62,8 @@ class ChildActivity extends AppModel {
 	{
 		return $this->find('first', [
 			'conditions' => [
-				'ChildActivity.id' => $activityId,
+				'Activity.id' => $activityId,
 			],
-		])['ChildActivity'];
+		])['Activity'];
 	}
 }

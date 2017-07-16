@@ -4,8 +4,8 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1.0,user-scalable=yes,maximum-scale=3.0,minimum-scale=1.0,width=device-width,height=device-height" />
 		<meta name="format-detection" content="telephone=no" />
-		<link rel="stylesheet" href="css/common.css" />
-		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="/css/common.css" />
+		<link rel="stylesheet" href="/css/index.css" />
 		<title>后台配置</title>
 	</head>
 	<body>
@@ -17,7 +17,6 @@
 		</header>
 		<section class="content">
 			<nav>
-				<li><a href="/su/pointManager" target="blank">查看积分记录</a></li>
 				<ul>
 					<li class="even active">账号管理</li>
 					<li class="odd">修改密码</li>
@@ -63,43 +62,63 @@
 						<form action="" method="" onsubmit="return false">
 							<ul>
 								<li>
-									<span>报名地址：</span><a href="#">www.baidu.com</a>
+									<span>查看记录：</span><a href="/su/activityManager" target="_blank">活动一览</a>&nbsp&nbsp&nbsp&nbsp<a href="/su/activityInfoManager" target="_blank">活动报名信息</a>
 								</li>
 								<li>
-									<span>标题：</span><input type="text" name="title"/>
+									<span>标题：</span><input type="text" name="title" id="activity_title" />
 								</li>
 								<li>
-									<span>缩略图：</span><img src="img/apply_pic1.jpg" width="302" height="171" />
+									<span>开始时间：</span><input type="text" name="start_time" id="activity_start_time" />
 								</li>
 								<li>
-									<span>开始时间：</span><input type="text" name="start_time"/>
+									<span>截止时间：</span><input type="text" name="end_time" id="activity_end_time" />
 								</li>
 								<li>
-									<span>截止时间：</span><input type="text" name="end_time"/>
+									<span>报名分数：</span><input type="text" id="activity_point_onsubmit" />
+								</li>
+								<li>
+									<span>扫码分数：</span><input type="text" id="activity_point_onscan" />
+								</li>
+								<li>
+									<span>人数限制：</span><input type="text" id="activity_people_limation" />
+								</li>
+								<li>
+									<span>位置：</span><input type="text" id="activity_location" />
 								</li>
 								<li class="clearfix">
-									<span>设置字段：</span><em>童年</em><em>童年</em><i>添加</i>
+									<span title="蓝色为选中">设置字段：</span>
+									<?php foreach($result['activity_fields'] as $name => $fieldText):?>
+										<em id="<?php echo 'activity_'.$name;?>" onclick="addToActivityFields('<?php echo $name;?>')"><?php echo $fieldText;?></em>
+									<?php endforeach;?>
 								</li>
 								<li>
-									<span>描述：</span><textarea></textarea>
+									<span>描述：</span><textarea id="activity_description"></textarea>
 								</li>
 								<li>
-									<input type="submit" value="保存"/>
+									<input type="submit" value="保存" onclick="saveActivity()" />
 								</li>
 							</ul>
 						</form>
 					</h2>
 					<h3>
 						<span>二维码</span>
-						<img src="img/apply_pic_code.jpg" />
+						<img src="/img/apply_pic_code.jpg" />
 					</h3>
 					<h4>
-						<span>选择报名类型</span>
-						<p>在线报名</p>
-						<p class="line_out">在线报名<br />现场核销</p>
+						<span>选择活动类型</span>
+						<select id="activity_type">
+							<option value="0" selected="true">在线报名</option>
+							<option value="1">现场核销</option>
+						</select>
+							<span>活动图：
+						</span><input type="file" id="activity_img">
+						<img src="" id="activity_img_to_show" style="display: none;">
+						<!-- <p>在线报名</p>
+						<p class="line_out">在线报名<br />现场核销</p> -->
 					</h4>
 				</section>
 				<section class="sign">
+					<h2 class="clearfix"><span>查看记录</span><p><a href="/su/pointManager" target="blank">积分记录</a>&nbsp&nbsp&nbsp&nbsp<a href="/su/punchRecordManager" target="blank">打卡记录</a></p></h2>
 					<h2 class="clearfix"><span>报名</span><p>添加打卡类型</p></h2>
 					<h3>
 						<div class="sign_menu">
@@ -376,6 +395,86 @@
 		</section>
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script>
+		var activityFields = <?php echo json_encode($result['activity_fields']);?>;
+		var currentFields = [];
+
+	    function readFile() {
+  
+		  	if (this.files && this.files[0]) {
+		    
+			    var FR= new FileReader();
+			    
+			    FR.addEventListener("load", function(e) {
+			      document.getElementById("activity_img_to_show").src = e.target.result;
+			    }); 
+			    
+			    FR.readAsDataURL( this.files[0] );
+		  	}
+		  
+		}
+
+		document.getElementById("activity_img").addEventListener("change", readFile);
+
+		function addToActivityFields(name) {
+			var currentName = 'activity_' + name;
+			if (currentFields.indexOf(name) >= 0) {
+				currentFields.splice(currentFields.indexOf(name),1);
+				$('#'+currentName).css('background', '#ffe9d0');
+			} else {
+				$('#'+currentName).css('background', '#33CCFF');
+				currentFields.push(name);
+			}
+			console.log(currentFields);
+		}
+
+		function saveActivity() {
+			var title = $('#activity_title').val();
+			var startTime = $('#activity_start_time').val();
+			var endTime = $('#activity_end_time').val();
+			var fields = currentFields;
+			var description = $('#activity_description').val();
+			var ponitOnScan = $('#activity_point_onscan').val();
+			var pointOnSubmit = $('#activity_point_onsubmit').val();
+			var type = $('#activity_type').val();
+			var file = $('#activity_img_to_show')[0].src;
+			var peopleLimation = $('#activity_people_limation').val();
+			var location = $('#activity_location').val();
+
+			var data = {
+				title:title,
+				start_time:startTime,
+				end_time:endTime,
+				fields:fields,
+				description:description,
+				point_onscan:ponitOnScan,
+				point_onsubmit:pointOnSubmit,
+				type:type,
+				img:file,
+				people_limation:peopleLimation,
+				location:location,
+			};
+
+			$.ajax({
+				url:'/activity/createActivity/',
+				type:'POST',
+				dataType:'json',
+				data:data,
+				success:function(res){
+					if (res.status == 1) {
+						if (confirm('保存成功，是否现在查看？')) {
+							window.location.href = '/activity/view/' + res.id;
+						}
+					}
+					console.log(res);
+				},
+				error:function(res){
+					console.log(res);
+				}
+			})
+		}
+
+
+
 		var punchTypes = <?php echo json_encode($result['punch_types']);?>;
 		var currentPunchType;
 

@@ -1,6 +1,7 @@
 <?php
 App::uses('PointLog', 'Model');
 App::uses('PunchType', 'Model');
+App::uses('Activity', 'Model');
 class SuController extends AppController
 {
     public $uses = [
@@ -8,6 +9,9 @@ class SuController extends AppController
         'Token',
         'PunchType',
         'PointLog',
+        'Activity',
+        'ActivityInfo',
+        'PunchRecord',
     ];
 
     public function index()
@@ -21,6 +25,8 @@ class SuController extends AppController
         ]);
 
         $result['punch_types'] = $punchTypes;
+
+        $result['activity_fields'] = \Activity::$fieldTexts;
 
         $this->set(compact('result'));
     }
@@ -41,7 +47,7 @@ class SuController extends AppController
                 if (\PointLog::judgeLogIsPunch($pointLog)) {
                     $pointLog['origin_action'] = \PunchType::getPunchTypeDetail($pointLog['PunchRecord']['type_id'])['name'];
                 } elseif (\PointLog::judgeLogIsActivity($pointLog)) {
-                    $pointLog['origin_action'] = $pointLog['Activity']['name'];
+                    $pointLog['origin_action'] = $pointLog['Activity']['title'];
                 }
             } else {
                 $pointLog['origin_action'] = \PointLog::$reasonTypes[$pointLog['PointLog']['reason_type_id']];
@@ -56,6 +62,60 @@ class SuController extends AppController
 
     public function regInfoManage()
     {
+    }
+
+    public function activityManager()
+    {
+        $this->set('title_for_layout', '活动一览');
+
+        $activities = $this->Activity->find('all', [
+            'conditions' => [
+                'Activity.is_deleted' => 0,
+            ],
+        ]);
+
+        foreach($activities as &$activity) {
+            $fieldStr = $activity['Activity']['fields'];
+            if ($fieldStr == '') {
+                continue;
+            }
+            $fieldTexts = implode(',', \Activity::getFieldArr($fieldStr));
+            $activity['Activity']['fields'] = $fieldTexts;
+        }
+
+        $this->set(compact('activities'));
+    }
+
+    public function activityInfoManager()
+    {
+        $this->set('title_for_layout', '活动报名信息');
+
+        $infos = $this->ActivityInfo->find('all', [
+            'conditions' => [
+                'ActivityInfo.is_deleted' => 0,
+            ],
+            'order' => [
+                'ActivityInfo.created DESC',
+            ],
+        ]);
+
+        $this->set(compact('infos'));
+    }
+
+    public function punchRecordManager()
+    {
+        $this->set('title_for_layout', '打卡记录');
+
+        $punchRecords = $this->PunchRecord->find('all', [
+            'conditions' => [
+                'PunchRecord.is_deleted' => 0,
+            ],
+            'order' => [
+                'PunchRecord.created DESC',
+            ],
+        ]);
+
+        $this->set(compact('punchRecords'));
     }
 
     public function refreshMenu()
