@@ -138,31 +138,21 @@
 					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 					<div class="mui-slider-item mui-slider-item-duplicate">
 						<a href="#">
-							<img src="img/eleven_header_pic3.jpg">
+							<img src='<?php echo $result["products"]["front_page_products"][2]["Product"]["pic_urls"];?>'>
 						</a>
 					</div>
+					<?php foreach($result['products']['front_page_products'] as $key => $product):?>
 					<!-- 第一张 -->
 					<div class="mui-slider-item">
 						<a href="/product/detail">
-							<img src="img/eleven_header_pic1.jpg">
+							<img src='<?php echo $product["Product"]["pic_urls"];?>'>
 						</a>
 					</div>
-					<!-- 第二张 -->
-					<div class="mui-slider-item">
-						<a href="/product/detail">
-							<img src="img/eleven_header_pic2.jpg">
-						</a>
-					</div>
-					<!-- 第三张 -->
-					<div class="mui-slider-item">
-						<a href="/product/detail">
-							<img src="img/eleven_header_pic3.jpg">
-						</a>
-					</div>
+					<?php endforeach;?>
 					<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 					<div class="mui-slider-item mui-slider-item-duplicate">
 						<a href="/product/detail">
-							<img src="img/eleven_header_pic1.jpg">
+							<img src='<?php echo $result["products"]["front_page_products"][0]["Product"]["pic_urls"];?>'>
 						</a>
 					</div>
 				</div>
@@ -180,48 +170,15 @@
 				</dl>
 				<ul class="clearfix gift active">
 					<i></i>
+					<?php foreach($result['products']['real_products'] as $key => $product):?>
 					<li>
-						<img src="img/eleven_pic_three.jpg" />
-						<h2 class="clearfix"><em>礼品套装</em><span>60丸子币</span></h2>
+						<img src='<?php echo $product["Product"]["pic_urls"];?>'/>
+						<h2 class="clearfix"><em><?php echo $product['Product']['name'];?></em><span><?php echo $product["Product"]["price"];?>丸子币</span></h2>
 						<h3>
-							<a href="#" class="gift_enter"></a>
+							<a href="/product/detail/<?php echo $product['Product']['id'];?>" class="gift_enter"></a>
 						</h3>
 					</li>
-					<li>
-						<img src="img/eleven_pic_three.jpg" />
-						<h2 class="clearfix"><em>礼品套装</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="gift_enter"></a>
-						</h3>
-					</li>
-					<li>
-						<img src="img/eleven_pic_three.jpg" />
-						<h2 class="clearfix"><em>礼品套装</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="gift_enter"></a>
-						</h3>
-					</li>
-					<li>
-						<img src="img/eleven_pic_three.jpg" />
-						<h2 class="clearfix"><em>礼品套装</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="gift_enter"></a>
-						</h3>
-					</li>
-					<li>
-						<img src="img/eleven_pic_three.jpg" />
-						<h2 class="clearfix"><em>礼品套装</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="gift_enter"></a>
-						</h3>
-					</li>
-					<li>
-						<img src="img/eleven_pic_three.jpg" />
-						<h2 class="clearfix"><em>礼品套装</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="gift_enter"></a>
-						</h3>
-					</li>
+					<?php endforeach;?>
 				</ul>
 				<ul class="clearfix lesson">
 					<i></i>
@@ -232,41 +189,15 @@
 							<a href="#" class="lesson_enter"></a>
 						</h3>
 					</li>
+					<?php foreach($result['products']['virtual_products'] as $key => $product):?>
 					<li>
-						<img src="img/eleven_pic_one.jpg" />
-						<h2 class="clearfix"><em>在线课程特色课程</em><span>60丸子币</span></h2>
+						<img src="<?php echo $product['Product']['pic_urls'];?>" />
+						<h2 class="clearfix"><em><?php echo $product['Product']['name'];?></em><span><?php echo $product['Product']['price'];?>丸子币</span></h2>
 						<h3>
-							<a href="#" class="lesson_enter"></a>
+							<a href="/product/detail/<?php echo $product['Product']['id'];?>" class="lesson_enter"></a>
 						</h3>
 					</li>
-					<li>
-						<img src="img/eleven_pic_one.jpg" />
-						<h2 class="clearfix"><em>在线课程特色课程</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="lesson_enter"></a>
-						</h3>
-					</li>
-					<li>
-						<img src="img/eleven_pic_one.jpg" />
-						<h2 class="clearfix"><em>在线课程特色课程</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="lesson_enter"></a>
-						</h3>
-					</li>
-					<li>
-						<img src="img/eleven_pic_one.jpg" />
-						<h2 class="clearfix"><em>在线课程特色课程</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="lesson_enter"></a>
-						</h3>
-					</li>
-					<li>
-						<img src="img/eleven_pic_one.jpg" />
-						<h2 class="clearfix"><em>在线课程特色课程</em><span>60丸子币</span></h2>
-						<h3>
-							<a href="#" class="lesson_enter"></a>
-						</h3>
-					</li>
+					<?php endforeach;?>
 				</ul>
 			</section>
 		</section>

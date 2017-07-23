@@ -230,31 +230,17 @@
 				<section class="market">
 					<h3>
 						<div class="market_menu">
-							<em><span class="addtype">添加类型</span></em>
-							<p>名称</p>
+							<em><span><span class="addtype">添加产品</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="/su/productManager" target="_blank">管理所有产品</a></span></em>
+							<em><span onclick="addProductType()">添加产品类型</span></em>
+							<p>产品类型</p>
 							<ul class="market_show">
+								<?php foreach($result['product_types'] as $key => $productType):?>
 								<li class="clearfix">
-									<span>课本</span>
-									<button>修改</button>
-									<em><i></i>删除</em>
+									<span><?php echo $productType['ProductType']['name'];?></span>
+									<button onclick="editProductType(<?php echo $key;?>)">修改</button>
+									<em onclick="deleteProductType(<?php echo $key;?>)"><i></i>删除</em>
 								</li>
-								<li class="clearfix">
-									<span>户外</span>
-									<button>修改</button>
-									<em><i></i>删除</em>
-								</li>
-								<li class="clearfix">
-									<span>文具</span>
-									<button>修改</button>
-									<em><i></i>删除</em>
-								</li>
-							</ul>
-							<ul class="market_hidden" style="display:none">
-								<li class="clearfix">
-									<span>课本</span>
-									<button>修改</button>
-									<em><i></i>删除</em>
-								</li>
+								<?php endforeach;?>
 							</ul>
 						</div>
 						<div class="market_details market_details1">
@@ -262,63 +248,78 @@
 								<ul>
 									<li class="market_name">
 										<span>名称</span>
-										<input type="text" name="market_details_name" />
+										<input type="text" name="market_details_name" id="product_name" />
 									</li>
 									<li class="clearfix radio">
+										<span>商品类型</span>
+										<dl class="clearfix">
+											<dd class="checked" onclick="isVirtual=0;$('#is_front_page').css('display', 'block');$('#product_type_li').css('display', 'block');">
+												<i></i>
+												实物商品
+											</dd>
+											<dd value="0" onclick="isVirtual=1;$('#product_type_li').css('display', 'none');">
+												<i></i>
+												在线课程
+											</dd>
+										</dl>
+									</li>
+									<li class="clearfix radio" id="is_front_page">
 										<span>是否首页推荐</span>
 										<dl class="clearfix">
-											<dd class="checked">
+											<dd class="checked" onclick="isFrontPage=1;">
 												<i></i>
 												是
 											</dd>
-											<dd>
+											<dd value="0" onclick="isFrontPage=0;">
 												<i></i>
 												否
 											</dd>
 										</dl>
 									</li>
-									<li>
+									<li id="product_type_li">
 										<span>类别</span>
-										<select>
-											<option value="a">玩子礼物</option>
-											<option value="b">在线课程</option>
+										<select id="product_type">
+											<?php foreach($result['product_types'] as $key => $productType):?>
+											<option value="<?php echo $productType['ProductType']['id'];?>"><?php echo $productType['ProductType']['name'];?></option>
+											<?php endforeach;?>
 										</select>
 									</li>
 									<li>
 										<span>图片</span>
-										<img src="img/market_pic1.jpg" />
+										<input type="file" id="product_img">
+										<img src="" id="product_img_to_show" style="display: none;">
 									</li>
 									<li>
 										<span>价格</span>
-										<input type="text" name="market_details_name" />
+										<input type="text" name="market_details_name" id="product_price" />
 									</li>
 									<li>
 										<span>库存</span>
-										<input type="text" name="market_details_name" />
+										<input type="text" name="market_details_name" id="product_stock" />
 									</li>
 									<li>
 										<span>规格</span>
-										<input type="text" name="market_details_name" />
+										<input type="text" name="market_details_name" id="product_sku_type" />
 									</li>
 									<li class="clearfix radio">
 										<span>上架中</span>
-										<dl class="clearfix">
-											<dd class="checked">
+										<dl class="clearfix" id="is_onsale">
+											<dd class="checked" onclick="isOnsale=1;">
 												<i></i>
 												是
 											</dd>
-											<dd>
+											<dd onclick="isOnsale=0;">
 												<i></i>
 												否
 											</dd>
 										</dl>
 									</li>
 									<li class="text">
-										<span>产品内容</span>
-										<textarea></textarea>
+										<span>产品介绍</span>
+										<textarea id="product_description"></textarea>
 									</li>
 									<li>
-										<input type="submit" value="保存"/> 
+										<input type="submit" value="保存" onclick="saveProduct()" /> 
 									</li>
 								</ul>
 							</form>
@@ -396,7 +397,11 @@
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script>
 		var activityFields = <?php echo json_encode($result['activity_fields']);?>;
+		var productTypes = <?php echo json_encode($result['product_types']);?>;
 		var currentFields = [];
+		var isFrontPage = 1;
+		var isOnsale = 1;
+		var isVirtual = 0;
 
 	    function readFile() {
   
@@ -541,6 +546,145 @@
 				}
 			})
 		}
+
+		//products
+		function addProductType() {
+			var name = prompt('输入新的产品类型', "");
+			if (name == null) {
+				return;
+			}
+			var url = '/product/addProductType';
+			var data = {
+				name:name,
+			};
+			$.ajax({
+				'url': url,
+				'method': 'POST',
+				'dataType': 'json',
+				'data': data,
+				success:function(res) {
+					if (res.status == 1) {
+						alert('保存成功(*^__^*) 嘻嘻……');
+					} else {
+						alert(res.msg);
+					}
+				},
+				error:function(res) {
+
+				}
+			})
+		}
+
+		function editProductType(index) {
+			var name = prompt('名称', productTypes[index].ProductType.name);
+			if (name == null) {
+				return;
+			}
+			var url = '/product/editProductType';
+			var data = {
+				id:productTypes[index].ProductType.id,
+				name:name,
+			};
+			$.ajax({
+				'url': url,
+				'method': 'POST',
+				'dataType': 'json',
+				'data': data,
+				success:function(res) {
+					if (res.status == 1) {
+						alert('保存成功(*^__^*) 嘻嘻……');
+					} else {
+						alert(res.msg);
+					}
+				},
+				error:function(res) {
+
+				}
+			})
+		}
+
+		function deleteProductType(index) {
+			if (!confirm('删除产品类型后，与其相关的商品也会全部失效，确定删除？')) {
+				return;
+			}
+			var url = '/product/editProductType';
+			var data = {
+				id:productTypes[index].ProductType.id,
+				is_deleted:1,
+			};
+			$.ajax({
+				'url': url,
+				'method': 'POST',
+				'dataType': 'json',
+				'data': data,
+				success:function(res) {
+					if (res.status == 1) {
+						alert('删除成功!');
+					} else {
+						alert(res.msg);
+					}
+				},
+				error:function(res) {
+
+				}
+			})
+		}
+
+		function saveProduct(){
+			var productName = $('#product_name').val();
+			var productPrice = $('#product_price').val();
+			var productStock = $('#product_stock').val();
+			var productSkuType = $('#product_sku_type').val();
+			var productType = $('#product_type').val();
+			var productDescription = $('#product_description').val();
+			var file = $('#product_img_to_show')[0].src;
+
+			var data = {
+				name:productName,
+				is_front_page:isFrontPage,
+				price:productPrice,
+				stock:productStock,
+				sku_type:productSkuType,
+				is_onsale:isOnsale,
+				product_type_id:productType,
+				description:productDescription,
+				file:file,
+				is_virtual:isVirtual,
+			};
+			var url = '/product/addProduct';
+			$.ajax({
+				'url':url,
+				'method':'POST',
+				'dataType':'json',
+				'data':data,
+				success:function(res) {
+					if (res.status == 1) {
+						alert('保存成功');
+					} else {
+						alert(res.msg);
+					}
+				},
+				error:function(res) {
+					console.log(res);
+				}
+			})
+		}
+
+		function readFileProduct() {
+  
+		  	if (this.files && this.files[0]) {
+		    
+			    var FR= new FileReader();
+			    
+			    FR.addEventListener("load", function(e) {
+			      document.getElementById("product_img_to_show").src = e.target.result;
+			    }); 
+			    
+			    FR.readAsDataURL( this.files[0] );
+		  	}
+		  
+		}
+		document.getElementById("product_img").addEventListener("change", readFileProduct);
 
 		$(document).ready(function(){
 			//点击导航跳转到对应页面
@@ -736,11 +880,11 @@
 				$(this).addClass("checked");
 			})
 			//点击修改按钮，跳转详情页2
-			$(".market_menu button").click(function(){
-				$(".market_details2 .market_name input").val($(this).parent().children("span").html());
-				$(".market_menu").css({display:"none"});
-				$(".market_details2").css({display:"block"});
-			})
+			// $(".market_menu").click(function(){
+			// 	$(".market_details2 .market_name input").val($(this).parent().children("span").html());
+			// 	$(".market_menu").css({display:"none"});
+			// 	$(".market_details2").css({display:"block"});
+			// })
 			$(".market_details2 input:submit").click(function(){
 				$(".market_menu").css({display:"block"});
 				$(".market_details2").css({display:"none"});

@@ -12,6 +12,9 @@ class SuController extends AppController
         'Activity',
         'ActivityInfo',
         'PunchRecord',
+        'ProductType',
+        'ProductType',
+        'Product',
     ];
 
     public function index()
@@ -24,7 +27,15 @@ class SuController extends AppController
             ],
         ]);
 
+        $productTypes = $this->ProductType->find('all', [
+            'conditions' => [
+                'ProductType.is_deleted' => 0,
+            ],
+        ]);
+
         $result['punch_types'] = $punchTypes;
+
+        $result['product_types'] = $productTypes;
 
         $result['activity_fields'] = \Activity::$fieldTexts;
 
@@ -116,6 +127,20 @@ class SuController extends AppController
         ]);
 
         $this->set(compact('punchRecords'));
+    }
+
+    public function productManager()
+    {
+        $this->set('title_for_layout', '产品管理');
+
+        $products = $this->Product->find('all', [
+            'conditions' => [
+                'Product.is_deleted' => 0,
+                'ProductType.is_deleted' => 0,
+            ],
+        ]);
+
+        $this->set(compact('products'));
     }
 
     public function refreshMenu()

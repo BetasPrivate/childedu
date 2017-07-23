@@ -381,31 +381,21 @@
 					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 					<div class="mui-slider-item mui-slider-item-duplicate">
 						<a href="#">
-							<img src="/img/gd_header_pic3.jpg">
+							<img src="<?php echo '/'.$product['Product']['pic_url_arr'][0];?>">
 						</a>
 					</div>
 					<!-- 第一张 -->
+					<?php foreach ($product['Product']['pic_url_arr'] as $url):?>
 					<div class="mui-slider-item">
 						<a href="#">
-							<img src="/img/gd_header_pic1.jpg">
+							<img src="<?php echo '/'.$url;?>">
 						</a>
 					</div>
-					<!-- 第二张 -->
-					<div class="mui-slider-item">
-						<a href="#">
-							<img src="/img/gd_header_pic2.jpg">
-						</a>
-					</div>
-					<!-- 第三张 -->
-					<div class="mui-slider-item">
-						<a href="#">
-							<img src="/img/gd_header_pic3.jpg">
-						</a>
-					</div>
+					<?php endforeach;?>
 					<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 					<div class="mui-slider-item mui-slider-item-duplicate">
 						<a href="#">
-							<img src="/img/gd_header_pic1.jpg">
+							<img src="<?php echo '/'.$product['Product']['pic_url_arr'][2];?>">
 						</a>
 					</div>
 				</div>
@@ -418,19 +408,19 @@
 			<!--详情-->
 			<section class="top">
 				<h2>
-					凯叔西游记  全五部防水升级版，送给孩子的文化精品  适龄3-12岁
+					<?php echo $product['Product']['name'];?>
 				</h2>
 				<h3>
-					<span>299</span>
+					<span><?php echo $product['Product']['price'];?></span>
 					<em>玩子币</em>
-					<i>¥189</i>
+					<!-- <i>¥189</i> -->
 				</h3>
 				<h4>
-					<span>快递：0.00</span>
-					<em>库存：11</em>
+					<!-- <span>快递：0.00</span> -->
+					<em>库存：<?php echo $product['Product']['price'];?></em>
 				</h4>
 				<h5>
-					<span>选择规格</span>
+					<span>选择数量</span>
 					<i></i>
 				</h5>
 			</section>
@@ -442,9 +432,10 @@
 				</dl>
 				<section class="details">
 					<i></i>
-					<img src="/img/gd_header_pic1.jpg" />	
+					<img src="<?php echo '/'.$product['Product']['pic_urls'];?>" />
+					<h3><?php echo $product['Product']['description'];?></h3>
 					<ul class="clearfix">
-						<li>
+						<!-- <li>
 							<img src="/img/gd_pic_one.jpg" />
 							<h2>智能玩伴</h2>
 							<h3>
@@ -464,7 +455,7 @@
 							<h3>
 								融合了凯叔融合了凯叔融合了凯叔融合了凯叔融合了凯叔融合了凯叔融合了
 							</h3>
-						</li>
+						</li> -->
 					</ul>
 					<div class="h150"></div>
 				</section>
@@ -472,10 +463,10 @@
 					<i></i>
 					<ul>
 						<li class="clearfix">
-							<span>品牌</span>
-							<em>MAI</em>
+							<span>规格</span>
+							<em><?php echo $product['Product']['sku_tupe'];?></em>
 						</li>
-						<li class="clearfix">
+						<!-- <li class="clearfix">
 							<span>型号</span>
 							<em>MK520</em>
 						</li>
@@ -490,7 +481,7 @@
 						<li class="clearfix last-item">
 							<span>售后服务</span>
 							<em>三包</em>
-						</li>
+						</li> -->
 					</ul>
 					<div class="h8"></div>
 					<div class="h150"></div>
@@ -498,7 +489,7 @@
 			</section>
 			<!--立即兑换-->
 			<section class="btn">
-				<a href="#">
+				<a href="#" onclick="submitProduct()">
 					<img src="/img/gd_pic_btn.png" />
 				</a>
 			</section>
@@ -506,11 +497,11 @@
 			<section class="zhezhaoceng"></section>
 			<section class="tips">
 				<h2>
-					<img src="/img/gd_tips_one.jpg" />
-					<span>299丸子币</span><br />
-					<em>库存<i>11</i>件</em>
+					<img src="/<?php echo $product['Product']['pic_urls'];?>" />
+					<span><?php echo $product['Product']['price'];?>丸子币</span><br />
+					<em>库存<i><?php echo $product['Product']['stock'];?></i>件</em>
 				</h2>
-				<h3>
+				<!-- <h3>
 					规格
 				</h3>
 				<h4>
@@ -518,13 +509,13 @@
 						<dd class="selected">礼盒装</dd>
 						<dd>升级版</dd>
 					</dl>
-				</h4>
+				</h4> -->
 				<h5>
 					购买数量
-					<p><i></i><input type="tel" name="num" value="1" readonly="readonly"/><em></em></p>
+					<p><i></i><input type="tel" name="num" value="1" id="quantity" readonly="readonly"/><em></em></p>
 				</h5>
 				<h6>
-					<a href="#">
+					<a href="#" onclick="test()">
 						<img src="/img/gd_pic_btn.png" />
 					</a>
 				</h6>
@@ -532,6 +523,23 @@
 		</section>
 		<script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
 		<script>
+			function submitProduct(){
+				var quantity = $('#quantity').val();
+				if (!confirm('确认兑换 '+quantity+' 件 '+'<?php echo $product['Product']['name'];?>'+'?')) {
+					return;
+				}
+
+				var url = '/product/'
+				$.ajax()
+			}
+
+			function test(){
+				$(".tips").animate({bottom:"-22rem"},300,function(){
+					//7.10end
+					$(".zhezhaoceng").css({display:"none"});
+				});
+			}
+
 			$(document).ready(function(){
 				//选项卡tab
 				//声明当前选项卡变量
