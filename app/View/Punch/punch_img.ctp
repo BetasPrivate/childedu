@@ -25,87 +25,124 @@
                 margin:0 auto;
             }
             /*7.10start*/
-            body>img {
+           body>img {
                 position: fixed;
-                width:100%;
-                height:100%;
-                top:0;
-                left:0;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
                 z-index: -1;
             }
+            
+            header p {
+                line-height: 2rem;
+                font-size: 0.65rem;
+                line-height: 2rem;
+                color: #999999;
+            }
+            
             header img {
-                width:100%;
-                margin-top:1.4rem;
+                width: 100%;
             }
+            
+            .logo img {
+                width: 28%;
+                margin-top: 0.8rem;
+                margin-left: 12%;
+                margin-bottom: 1.75rem;
+                float: left;
+            }
+            
+            .logo p {
+                font-size: 0.85rem;
+                color: #ed2f90;
+                line-height: 2.85rem;
+                margin-left: 8%;
+                float: left;
+            }
+            
             .main h2 {
-                padding-top:0.2rem;
-                line-height:1.4rem;
-                font-size:0.7rem;
-            }
-            .main h3 {
-                margin-top:0.5rem;
-                background: url(/img/ten_main_bg.png);
+                background: url(/img/main_bg.png) no-repeat;
                 background-size: 100%;
                 -webkit-background-size: 100%;
+                margin-bottom: 1.4rem;
             }
-            .main h3 img {
-                width:31%;
-                margin:0 auto;
-                display: block;
+            
+            .main h2 p {
+                line-height: 1.2rem;
+                font-size: 0.7rem;
+                padding: 1rem 7%;
             }
-            .main h4 img.code {
-                width:38%;
-                display:block;
-                text-align: center;
+            
+            .main h4 img {
+                width: 25%;
+                float: left;
             }
-            .main h3 p {
-                text-align: center;
-                line-height: 2.05rem;
-                font-size: 0.65rem;
-                color: #999999;
-                font-weight: bold;
-            }
+            
             .main h4 ul {
-                width:90%;
-                margin-left: 5%;
+                width: 75%;
+                float: left;
             }
+            
             .main h4 ul li {
                 float: left;
-                width:23%;
-                margin-right:2%;
-                margin-top:0.1rem;
+                width: 23%;
+                margin-left: 2%;
                 box-sizing: border-box;
-                border:solid 1px #d9d9d9;
+                border: solid 1px #d9d9d9;
             }
+            
+            .main h4 ul li:nth-child(5),
+            .main h4 ul li:nth-child(6),
+            .main h4 ul li:nth-child(7),
+            .main h4 ul li:nth-child(8) {
+                margin-top: 3px;
+            }
+            
             .main h4 ul li img {
                 display: block;
-                width:100%;
+                width: 100%;
+            }
+            .main {
+                margin-bottom: 2rem;
+            }
+            .whole_img {
+                position: fixed;
+                width: 80%;
+                height: 80%;
+                top: 30px;
+                left: 10%;
+                right: 10%;
+                z-index: -1;
             }
             /*7.10 end*/
         </style>
     </head>
-    <!-- <button onclick="test()">test</button> -->
+    <button onclick="test()">test</button>
     <!-- <a href="#" id="download">下载图片</a> -->
+    <p id="saveImg">长按保存图片到相册</p>
     <body>
-        <img src="" id='whole_img' style="display: none;" />
+        <img src="/img/ten_body_bg.jpg" />
+        <img class="whole_img" src="" id='whole_img' style="display: none;" />
         <!-- <button onclick="uploadImage()">上传图片</button> -->
         <!-- <button onclick="selectImage()">选择图片</button> -->
         <!-- <input type="text" id="testUrl"> -->
-        <p id="saveImg">长按保存图片到相册</p>
         <section class="home" id="canvasImg">
             <header>
                 <!-- <img src="/img/ten_header_pic.jpg" /> -->
                 <img src="<?php echo $result['url'];?>" id='punch_img'/>
             </header>
+            <section class="logo clearfix">
+                <img src="/img/logo.png" />
+                <p>最好的爱是陪伴</p>
+            </section>
             <section class="main">
-                <h2>
+                <h2 id='punch_text'>
                     <?php echo $result['punch_text'];?>
                 </h2>
-                <h3>
+                <h4 class="clearfix">
                     <img src="<?php echo $result['qr_scene_url'];?>" class="code" id="qrScenePic"/>
-                </h3>
-                <h4>
-                    <ul>
+                    <ul class="clearfix">
                         <li>
                             <img src="/img/ten_header_pic.jpg" />
                         </li>
@@ -135,14 +172,25 @@
             </section>
         </section>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-
+        <!--7.25start-->
+        <script>
+            $(document).ready(function() {
+                var oimghei = $(".main h4>img").height();
+                console.log(oimghei);
+                var ohei = (oimghei - 7) / 2;
+                console.log(ohei);
+                $(".main h4 ul li img").height(ohei);
+            })
+        </script>
+        <!--7.25end-->
         <script type="text/javascript">
             var localUrl;
             var serverUrl;
             function test(){
                 // $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
-                document.body.background = '/img/ten_body_bg.jpg';
-                html2canvas(document.body, {
+                // document.body.background = '/img/ten_body_bg.jpg';
+                // $("#punch_text").css("backgroundImage","url(/img/ten_body_bg.jpg)");
+                html2canvas($('#canvasImg'), {
                     onrendered: function(canvas) {  
                         //把截取到的图片替换到a标签的路径下载  
                         localUrl = canvas.toDataURL();
