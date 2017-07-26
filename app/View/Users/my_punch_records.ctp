@@ -33,7 +33,7 @@
 			<ul>
 				<?php foreach ($punchRecords as $punchRecord): ?>
 				<li>
-					<?php echo $punchRecord['punch_text'];?><span><?php echo $punchRecord['total_point'];?>积分</span>
+					<br><?php echo $punchRecord['punch_text'];?><span><?php echo $punchRecord['total_point'];?>积分</span><br><span>日期<?php echo substr($punchRecord['PunchRecord']['created'], 0, 10);?></span>
 				</li>
 				<?php endforeach;?>
 			</ul>

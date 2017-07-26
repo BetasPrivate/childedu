@@ -17,15 +17,17 @@
             body {
                 max-width: 750px;
                 min-width: 320px;
-                margin:0 auto;
+                margin: 0 auto;
                 font-family: "DFPHannotateW5-GB";
             }
+            
             .home {
-                width:90%;
-                margin:0 auto;
+                width: 90%;
+                margin: 0 auto;
             }
-            /*7.10start*/
-           body>img {
+            /*7.25start*/
+            
+            body>img {
                 position: fixed;
                 width: 100%;
                 height: 100%;
@@ -40,9 +42,12 @@
                 line-height: 2rem;
                 color: #999999;
             }
-            
+
             header img {
-                width: 100%;
+                max-width: 100%;
+                max-height:9rem;
+                margin:0 auto;
+                display: block;
             }
             
             .logo img {
@@ -66,6 +71,8 @@
                 background-size: 100%;
                 -webkit-background-size: 100%;
                 margin-bottom: 1.4rem;
+                height:9.2rem;
+                overflow: scroll;
             }
             
             .main h2 p {
@@ -89,9 +96,10 @@
                 width: 23%;
                 margin-left: 2%;
                 box-sizing: border-box;
+            }
+            .main h4 ul li img {
                 border: solid 1px #d9d9d9;
             }
-            
             .main h4 ul li:nth-child(5),
             .main h4 ul li:nth-child(6),
             .main h4 ul li:nth-child(7),
@@ -107,23 +115,25 @@
                 margin-bottom: 2rem;
             }
             .whole_img {
-                position: fixed;
-                width: 80%;
-                height: 80%;
-                top: 30px;
-                left: 10%;
-                right: 10%;
-                z-index: -1;
+                /*position: fixed;*/
+                /*width: 80%;*/
+                /*height: 80%;*/
+                /*top: 30px;*/
+                /*left: 10%;*/
+                /*right: 10%;*/
+                /*z-index: -1;*/
             }
             /*7.10 end*/
         </style>
     </head>
-    <button onclick="test()">test</button>
+    <!-- <button onclick="test()">test</button> -->
     <!-- <a href="#" id="download">下载图片</a> -->
     <p id="saveImg">长按保存图片到相册</p>
     <body>
         <img src="/img/ten_body_bg.jpg" />
-        <img class="whole_img" src="" id='whole_img' style="display: none;" />
+        <section class="home">
+            <img class="whole_img" src="" id='whole_img' style="display: none;" />
+        </section>
         <!-- <button onclick="uploadImage()">上传图片</button> -->
         <!-- <button onclick="selectImage()">选择图片</button> -->
         <!-- <input type="text" id="testUrl"> -->
@@ -138,7 +148,7 @@
             </section>
             <section class="main">
                 <h2 id='punch_text'>
-                    <?php echo $result['punch_text'];?>
+                    <p><?php echo $result['punch_text'];?></p>
                 </h2>
                 <h4 class="clearfix">
                     <img src="<?php echo $result['qr_scene_url'];?>" class="code" id="qrScenePic"/>
@@ -188,8 +198,8 @@
             var serverUrl;
             function test(){
                 // $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
-                // document.body.background = '/img/ten_body_bg.jpg';
-                // $("#punch_text").css("backgroundImage","url(/img/ten_body_bg.jpg)");
+                // document.body.background.image = '/img/ten_body_bg.jpg';
+                $("#canvasImg").css("background-image","url(/img/ten_body_bg.jpg)");
                 html2canvas($('#canvasImg'), {
                     onrendered: function(canvas) {  
                         //把截取到的图片替换到a标签的路径下载  

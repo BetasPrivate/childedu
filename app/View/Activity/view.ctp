@@ -157,6 +157,7 @@
 		<section class="home">
 			<header>
 				<img src="/<?php echo $activity['thumbnail_url'];?>" />
+				<?php if ($activity['id'] != 1):?>
 				<h2><?php echo $activity['title'];?></h2>
 				<h3>
 					<ul>
@@ -171,13 +172,16 @@
 						</li>
 					</ul>
 				</h3>
+				<?php endif;?>
 			</header>
 			<section class="main">
+				<?php if ($activity['id'] != 1):?>
 				<ul>
 					<li>
 						<?php echo $activity['description'];?>
 					</li>
 				</ul>
+				<?php endif;?>
 				<form action="/activity/submitActivityRegInfo" method="post">
 					<input type="hidden" id="id" name="id" value="<?php echo $activity['id'];?>">
 					<?php foreach($activity['fields'] as $name => $text):?>

@@ -93,6 +93,14 @@
 			.main h3 ul li i.i_5 {
 				background-position-y: -3.6rem;	
 			}
+			/*7.10start  person_center_icon.kpg图片改了，名字没改*/
+			.main h3 ul li i.i_6 {
+				background-position-y: -4.5rem;	
+			}
+			.main h3 ul li:nth-child(6){
+				border-bottom: 0;
+			}
+			/*7.10end*/
 			.main h4 {
 				padding-top:2.5rem;
 			}
@@ -101,13 +109,17 @@
 				display:block;
 				margin:0 auto;
 			}
+			/*7.26*/
+			.main {
+				margin-bottom: 30px;
+			}
 		</style>
 	</head>
 	<body>
 		<section class="home">
 			<header>
 				<img src="/img/person_center_header.jpg" class="header_bg">
-				<img src="/img/user_img.jpg" class="user_name">
+				<img src="<?php echo $headUrl;?>" class="user_name">
 			</header>
 			<section class="main">
 				<h2><?php echo AuthComponent::user('username');?></h2>
@@ -139,7 +151,9 @@
 							</a>
 						</li>
 						<li>
-							<a href="/users/logout">退出登录</a>
+							<a href="/users/logout">
+								<i class="i_6"></i>退出登录
+							</a>
 						</li>
 					</ul>
 				</h3>

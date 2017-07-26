@@ -46,7 +46,7 @@ input[type=submit]{
 	height:1.65rem;
 	line-height:1.65rem;
 	text-align:center;
-	background-color:#4bb5c3;
+	background-color:#ff9601;
 	color:#FFFFFF;
 	border:0;
 	outline:none;

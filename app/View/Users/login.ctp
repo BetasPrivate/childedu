@@ -74,17 +74,28 @@
             <img src="/img/login.jpg" />
         </section>
         <section class="message">
-            <?php echo $this->Flash->render('auth'); ?>
-            <?php echo $this->Flash->render();?>
             <form action="/users/login" method="post">
                 <input type="text" name="data[User][username]" placeholder="账户"/>
                 <input type="password" name="data[User][password]" placeholder="密码"/>
-                <input type="submit" value="确定"/>
+                <p style="text-align: center;font-size: 0.7rem;line-height: 0.65rem;" id='msg'></p>
+                <input type="submit" value="立即登录" style="margin-top:0.8rem;"/>
             </form>
             <h2>
-                <a href="#">忘记密码？</a>|<a href="/users/signIn" class="a_2">免费注册</a>
+                <a href="/users/findPasswd" style="border-right:1px #4c4c4c solid;padding-right:0.3rem;">忘记密码？</a><a href="/users/signIn" style="padding-left:0.5rem">免费注册</a>
             </h2>
         </section>
     </section>
 </body>
 </html>
+<script type="text/javascript">
+    var a = document.getElementById('msg');
+    var authMsg = '<?php echo trim(strip_tags($this->Flash->render("auth")));?>';
+    var renderMsg = '<?php echo trim(strip_tags($this->Flash->render()));?>';
+    if (authMsg != '') {
+        a.innerText = authMsg;
+    } else if (renderMsg != '') {
+        a.innerText = renderMsg;
+    } else {
+        a.innerText = '请输入账号密码';
+    }
+</script>

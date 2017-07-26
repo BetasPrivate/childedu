@@ -9,15 +9,28 @@ class UsersController extends AppController
         'Point',
         'PunchRecord',
         'PointLog',
+        'Token',
     ];
 
     public function index()
     {
         $this->set('title_for_layout', '个人中心');
 
+        if (!empty(AuthComponent::user('open_id'))) {
+            $openId = AuthComponent::user('open_id');
+        } else {
+            $tools = new JsApiPay();
+            $openId = $tools->GetOpenid();
+            $this->User->save(['id' => AuthComponent::user('id'), 'open_id' => $openId]);
+        }
+
+        $util = new Utility();
+        $token = $this->Token->getToken(\Token::ACCESS_TOKEN);
+        $userDetail = $util->getUserDetailInfo($token, $openId);
+        $headUrl = isset($userDetail['headimgurl']) ? $userDetail['headimgurl'] : '/img/user_img.jpg';
         
 
-        $this->set(compact('trades'));
+        $this->set(compact('headUrl'));
     }
 
     public function myPoints()
@@ -94,9 +107,9 @@ class UsersController extends AppController
 
     public function signIn()
     {
-        // $tools = new JsApiPay();
-        // $openId = $tools->GetOpenid();
-        $openId = 'o5FzDw2nQn9jY5eqHrOKOJZOdq6U';
+        $tools = new JsApiPay();
+        $openId = $tools->GetOpenid();
+        // $openId = 'o5FzDw2nQn9jY5eqHrOKOJZOdq6U';
 
         $this->set(compact('openId'));
     }
@@ -153,9 +166,9 @@ class UsersController extends AppController
     public function findPasswd()
     {
         if (!$this->request->is('post')) {
-            // $tools = new JsApiPay();
-            // $openId = $tools->GetOpenid();
-            $openId = 'o5FzDw2nQn9jY5eqHrOKOJZOdq6U';
+            $tools = new JsApiPay();
+            $openId = $tools->GetOpenid();
+            // $openId = 'o5FzDw2nQn9jY5eqHrOKOJZOdq6U';
             $result = [
                 'open_id' => $openId,
             ];
@@ -166,18 +179,14 @@ class UsersController extends AppController
             $openId = $data['open_id'];
             $newKey = $data['newKey'];
 
-            $util = new Utility();
-            $token = $this->Token->getToken(\Token::ACCESS_TOKEN);
-            $userDetail = $util->getUserDetailInfo($token, $openId);
-            $nickName = isset($userDetail['nickname']) ? $userDetail['nickname'] : false;
-
             $user = $this->User->getUserByName($userName);
+
             if (!$user) {
                 $result = [
                     'status' => 0,
                     'msg' => '没有找到该用户，请重新注册',
                 ];
-            } else {
+            } elseif(!empty($user['User']['open_id'])) {
                 if ($user['User']['open_id'] == $openId) {
                     $this->User->id = $user['User']['id'];
                     $saveResult = $this->User->save(['passwd' => $newKey]);
@@ -192,15 +201,21 @@ class UsersController extends AppController
                         ];
                     }
                 } else {
+                    $util = new Utility();
+                    $token = $this->Token->getToken(\Token::ACCESS_TOKEN);
+                    $userDetail = $util->getUserDetailInfo($token, $user['User']['open_id']);
+                    $nickName = isset($userDetail['nickname']) ? $userDetail['nickname'] : false;
                     $result = [
                         'status' => 0,
                         'msg' => '请使用注册账号时候的微信号 '.$nickName.' 来找回密码',
                     ];
                 }
-                echo json_encode($result);
-                exit();
+            } else {
+                $this->User->id = $user['User']['id'];
+                $this->User->update(['open_id' => $openId]);
             }
-
+            echo json_encode($result);
+            exit();
         }
         $this->set(compact('result'));
     }
@@ -261,7 +276,7 @@ class UsersController extends AppController
     public function beforeFilter() {
         parent::beforeFilter();
         // Allow users to register and logout.
-        $this->Auth->allow('signIn', 'setPasswd', 'submitRegInfo', 'getVerficationCode', 'login');
+        $this->Auth->allow('signIn', 'setPasswd', 'submitRegInfo', 'getVerficationCode', 'login', 'findPasswd');
     }
 
     public function logout() {
