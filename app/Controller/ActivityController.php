@@ -53,7 +53,7 @@ class ActivityController extends AppController {
 				$extend = explode(';', explode('/', $baseArr[0])[1])[0];
 				$content = base64_decode($baseArr[1]);
 
-				$imgUrl = 'tmp/'.$data['title'].time().$activityId.'.'.$extend;
+				$imgUrl = 'tmp'. DS .md5($data['title']).time().$activityId.'.'.$extend;
 				//Store in the filesystem.
 				$fp = fopen($imgUrl, "w");
 				fwrite($fp, $content);

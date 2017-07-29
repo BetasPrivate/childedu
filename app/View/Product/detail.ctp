@@ -543,7 +543,11 @@
 					dataType:'json',
 					data:data,
 					success:function(res){
-
+						if (res.status == 1) {
+							alert('兑换成功');
+						} else {
+							alert(res.msg);
+						}
 					},
 					error:function(res) {
 

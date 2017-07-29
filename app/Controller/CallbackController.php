@@ -8,6 +8,7 @@ class CallbackController extends AppController
         'WxLog',
         'PunchRecord',
         'Point',
+        'Activity',
     ];
 
     function entrance()
@@ -91,6 +92,7 @@ class CallbackController extends AppController
     {
         $ticket = trim((string)$obj->Ticket);
         $eventKey = trim((string)$obj->EventKey);
+        $fromUsername = trim((string)$obj->FromUserName);
 
         $isPunch = $this->PunchRecord->find('first', [
             'contain' => [
@@ -109,6 +111,17 @@ class CallbackController extends AppController
                 } else {
                     $msg = '抱歉，该用户助力加油得积分次数已达上限';
                 }
+                $this->sendTextMsg($obj, $msg);
+            }
+        } else {
+            $isActivity = $this->Activity->find('first', [
+                'conditions' => [
+                    'Activity.offline_ticket' => $ticket,
+                    'Activity.is_deleted' => 0,
+                ],
+            ]);
+            if ($isActivity) {
+                $msg = $this->Activity->addPointByActivityScan($isActivity, $fromUsername);
                 $this->sendTextMsg($obj, $msg);
             }
         }

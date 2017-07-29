@@ -2,6 +2,7 @@
 App::uses('PointLog', 'Model');
 App::uses('PunchType', 'Model');
 App::uses('Activity', 'Model');
+App::uses('User', 'Model');
 class SuController extends AppController
 {
     public $uses = [
@@ -15,6 +16,8 @@ class SuController extends AppController
         'ProductType',
         'ProductType',
         'Product',
+        'User',
+        'ProductLog',
     ];
 
     public function index()
@@ -151,10 +154,97 @@ class SuController extends AppController
         $this->set(compact('products'));
     }
 
+    public function userManager()
+    {
+        $this->set('title_for_layout', '用户管理');
+
+        $users = $this->User->find('all', [
+            'order' => [
+                'is_activated DESC',
+            ],
+        ]);
+
+        foreach ($users as &$user) {
+            $user['clz_name'] = \User::className($user['User']['is_activated']);
+        }
+
+        $this->set(compact('users'));
+    }
+
     public function refreshMenu()
     {
         $util = new Utility();
         $util->editMenu($this->Token->getToken());
         exit;
+    }
+
+    public function editUserSu()
+    {
+        $data = $this->request->data;
+        $data['password'] = $data['passwd'];
+        $data['id'] = $data['user_id'];
+        $saveRes = $this->User->save($data);
+        $result = [
+            'status' => 1,
+            'msg' => '',
+        ];
+        if (!$saveRes) {
+            $result['msg'] = '保存失败，请稍后重试';
+        }
+        echo json_encode($result);
+        exit();
+
+    }
+
+    public function productLogs()
+    {
+        $conditions = [
+            'ProductLog.is_deleted' => 0,
+        ];
+
+        $productLogs = $this->ProductLog->find('all', [
+            'conditions' => $conditions,
+        ]);
+
+        $this->set(compact('productLogs'));
+    }
+
+    public function genQrCodeForActivity()
+    {
+        $data = $this->request->data;
+        $activityId = $data['id'];
+        $token = $this->Token->getToken();
+
+        $util = new Utility();
+        $ticketResult = $util->getSceneTicketUrl($token, 604800, $activityId, false);
+
+        $result = [
+            'status' => 0,
+            'msg' => ''
+        ];
+
+
+        $url = isset($ticketResult['url']) ? $ticketResult['url'] : false;
+        $ticket = isset($ticketResult['ticket']) ? $ticketResult['ticket'] : false;
+        if ($url && $ticket) {
+            $saveData = [
+                'id' => $activityId,
+                'offline_ticket' => $ticket,
+                'offline_url' => $url,
+            ];
+            $saveRes = $this->Activity->save($saveData);
+            if ($saveRes) {
+                $result['url'] = $url;
+                $result['status'] = 1;
+            } else {
+                $result['msg'] = '保存失败，请稍后重试';
+            }
+        } else {
+            $result['msg'] = '获取二维码失败，请稍后重试';
+        }
+
+        echo json_encode($result);
+        exit();
+
     }
 }

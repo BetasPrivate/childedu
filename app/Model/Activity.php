@@ -66,4 +66,18 @@ class Activity extends AppModel {
 			],
 		])['Activity'];
 	}
+
+	public function addPointByActivityScan($isActivity, $fromUserName)
+	{
+		$user = ClassRegistry::init('User')->getUserByOpenId($fromUserName);
+		if ($user) {
+			//add point log
+			$this->saveActivityPointRecord($user['User']['id'], $isActivity['Activity']['id'], self::POINT_ON_SCAN);
+			$msg = '报名成功，获得'.$isActivity['Activity'][self::$key[self::POINT_ON_SCAN]].'积分';
+		} else {
+			$msg = '抱歉，未找到您的注册信息。请尝试注册';
+		}
+
+		return $msg;
+	}
 }

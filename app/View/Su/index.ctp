@@ -25,7 +25,7 @@
 					<li class="even">打卡管理</li>
 					<li class="odd">打卡管理</li>
 					<li class="even">商城管理</li>
-					<li class="odd">礼品兑换</li>
+					<li class="odd"><a href="/su/productLogs" target="_blank">兑换详情</a></li>
 				</ul>
 			</nav>
 			<section class="main">
@@ -35,13 +35,13 @@
 						<ul>
 							<li class="selected">填写用户名</li>
 							<li>修改密码</li>
-							<li>密码</li>
+							<li><a href="/su/userManager" target="_blank">用户管理</a></li>
 						</ul>
 					</h2>
 					<!--填写用户名-->
 					<div class="user_name">
 						<form action="" method="" onsubmit="return false">
-							<h3><input type="tel" name="phone" placeholder="请输入您的手机号"/></h3>
+							<h3><input type="tel" name="phone" id="user_info_to_change" placeholder="请输入用户名或者手机号"/></h3>
 							<!--<h4><input type="text" name="code" placeholder="请输入验证码"/><img src="img/user_pic1.jpg" /><span>看不清？</span></h4>-->
 							<h5><input type="submit" value="下一步"/></h5>
 						</form>
@@ -49,9 +49,9 @@
 					<!--修改密码-->
 					<div class="change_key">
 						<form action="" method="" onsubmit="return false">
-							<h3><input type="password" name="newkey" placeholder="请输入新密码"/></h3>
-							<h4>由6~19个英文或数字组成</h4>
-							<h5><input type="password" name="submit_newkey" placeholder="确认新密码"/></h5>
+							<h3><input type="password" name="newkey" id="user_passwd_n_to_change" placeholder="请输入新密码"/></h3>
+							<h4>长度大于等于8</h4>
+							<h5><input type="password" name="submit_newkey" id="user_passwd_nc_to_change" placeholder="确认新密码"/></h5>
 							<h6><input type="submit" value="确定"/></h6>
 						</form>
 					</div>
@@ -68,10 +68,10 @@
 									<span>标题：</span><input type="text" name="title" id="activity_title" />
 								</li>
 								<li>
-									<span>开始时间：</span><input type="text" name="start_time" id="activity_start_time" />
+									<span>开始时间：</span><input type="text" name="start_time" id="activity_start_time" placeholder="例：2017-07-25" />
 								</li>
 								<li>
-									<span>截止时间：</span><input type="text" name="end_time" id="activity_end_time" />
+									<span>截止时间：</span><input type="text" name="end_time" id="activity_end_time" placeholder="例：2017-07-25" />
 								</li>
 								<li>
 									<span>报名分数：</span><input type="text" id="activity_point_onsubmit" />
@@ -773,17 +773,44 @@
 			//账户管理tab修改密码
 			//点击填写用户名页的下一步，跳转修改密码页
 			$(".user_name input:submit").click(function(){
-				$(".user h2").removeClass("check1");
-				$(".user h2").addClass("check2");
-				$(".user_name").css({display:"none"});
-				$(".change_key").css({display:"block"});
-				var onow=$(".user h2 ul").children("li")[0];
-				var onext=$(".user h2 ul").children("li")[1]
-				$(onow).removeClass("selected");
-				$(onext).addClass("selected");
+				checkUserInfo();
 			})
+			var userIdToChange;
+
+			function checkUserInfo() {
+				var info = $('#user_info_to_change').val();
+				var url = '/users/checkUserInfo';
+				var data = {
+					info:info
+				};
+				$.ajax({
+					url:url,
+					type:'POST',
+					dataType:'json',
+					data:data,
+					success:function(res){
+						if (res.status == 1) {
+							userIdToChange = res.user_id;
+							$(".user h2").removeClass("check1");
+							$(".user h2").addClass("check2");
+							$(".user_name").css({display:"none"});
+							$(".change_key").css({display:"block"});
+							var onow=$(".user h2 ul").children("li")[0];
+							var onext=$(".user h2 ul").children("li")[1]
+							$(onow).removeClass("selected");
+							$(onext).addClass("selected");
+						} else {
+							alert(res.msg);
+						}
+					},
+					error:function(res){
+
+					}
+				})
+			}
 			//点击修改密码确定，跳转完成
 			$(".change_key input:submit").click(function(){
+				editUserInfo();
 				$(".user h2").removeClass("check2");
 				$(".user h2").addClass("check3");
 				var onow=$(".user h2 ul").children("li")[1];
@@ -791,6 +818,39 @@
 				$(onow).removeClass("selected");
 				$(onext).addClass("selected");
 			})
+
+			function editUserInfo() {
+				var passwd = document.getElementById('user_passwd_n_to_change').value.trim();
+		        var passwdVerify = document.getElementById('user_passwd_nc_to_change').value.trim();
+		        if (passwd != passwdVerify) {
+		            alert('两次输入的密码不一致，请重试！');
+		            return;
+		        }
+		        if (passwd.length < 8) {
+		            alert('密码长度过短！');
+		            return;
+		        }
+		        var data = {
+		        	user_id: userIdToChange,
+		        	passwd: passwd,
+		        };
+		        $.ajax({
+		            url: '/su/editUserSu',
+		            method: 'POST',
+		            dataType: 'json',
+		            data: data,
+		            success: function(res) {
+		                if (res.status == 1) {
+		                	alert('修改成功！');
+		                } else {
+		                	alert(res.msg);
+		                }
+		            },
+		            error: function(data) {
+		                console.log(data);
+		            }
+		        })
+			}
 			
 			//报名管理
 			//点击在线或在线报名现场核销跳出对应二维码

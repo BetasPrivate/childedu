@@ -25,7 +25,17 @@
         <tbody>
             <?php foreach($activities as $activity): ?>
             <tr>
-                <td class="col-md-2"><?php echo $activity['Activity']['title'];?></td>
+                <td class="col-md-2">
+                    <?php echo $activity['Activity']['title'];?>
+                    <?php if ($activity['Activity']['type'] == 1):?>
+                        <br>
+                        <?php if (empty($activity['Activity']['offline_url'])):?>
+                            <button class="btn btn-info" onclick="genQrCode(<?php echo $activity['Activity']['id'];?>)">生成核销二维码</button>
+                        <?php else:?>
+                            <a href="<?php echo $activity['Activity']['offline_url'];?>" target="_blank">查看核销二维码</a>
+                        <?php endif;?>
+                    <?php endif;?>
+                </td>
                 <td class="col-md-2"><?php echo $activity['Activity']['start_time'];?></td>
                 <td class="col-md-1"><?php echo $activity['Activity']['end_time'];?></td>
                 <td class="col-md-1"><?php echo $activity['Activity']['location'];?></td>
@@ -37,3 +47,29 @@
         </tbody>
     </table>
 </div>
+<script type="text/javascript">
+    function genQrCode($activityId){
+        var url = '/su/genQrCodeForActivity';
+        var data = {
+            id:$activityId,
+        };
+        $.ajax({
+            url:url,
+            type:"POST",
+            dataType:'json',
+            data:data,
+            success:function(res){
+                if (res.status == 1) {
+                    if (confirm('获取成功，现在查看?')) {
+                        window.open(res.url,'_blank');
+                    }
+                } else {
+                    alert(res.msg);
+                }
+            },
+            error:function(res){
+
+            }
+        });
+    }
+</script>

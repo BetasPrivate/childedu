@@ -10,6 +10,7 @@ class UsersController extends AppController
         'PunchRecord',
         'PointLog',
         'Token',
+        'ProductLog',
     ];
 
     public function index()
@@ -67,6 +68,13 @@ class UsersController extends AppController
         $this->set(compact('punchRecords'));
     }
 
+    public function myProductLogs()
+    {
+        $productLogs = $this->ProductLog->getProductLogByUserId(AuthComponent::user('id'));
+
+        $this->set(compact('productLogs'));
+    }
+
     public function login()
     {
         $this->set('title_for_layout', '用户登录');
@@ -88,7 +96,7 @@ class UsersController extends AppController
         $count = $this->User->getAffectedRows();
         if ($count == 1) {
             echo '登录成功，跳转中...';
-            $this->redirect('/seats/index');
+            $this->redirect('/users/index');
         } else {
             echo '账号或密码错误，请重试';
             $this->redirect($this->referer());
@@ -285,6 +293,61 @@ class UsersController extends AppController
 
         $this->layout = 'ajax';
         $this->set(compact('result'));
+    }
+
+    public function checkUserInfo()
+    {
+        $data = $this->request->data;
+
+        $info = $data['info'];
+        $user = $this->User->find('first', [
+            'conditions' => [
+                'or' => [
+                    'User.username' => $info,
+                    'User.phone' => $info,
+                ],
+            ],
+        ]);
+
+        $result = [
+            'status' => 0,
+            'msg' => '根据输入信息没有查到相关用户',
+        ];
+
+        if ($user) {
+            $userId = $user['User']['id'];
+            $result['status'] = 1;
+            $result['user_id'] = $userId;
+        }
+
+        echo json_encode($result);
+        exit();
+    }
+
+    public function editUser()
+    {
+        $data = $this->request->data;
+
+        $userId = $data['user_id'];
+        $type = $data['type'];
+
+        $this->User->id = $userId;
+        $saveResult = $this->User->save(['is_activated' => $type]);
+
+        if ($saveResult) {
+            $result = [
+                'status' => 1,
+            ];
+        } else {
+            $result = [
+                'status' => 0,
+                'msg' => '保存失败，请稍后重试',
+            ];
+        }
+
+        echo json_encode($result);
+        exit();
+
     }
 
     public function beforeFilter() {

@@ -4,6 +4,7 @@ class ProductController extends AppController {
 	public $uses = [
 		'Product',
 		'ProductType',
+		'ProductLog',
 	];
 
 	public function index()
@@ -148,5 +149,28 @@ class ProductController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow('index', 'detail');
+	}
+
+	public function setDone()
+	{
+		$data = $this->request->data;
+		$data['done_time'] = date('Y-m-d H:i:s');
+		$data['is_done'] = 1;
+		$saveRes = $this->ProductLog->save($data);
+
+		$result = [
+			'status' => 0,
+			'msg' => '',
+		];
+
+		if ($saveRes) {
+			$result['status'] = 1;
+			$result['done_time'] = $data['done_time'];
+		} else {
+			$result['msg'] = '保存失败，请稍后重试';
+		}
+
+		echo json_encode($result);
+		exit();
 	}
 }

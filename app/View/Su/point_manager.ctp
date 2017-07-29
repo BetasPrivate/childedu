@@ -25,12 +25,12 @@
                 <td class="col-md-2 <?php echo $pointLog['class_name'];?>"><?php echo $pointLog['User']['username'];?></td>
                 <td class="col-md-3 <?php echo $pointLog['class_name'];?>"><?php echo $pointLog['origin_action'];?></td>
                 <td class="col-md-1 <?php echo $pointLog['class_name'];?>">
-                    <?php echo $pointLog['PointLog']['point'];?>
                     <?php if ($pointLog['PointLog']['action_type'] == 1):?>
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     <?php elseif ($pointLog['PointLog']['action_type'] == 0):?>
                     <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                     <?php endif;?>
+                    <?php echo $pointLog['PointLog']['point'];?>
                 </td>
                 <td class="col-md-2 <?php echo $pointLog['class_name'];?>"><?php echo $pointLog['PointLog']['created'];?></td>
             </tr>
