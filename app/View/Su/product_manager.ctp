@@ -31,7 +31,13 @@
                 <td class="col-md-1"><?php echo $product['Product']['name'];?></td>
                 <td class="col-md-1"><?php echo $product['Product']['is_front_page'];?></td>
                 <td class="col-md-1"><?php echo $product['ProductType']['name'];?></td>
-                <td class="col-md-2"><?php echo $product['Product']['pic_urls'];?></td>
+                <td class="col-md-2">
+                    <?php foreach($product['pic_urls'] as $key => $picUrl):?>
+                        <?php if(!empty($picUrl)):?>
+                            <p><a style="cursor: pointer;" target="__blank" href="<?php echo 'http://'.ROOT_URL.'/'.$picUrl?>"><?php echo '图片'.++$key;?></a></p>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                </td>
                 <td class="col-md-1"><?php echo $product['Product']['price'];?></td>
                 <td class="col-md-1"><?php echo $product['Product']['stock'];?></td>
                 <td class="col-md-1"><?php echo $product['Product']['sku_type'];?></td>

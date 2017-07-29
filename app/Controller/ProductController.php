@@ -33,7 +33,7 @@ class ProductController extends AppController {
 			],
 		]);
 
-		$product['Product']['pic_url_arr'] = $this->Product->getPicUrlArrByPicUrls($product['Product']['pic_urls']);
+		$product['Product']['pic_url_arr'] = $this->Product->getPicUrlArrByProduct($product);
 
 		$this->set(compact('product'));
 	}
@@ -78,21 +78,44 @@ class ProductController extends AppController {
 	{
 		$data = $this->request->data;
 
-		$baseCode = $data['file'];
-
+		$baseCode = $data['file1'];
 		$baseArr = explode(',', $baseCode);
 		$extend = explode(';', explode('/', $baseArr[0])[1])[0];
 		$content = base64_decode($baseArr[1]);
 		$productName = $data['name'];
-
-		$imgUrl = 'tmp/'.time().$productName.'.'.$extend;
+		$imgUrl = 'tmp/'.time().$productName.'1.'.$extend;
 		//Store in the filesystem.
 		$fp = fopen($imgUrl, "w");
 		fwrite($fp, $content);
 		fclose($fp);
+		unset($data['file1']);
+		$data['pic_url1'] = $imgUrl;
 
-		unset($data['file']);
-		$data['pic_urls'] = $imgUrl;
+		$baseCode = $data['file2'];
+		$baseArr = explode(',', $baseCode);
+		$extend = explode(';', explode('/', $baseArr[0])[1])[0];
+		$content = base64_decode($baseArr[1]);
+		$productName = $data['name'];
+		$imgUrl = 'tmp/'.time().$productName.'2.'.$extend;
+		//Store in the filesystem.
+		$fp = fopen($imgUrl, "w");
+		fwrite($fp, $content);
+		fclose($fp);
+		unset($data['file2']);
+		$data['pic_url2'] = $imgUrl;
+
+		$baseCode = $data['file3'];
+		$baseArr = explode(',', $baseCode);
+		$extend = explode(';', explode('/', $baseArr[0])[1])[0];
+		$content = base64_decode($baseArr[1]);
+		$productName = $data['name'];
+		$imgUrl = 'tmp/'.time().$productName.'3.'.$extend;
+		//Store in the filesystem.
+		$fp = fopen($imgUrl, "w");
+		fwrite($fp, $content);
+		fclose($fp);
+		unset($data['file3']);
+		$data['pic_url3'] = $imgUrl;
 
 		$this->Product->create();
 		$saveRes = $this->Product->save($data);
@@ -112,6 +135,13 @@ class ProductController extends AppController {
 	public function purchaseProduct()
 	{
 		$data = $this->request->data;
+
+		$quantity = $data['quantity'];
+		$id = $data['id'];
+
+		$result = $this->Product->purchaseProduct($id, $quantity);
+		echo json_encode($result);
+		exit();
 	}
 
 	public function beforeFilter()

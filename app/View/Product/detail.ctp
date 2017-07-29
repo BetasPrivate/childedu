@@ -432,7 +432,11 @@
 				</dl>
 				<section class="details">
 					<i></i>
-					<img src="<?php echo '/'.$product['Product']['pic_urls'];?>" />
+					<?php foreach($product['Product']['pic_url_arr'] as $picUrl):?>
+						<?php if(!empty($picUrl)):?>
+							<img src="<?php echo '/'.$picUrl;?>" />
+						<?php endif;?>
+					<?php endforeach;?>
 					<h3><?php echo $product['Product']['description'];?></h3>
 					<ul class="clearfix">
 						<!-- <li>
@@ -464,7 +468,7 @@
 					<ul>
 						<li class="clearfix">
 							<span>规格</span>
-							<em><?php echo $product['Product']['sku_tupe'];?></em>
+							<em><?php echo $product['Product']['sku_type'];?></em>
 						</li>
 						<!-- <li class="clearfix">
 							<span>型号</span>
@@ -497,7 +501,7 @@
 			<section class="zhezhaoceng"></section>
 			<section class="tips">
 				<h2>
-					<img src="/<?php echo $product['Product']['pic_urls'];?>" />
+					<img src="/<?php echo $product['Product']['pic_url1'];?>" />
 					<span><?php echo $product['Product']['price'];?>丸子币</span><br />
 					<em>库存<i><?php echo $product['Product']['stock'];?></i>件</em>
 				</h2>
@@ -515,7 +519,7 @@
 					<p><i></i><input type="tel" name="num" value="1" id="quantity" readonly="readonly"/><em></em></p>
 				</h5>
 				<h6>
-					<a href="#" onclick="test()">
+					<a href="#" onclick="submitProduct()">
 						<img src="/img/gd_pic_btn.png" />
 					</a>
 				</h6>
@@ -528,9 +532,23 @@
 				if (!confirm('确认兑换 '+quantity+' 件 '+'<?php echo $product['Product']['name'];?>'+'?')) {
 					return;
 				}
+				var data = {
+					quantity:quantity,
+					id:'<?php echo $product['Product']['id'];?>',
+				}
+				var url = '/product/purchaseProduct';
+				$.ajax({
+					url:url,
+					type:'POST',
+					dataType:'json',
+					data:data,
+					success:function(res){
 
-				var url = '/product/'
-				$.ajax()
+					},
+					error:function(res) {
+
+					}
+				});
 			}
 
 			function test(){

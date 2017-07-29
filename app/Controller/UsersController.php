@@ -189,7 +189,7 @@ class UsersController extends AppController
             } elseif(!empty($user['User']['open_id'])) {
                 if ($user['User']['open_id'] == $openId) {
                     $this->User->id = $user['User']['id'];
-                    $saveResult = $this->User->save(['passwd' => $newKey]);
+                    $saveResult = $this->User->save(['password' => $newKey]);
                     if ($saveResult) {
                         $result = [
                             'status' => 1,
@@ -212,7 +212,21 @@ class UsersController extends AppController
                 }
             } else {
                 $this->User->id = $user['User']['id'];
-                $this->User->update(['open_id' => $openId]);
+                $saveData = [
+                    'open_id' => $openId,
+                    'password' => $newKey,
+                ];
+                $saveResult = $this->User->save($saveData);
+                if ($saveResult) {
+                    $result = [
+                        'status' => 1,
+                    ];
+                } else {
+                    $result = [
+                        'status' => 0,
+                        'msg' => '找回密码失败，请重试',
+                    ];
+                }
             }
             echo json_encode($result);
             exit();

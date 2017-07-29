@@ -285,9 +285,19 @@
 										</select>
 									</li>
 									<li>
-										<span>图片</span>
-										<input type="file" id="product_img">
-										<img src="" id="product_img_to_show" style="display: none;">
+										<span>图片1</span>
+										<input type="file" id="product_img1">
+										<img src="" id="product_img_to_show1" style="display: none;">
+									</li>
+									<li>
+										<span>图片2</span>
+										<input type="file" id="product_img2">
+										<img src="" id="product_img_to_show2" style="display: none;">
+									</li>
+									<li>
+										<span>图片3</span>
+										<input type="file" id="product_img3">
+										<img src="" id="product_img_to_show3" style="display: none;">
 									</li>
 									<li>
 										<span>价格</span>
@@ -637,7 +647,9 @@
 			var productSkuType = $('#product_sku_type').val();
 			var productType = $('#product_type').val();
 			var productDescription = $('#product_description').val();
-			var file = $('#product_img_to_show')[0].src;
+			var file1 = $('#product_img_to_show1')[0].src;
+			var file2 = $('#product_img_to_show2')[0].src;
+			var file3 = $('#product_img_to_show3')[0].src;
 
 			var data = {
 				name:productName,
@@ -648,7 +660,9 @@
 				is_onsale:isOnsale,
 				product_type_id:productType,
 				description:productDescription,
-				file:file,
+				file1:file1,
+				file2:file2,
+				file3:file3,
 				is_virtual:isVirtual,
 			};
 			var url = '/product/addProduct';
@@ -670,21 +684,53 @@
 			})
 		}
 
-		function readFileProduct() {
+		function readFileProduct1() {
   
 		  	if (this.files && this.files[0]) {
 		    
 			    var FR= new FileReader();
 			    
 			    FR.addEventListener("load", function(e) {
-			      document.getElementById("product_img_to_show").src = e.target.result;
+			      document.getElementById("product_img_to_show1").src = e.target.result;
 			    }); 
 			    
 			    FR.readAsDataURL( this.files[0] );
 		  	}
 		  
 		}
-		document.getElementById("product_img").addEventListener("change", readFileProduct);
+		document.getElementById("product_img1").addEventListener("change", readFileProduct1);
+
+		function readFileProduct2() {
+  
+		  	if (this.files && this.files[0]) {
+		    
+			    var FR= new FileReader();
+			    
+			    FR.addEventListener("load", function(e) {
+			      document.getElementById("product_img_to_show2").src = e.target.result;
+			    }); 
+			    
+			    FR.readAsDataURL( this.files[0] );
+		  	}
+		  
+		}
+		document.getElementById("product_img2").addEventListener("change", readFileProduct2);
+
+		function readFileProduct3() {
+  
+		  	if (this.files && this.files[0]) {
+		    
+			    var FR= new FileReader();
+			    
+			    FR.addEventListener("load", function(e) {
+			      document.getElementById("product_img_to_show3").src = e.target.result;
+			    }); 
+			    
+			    FR.readAsDataURL( this.files[0] );
+		  	}
+		  
+		}
+		document.getElementById("product_img3").addEventListener("change", readFileProduct3);
 
 		$(document).ready(function(){
 			//点击导航跳转到对应页面

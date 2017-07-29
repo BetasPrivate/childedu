@@ -22,6 +22,7 @@ class PointLog extends AppModel {
 	const SHARE_TO_FRIENDS = 2;
 	const SCAN_ASSISTANT = 3;
 	const ACTIVITY = 4;
+	const PURCHASE_PRODUCT = 5;
 
 	const ADD = 1;
 	const MINUS = 0;
@@ -31,6 +32,7 @@ class PointLog extends AppModel {
 		self::SHARE_TO_FRIENDS => '分享朋友圈',
 		self::SCAN_ASSISTANT => '助力加油',
 		self::ACTIVITY => '活动报名',
+		self::PURCHASE_PRODUCT => '兑换商品',
 	];
 
 	public static $classes = [
@@ -38,6 +40,7 @@ class PointLog extends AppModel {
 		self::SHARE_TO_FRIENDS => 'success',
 		self::SCAN_ASSISTANT => 'primary',
 		self::ACTIVITY => 'warning',
+		self::PURCHASE_PRODUCT => 'danger',
 	];
 
 	public static $text = [

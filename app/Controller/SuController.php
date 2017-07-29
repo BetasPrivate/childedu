@@ -140,6 +140,14 @@ class SuController extends AppController
             ],
         ]);
 
+        foreach ($products as &$product) {
+            $picUrls = [];
+            for ($i=1;$i<=3;$i++) {
+                array_push($picUrls, $product['Product']['pic_url'.$i]);
+            }
+            $product['pic_urls'] = $picUrls;
+        }
+
         $this->set(compact('products'));
     }
 
