@@ -18,10 +18,9 @@
 				<h4 class="clearfix">
 					<span>选择打卡类型</span>
 					<select name="sign_type" id="punch_type" onclick="checkLogIn()">
-						<option value="1">陪伴阅读打卡</option>
-						<option value="2">活动打卡</option>
-						<option value="3">课堂打卡</option>
-						<option value="4">助教打卡</option>
+						<?php foreach($punchTypes as $punchType):?>
+						<option value="<?php echo $punchType['PunchType']['id'];?>"><?php echo $punchType['PunchType']['name'];?></option>
+						<?php endforeach;?>
 					</select>
 				</h4>
 				<h3>
@@ -69,6 +68,14 @@
 					punch_type: $('#punch_type').val(),
 					punch_text: $('#inner_feeling').val(),
 				};
+				if (a.firstChild == undefined) {
+					alert('无图无真相~');
+					return;
+				}
+				if (data.punch_text == '') {
+					alert('请输入心得');
+					return;
+				}
 				$.ajax({
 					'url': '/punch/submitPunchRequest',
 					'method': 'POST',

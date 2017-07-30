@@ -131,7 +131,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="/users/productLogs">
+							<a href="/users/myProductLogs">
 								<i class="i_2"></i>我的兑换
 							</a>
 						</li>

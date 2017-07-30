@@ -8,7 +8,7 @@
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script src="/js/html2canvas.js"></script>
         <script src="/js/canvas2image.js"></script>
-        <title>陪伴阅读打卡</title>
+        <title><?php echo $result['punch_type_name'];?></title>
         <style>
            @font-face {
                 font-family:"DFPHannotateW5-GB";
@@ -130,7 +130,7 @@
     <!-- <a href="#" id="download">下载图片</a> -->
     <p id="saveImg">长按保存图片到相册</p>
     <body>
-        <img src="/img/ten_body_bg.jpg" />
+        <img src="<?php echo $result['bg_img_url'];?>" />
         <section class="home">
             <img class="whole_img" src="" id='whole_img' style="display: none;" />
         </section>
@@ -153,30 +153,11 @@
                 <h4 class="clearfix">
                     <img src="<?php echo $result['qr_scene_url'];?>" class="code" id="qrScenePic"/>
                     <ul class="clearfix">
+                        <?php foreach($result['imgs'] as $img):?>
                         <li>
-                            <img src="/img/ten_header_pic.jpg" />
+                            <img src="<?php echo $img['PunchBgImg']['url'];?>" />
                         </li>
-                        <li>
-                            <img src="/img/ten_header_pic.jpg" />
-                        </li>
-                        <li>
-                            <img src="/img/ten_header_pic.jpg" />
-                        </li>
-                        <li>
-                            <img src="/img/ten_header_pic.jpg" />
-                        </li>
-                        <li>
-                            <img src="/img/ten_header_pic.jpg" />
-                        </li>
-                        <li>
-                            <img src="/img/ten_header_pic.jpg" />
-                        </li>
-                        <li>
-                            <img src="/img/ten_header_pic.jpg" />
-                        </li>
-                        <li>
-                            <img src="/img/ten_header_pic.jpg" />
-                        </li>
+                        <?php endforeach;?>
                     </ul>
                 </h4>
             </section>
@@ -199,7 +180,7 @@
             function test(){
                 // $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
                 // document.body.background.image = '/img/ten_body_bg.jpg';
-                $("#canvasImg").css("background-image","url(/img/ten_body_bg.jpg)");
+                $("#canvasImg").css("background-image","url(<?php echo $result['bg_img_url'];?>)");
                 html2canvas($('#canvasImg'), {
                     onrendered: function(canvas) {  
                         //把截取到的图片替换到a标签的路径下载  

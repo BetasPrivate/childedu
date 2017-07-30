@@ -119,7 +119,7 @@
 				</section>
 				<section class="sign">
 					<h2 class="clearfix"><span>查看记录</span><p><a href="/su/pointManager" target="blank">积分记录</a>&nbsp&nbsp&nbsp&nbsp<a href="/su/punchRecordManager" target="blank">打卡记录</a></p></h2>
-					<h2 class="clearfix"><span>报名</span><p>添加打卡类型</p></h2>
+					<h2 class="clearfix"><span>报名</span><p>添加打卡类型&nbsp&nbsp&nbsp&nbsp<a href="/su/punchBgImgManager" target="blank">编辑打卡图片</a></p></h2>
 					<h3>
 						<div class="sign_menu">
 							<ul class="sign_show">

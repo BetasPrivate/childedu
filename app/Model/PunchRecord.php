@@ -141,4 +141,9 @@ class PunchRecord extends AppModel {
 		$this->PointLog->create();
 		$this->PointLog->save($saveData);
 	}
+
+	public function getUrl($url)
+	{
+		return 'http://'.ROOT_URL.'/'.$url;
+	}
 }

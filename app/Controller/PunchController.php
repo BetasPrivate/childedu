@@ -7,11 +7,18 @@ class PunchController extends AppController {
 		'PointLog',
 		'Token',
 		'PunchType',
+		'PunchBgImg',
 	];
 
 	public function index()
 	{
+		$punchTypes = $this->PunchType->find('all', [
+			'conditions' => [
+				'is_deleted' => 0,
+			],
+		]);
 
+		$this->set(compact('punchTypes'));
 	}
 
 	public function view($punchId)
@@ -22,7 +29,9 @@ class PunchController extends AppController {
 			],
 		]);
 
-		$result['punch_img_url'] =  '/'.$punchRecord['PunchRecord']['img_url'];
+		$this->set('title_for_layout', $punchRecord['User']['username'].'的打卡记录');
+
+		$result['punch_img_url'] =  ROOT_URL.'/'.$punchRecord['PunchRecord']['img_url'];
 
 		$this->set(compact('result'));
 	}
@@ -51,6 +60,8 @@ class PunchController extends AppController {
 			'status' => 1,
 			'msg' => '',
 		];
+
+		//需要检查是否当天已经有过该类打卡记录，若有则拒绝打卡。
 
 		$saveResult = $this->PunchRecord->createNewPunchRecord($punchType, $punchText, AuthComponent::user('id'));
 
@@ -93,6 +104,25 @@ class PunchController extends AppController {
 		$qrSceneUrl = $urlData['qr_scene_url'];
 		$punchType = $urlData['punch_type'];
 
+		$punchTypeName = $this->PunchType->find('first', [
+			'conditions' => [
+				'PunchType.id' => $punchType,
+			],
+		])['PunchType']['name'];
+
+		$imgs = $this->PunchBgImg->find('all', [
+        ]);
+
+        foreach ($imgs as &$img) {
+            $img['PunchBgImg']['url'] = $this->PunchRecord->getUrl($img['PunchBgImg']['url']);
+            $img['PunchBgImg']['type_text'] = \PunchBgImg::text($img['PunchBgImg']['type']);
+        }
+
+        $bgImgUrl = $imgs[0]["PunchBgImg"]['url'];
+
+        unset($imgs[0]);
+
+
 		$util = new Utility();
 		$noncestr = 'zhanshenkeji';
 
@@ -123,6 +153,9 @@ class PunchController extends AppController {
 		$result['qr_scene_url'] = $qrSceneUrl;
 		$result['punch_type'] = $punchType;
 		$result['share_link'] = ROOT_URL.'/punch/view/'.$punchId;
+		$result['punch_type_name'] = $punchTypeName;
+		$result['bg_img_url'] = $bgImgUrl;
+		$result['imgs'] = $imgs;
 
 		$this->set(compact('result'));
 	}
@@ -186,6 +219,42 @@ class PunchController extends AppController {
 			'status' => 1,
 			'img_url' => 'http://'.ROOT_URL.'/'.$imgUrl,
 		];
+		echo json_encode($result);
+		exit();
+	}
+
+	public function updateImg()
+	{
+		$data = $this->request->data;
+
+		$baseCode = $data['file'];
+
+		$baseArr = explode(',', $baseCode);
+		$extend = explode(';', explode('/', $baseArr[0])[1])[0];
+		$content = base64_decode($baseArr[1]);
+		$punchBgImgId = $data['id'];
+
+		$imgUrl = 'tmp/'.'bgImg'.time().$punchBgImgId.'.'.$extend;
+		//Store in the filesystem.
+		$fp = fopen($imgUrl, "w");
+		fwrite($fp, $content);
+		fclose($fp);
+
+		//保存imgUrl
+		$this->PunchBgImg->id = $punchBgImgId;
+		$saveResult = $this->PunchBgImg->save(['url' => $imgUrl]);
+		if ($saveResult) {
+			$result = [
+				'status' => 1,
+				'url' => $this->PunchRecord->getUrl($imgUrl),
+			];
+		} else {
+			$result = [
+				'status' => 0,
+				'msg' => '操作失败，请稍后重试',
+			];
+		}
+
 		echo json_encode($result);
 		exit();
 	}

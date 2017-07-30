@@ -3,6 +3,7 @@ App::uses('PointLog', 'Model');
 App::uses('PunchType', 'Model');
 App::uses('Activity', 'Model');
 App::uses('User', 'Model');
+App::uses('PunchBgImg', 'Model');
 class SuController extends AppController
 {
     public $uses = [
@@ -18,6 +19,7 @@ class SuController extends AppController
         'Product',
         'User',
         'ProductLog',
+        'PunchBgImg',
     ];
 
     public function index()
@@ -246,5 +248,21 @@ class SuController extends AppController
         echo json_encode($result);
         exit();
 
+    }
+
+    public function punchBgImgManager()
+    {
+        $imgs = $this->PunchBgImg->find('all', [
+        ]);
+
+        foreach ($imgs as &$img) {
+            $img['PunchBgImg']['url'] = $this->PunchRecord->getUrl($img['PunchBgImg']['url']);
+            $img['PunchBgImg']['type_text'] = \PunchBgImg::text($img['PunchBgImg']['type']);
+            if ($img['PunchBgImg']['type'] == 'logo') {
+                $img['PunchBgImg']['type_text'] .= $img['PunchBgImg']['id'] -1;
+            }
+        }
+
+        $this->set(compact('imgs'));
     }
 }
