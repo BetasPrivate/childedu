@@ -24,6 +24,8 @@
             .home {
                 width: 90%;
                 margin: 0 auto;
+                margin-top: 0.8rem;
+                margin-bottom: 1.75rem;
             }
             /*7.25start*/
             
@@ -128,7 +130,7 @@
     </head>
     <!-- <button onclick="test()">test</button> -->
     <!-- <a href="#" id="download">下载图片</a> -->
-    <p id="saveImg">长按保存图片到相册</p>
+    <p id="saveImg" style="display: none;">长按保存图片到相册</p>
     <body>
         <img src="<?php echo $result['bg_img_url'];?>" />
         <section class="home">
@@ -181,7 +183,8 @@
                 // $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
                 // document.body.background.image = '/img/ten_body_bg.jpg';
                 $("#canvasImg").css("background-image","url(<?php echo $result['bg_img_url'];?>)");
-                html2canvas($('#canvasImg'), {
+                // html2canvas($('#canvasImg'), {
+                html2canvas(document.body, {
                     onrendered: function(canvas) {  
                         //把截取到的图片替换到a标签的路径下载  
                         localUrl = canvas.toDataURL();

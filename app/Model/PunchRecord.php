@@ -142,6 +142,23 @@ class PunchRecord extends AppModel {
 		$this->PointLog->save($saveData);
 	}
 
+	public function checkCanPunchToday($punchType, $userId)
+	{
+		$record = $this->find('first', [
+			'conditions' => [
+				'PunchRecord.is_deleted' => 0,
+				'PunchRecord.type_id' => $punchType,
+				'PunchRecord.user_id' => $userId,
+				'PunchRecord.created >' => date('Y-m-d'),
+			],
+		]);
+
+		if ($record) {
+			return false;
+		}
+		return true;
+	}
+
 	public function getUrl($url)
 	{
 		return 'http://'.ROOT_URL.'/'.$url;

@@ -15,6 +15,14 @@ class RegistrationController extends AppController
 		// $ticket = $this->Token->getJsApiTicket();
 		$timeStamp = time();
 		$noncestr = 'zhanshenkeji';
+		$activityId = 1;
+		$activity = $this->Activity->find('first', [
+			'conditions' => [
+				'Activity.id' => $activityId,
+			],
+		])['Activity'];
+
+		$this->set(compact('activityId', 'activity'));
 	}
 
 	function submitReg()

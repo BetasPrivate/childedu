@@ -26,7 +26,7 @@
             <?php foreach($activities as $activity): ?>
             <tr>
                 <td class="col-md-2">
-                    <?php echo $activity['Activity']['title'];?>
+                    <a href="/su?activityId=<?php echo $activity['Activity']['id'];?>" style="cursor: pointer;"><?php echo $activity['Activity']['title'];?></a>
                     <?php if ($activity['Activity']['type'] == 1):?>
                         <br>
                         <?php if (empty($activity['Activity']['offline_url'])):?>

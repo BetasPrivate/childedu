@@ -74,11 +74,11 @@
     <body>
         <section class="home">
             <header>
-                <img src="/img/header.jpg" alt="周末识趣，亲情不打烊"/> 
+                <img src="/<?php echo $activity['thumbnail_url'];?>" alt="周末识趣，亲情不打烊"/> 
             </header>
             <div class="main">
                 <h2>注册信息填写</h2>
-                <form action="/registration/submitReg" method="post">
+                <form action="/activity/submitActivityRegInfo" method="post">
                     <ul>
                         <li class="clearfix first-item">
                             <input type="text" name="user_name" onclick="checkLogIn()" placeholder="家长姓名"/> 
@@ -92,12 +92,14 @@
                         <li class="clearfix">
                             <input type="text" name="child_birth" onclick="checkLogIn()"  placeholder="子女出生年月"/> 
                         </li>
+                        <input type="hidden" id="id" name="id" value="<?php echo $activityId;?>">
                     </ul>
-                    <button>提交</button>
+                    <button onclick="submitActivityRegInfo()">提交</button>
                 </form>
             </div>
         </section>
     </body>
+    <script src="/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript">
         <?php if (AuthComponent::user('id')):?>
         var isLogIn = true;
@@ -112,6 +114,31 @@
                     window.location.href = '/users/login';
                 }
             }
+        }
+
+        function submitActivityRegInfo() {
+            checkLogIn();
+            var data = {
+                user_name:$('#user_name').val(),
+                mobile_phone:$('#mobile_phone').val(),
+                child_name:$('#child_name').val(),
+                child_birth:$('#child_birth').val(),
+                id:'<?php echo $activityId;?>'
+            };
+            $.ajax({
+                'url': '/activity/submitActivityRegInfo',
+                'method': 'POST',
+                'dataType': 'json',
+                'data': data,
+                success:function(response) {
+                    if (response.status == 1) {
+                     window.location.href = '/registration/regSuccess';
+                    }
+                },
+                error:function(response) {
+                    console.log('error');
+                }
+            })
         }
     </script>
 </html>

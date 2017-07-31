@@ -31,8 +31,11 @@
 				</h5>
 			</section>
 		</section>
+		<script type="text/javascript">
+			var size;
+		</script>
 		<script src="/js/jquery-3.2.1.min.js"></script>
-		<script src="/js/accompany_read.js"></script>
+		<script src="/js/accompany_read.js?1"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				reset();
@@ -62,6 +65,7 @@
 	            }
 	        }
 			var a= document.getElementById('imagePreview');
+			var b = document.getElementById('imageInput');
 			function punch() {
 				checkLogIn();
 				var data = {
@@ -70,6 +74,12 @@
 				};
 				if (a.firstChild == undefined) {
 					alert('无图无真相~');
+					return;
+				}
+
+				var size = b.files[0].size/1024;
+				if(size > 3*1024) {
+					alert('请使用3M以下的图片');
 					return;
 				}
 				if (data.punch_text == '') {
@@ -100,6 +110,8 @@
 						    mapForm.appendChild(mapInput);
 						    document.body.appendChild(mapForm);
 						    mapForm.submit();
+						} else {
+							alert(response.msg);
 						}
 					},
 					error:function(response) {

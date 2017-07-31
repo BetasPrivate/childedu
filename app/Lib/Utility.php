@@ -132,7 +132,7 @@ class Utility {
                         1 => [
                             'name' => urlencode('玩子报名'),
                             'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/activity/view/1',
+                            'url' => 'http://childwelfare.zhanshen1.com/registration',
                         ],
                         2 => [
                             'name' => urlencode('陪伴打卡'),
@@ -144,11 +144,11 @@ class Utility {
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/activity/view/2',
                         ],
-                        // 4 => [
-                        //     'name' => urlencode('玩子币兑换'),
-                        //     'type' => 'view',
-                        //     'url' => 'http://childwelfare.zhanshen1.com/product',
-                        // ],
+                        4 => [
+                            'name' => urlencode('玩子币兑换'),
+                            'type' => 'view',
+                            'url' => 'http://childwelfare.zhanshen1.com/product',
+                        ],
                     ],
                 ],
                 1 => [

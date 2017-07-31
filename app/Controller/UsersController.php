@@ -86,6 +86,11 @@ class UsersController extends AppController
         }
     }
 
+    public function noAuthentication()
+    {
+        $this->Flash->error(__('请确保你有足够的权限'));
+    }
+
     public function checkLogin()
     {
         $data = $this->request->data;
@@ -280,7 +285,6 @@ class UsersController extends AppController
                 'password' => $passwd,
                 'open_id' => $openId,
             ];
-
             $saveResult = $this->User->save($saveData);
 
             if ($saveResult) {

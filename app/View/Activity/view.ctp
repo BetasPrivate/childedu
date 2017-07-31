@@ -212,12 +212,12 @@
 		function submitActivityRegInfo() {
 			checkLogIn();
 			var data = {
-				user_name:('#user_name').val(),
-				mobile_phone:('#mobile_phone').val(),
-				address:('#address').val(),
-				venue_id:('#venue_id').val(),
-				child_name:('#child_name').val(),
-				child_birth:('#child_birth').val(),
+				user_name:$('#user_name').val(),
+				mobile_phone:$('#mobile_phone').val(),
+				address:$('#address').val(),
+				venue_id:$('#venue_id').val(),
+				child_name:$('#child_name').val(),
+				child_birth:$('#child_birth').val(),
 				id:'<?php echo $activity['id'];?>'
 			};
 			$.ajax({

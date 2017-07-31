@@ -40,7 +40,12 @@ class ActivityController extends AppController {
 		$fields = implode(',', $data['fields']);
 		$data['fields'] = $fields;
 
-		$this->Activity->create();
+		if (!isset($data['id'])) {
+			$this->Activity->create();
+		} else {
+			$this->Activity->id = $data['id'];
+		}
+
 		$saveResult = $this->Activity->save($data);
 
 		if ($saveResult) {
@@ -78,7 +83,6 @@ class ActivityController extends AppController {
 	public function submitActivityRegInfo()
 	{
 		$data = $this->request->data;
-
 		$data['activity_id'] = $data['id'];
 		$activityId = $data['id'];
 		unset($data['id']);

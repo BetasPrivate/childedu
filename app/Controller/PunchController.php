@@ -62,6 +62,13 @@ class PunchController extends AppController {
 		];
 
 		//需要检查是否当天已经有过该类打卡记录，若有则拒绝打卡。
+		$userId = AuthComponent::user('id');
+		if (!$this->PunchRecord->checkCanPunchToday($punchType, $userId)) {
+			$result['status'] = 0;
+			$result['msg'] = '今天已经操作该类打卡了，明天再来吧!';
+			echo json_encode($result);
+			exit();
+		}
 
 		$saveResult = $this->PunchRecord->createNewPunchRecord($punchType, $punchText, AuthComponent::user('id'));
 

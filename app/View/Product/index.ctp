@@ -169,7 +169,7 @@
 					<dd class="lesson_button">在线课程</dd>
 				</dl>
 				<ul class="clearfix gift active">
-					<?php if(sizeof($result['products']['virtual_products']) == 0):?>
+					<?php if(sizeof($result['products']['real_products']) == 0):?>
 						<h3>此类目下暂无商品</h3>
 					<?php endif;?>
 					<i></i>

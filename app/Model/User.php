@@ -13,13 +13,13 @@ class User extends AppModel {
                 'message' => 'A username is required'
             )
         ),
-        'role' => array(
-            'valid' => array(
-                'rule' => array('inList', array('admin', 'author')),
-                'message' => 'Please enter a valid role',
-                'allowEmpty' => false
-            )
-        )
+        // 'role' => array(
+        //     'valid' => array(
+        //         'rule' => array('inList', array('admin', 'author')),
+        //         'message' => 'Please enter a valid role',
+        //         'allowEmpty' => false
+        //     )
+        // )
     );
 
     public $virtualFields = [

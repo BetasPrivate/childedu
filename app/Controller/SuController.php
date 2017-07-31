@@ -26,6 +26,18 @@ class SuController extends AppController
     {
         $this->set('title_for_layout', '后台管理');
 
+        $activity = [];
+
+        $activityId = isset($this->request->query['activityId']) ? $this->request->query['activityId'] : null;
+
+        if (!empty($activityId)) {
+            $activity = $this->Activity->find('first', [
+                'conditions' => [
+                    'Activity.id' => $activityId,
+                ],
+            ]);
+        }
+
         $punchTypes = $this->PunchType->find('all', [
             'conditions' => [
                 'PunchType.is_deleted' => 0,
@@ -43,6 +55,10 @@ class SuController extends AppController
         $result['product_types'] = $productTypes;
 
         $result['activity_fields'] = \Activity::$fieldTexts;
+
+        $result['activity'] = $activity;
+
+        $result['activityId'] = $activityId;
 
         $this->set(compact('result'));
     }
@@ -264,5 +280,13 @@ class SuController extends AppController
         }
 
         $this->set(compact('imgs'));
+    }
+
+    function beforeFilter()
+    {
+        parent::beforeFilter();
+        if (AuthComponent::user('role') == 0) {
+            $this->redirect('/users/noAuthentication');
+        }
     }
 }

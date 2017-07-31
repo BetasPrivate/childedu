@@ -84,7 +84,7 @@ class ProductController extends AppController {
 		$extend = explode(';', explode('/', $baseArr[0])[1])[0];
 		$content = base64_decode($baseArr[1]);
 		$productName = $data['name'];
-		$imgUrl = 'tmp/'.time().$productName.'1.'.$extend;
+		$imgUrl = 'tmp/'.time().md5($productName).'1.'.$extend;
 		//Store in the filesystem.
 		$fp = fopen($imgUrl, "w");
 		fwrite($fp, $content);
@@ -97,7 +97,7 @@ class ProductController extends AppController {
 		$extend = explode(';', explode('/', $baseArr[0])[1])[0];
 		$content = base64_decode($baseArr[1]);
 		$productName = $data['name'];
-		$imgUrl = 'tmp/'.time().$productName.'2.'.$extend;
+		$imgUrl = 'tmp/'.time().md5($productName).'2.'.$extend;
 		//Store in the filesystem.
 		$fp = fopen($imgUrl, "w");
 		fwrite($fp, $content);
@@ -110,7 +110,7 @@ class ProductController extends AppController {
 		$extend = explode(';', explode('/', $baseArr[0])[1])[0];
 		$content = base64_decode($baseArr[1]);
 		$productName = $data['name'];
-		$imgUrl = 'tmp/'.time().$productName.'3.'.$extend;
+		$imgUrl = 'tmp/'.time().md5($productName).'3.'.$extend;
 		//Store in the filesystem.
 		$fp = fopen($imgUrl, "w");
 		fwrite($fp, $content);

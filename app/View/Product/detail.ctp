@@ -417,7 +417,7 @@
 				</h3>
 				<h4>
 					<!-- <span>快递：0.00</span> -->
-					<em>库存：<?php echo $product['Product']['price'];?></em>
+					<em>库存：<?php echo $product['Product']['stock'];?></em>
 				</h4>
 				<h5>
 					<span>选择数量</span>
