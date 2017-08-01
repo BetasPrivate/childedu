@@ -149,6 +149,6 @@ class ActivityController extends AppController {
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
-		$this->Auth->allow('welfare');
+		$this->Auth->allow('welfare', 'view');
 	}
 }

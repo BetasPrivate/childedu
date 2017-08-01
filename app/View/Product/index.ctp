@@ -144,14 +144,14 @@
 					<?php foreach($result['products']['front_page_products'] as $key => $product):?>
 					<!-- 第一张 -->
 					<div class="mui-slider-item">
-						<a href="/product/detail">
+						<a href="/product/detail/<?php echo $product['Product']['id'];?>">
 							<img src='<?php echo $product["Product"]["pic_url1"];?>'>
 						</a>
 					</div>
 					<?php endforeach;?>
 					<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 					<div class="mui-slider-item mui-slider-item-duplicate">
-						<a href="/product/detail">
+						<a href="/product/detail/<?php echo $result['products']['front_page_products'][0]['Product']['id'];?>">
 							<img src='<?php echo $result["products"]["front_page_products"][0]["Product"]["pic_url1"];?>'>
 						</a>
 					</div>

@@ -527,7 +527,26 @@
 		</section>
 		<script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
 		<script>
+			<?php if (AuthComponent::user('id')):?>
+	        var isLogIn = true;
+	        <?php else:?>
+	        var isLogIn = false;
+	        <?php endif;?>
+	        function checkLogIn() {
+	            if (!isLogIn) {
+	                if (!confirm('系统检测到您尚未登录，现在登录？')) {
+	                    return false;
+	                } else {
+	                    window.location.href = '/users/login';
+	                }
+	            }
+	            return true;
+	        }
+
 			function submitProduct(){
+				if (!checkLogIn()) {
+					return;
+				}
 				var quantity = $('#quantity').val();
 				if (!confirm('确认兑换 '+quantity+' 件 '+'<?php echo $product['Product']['name'];?>'+'?')) {
 					return;
