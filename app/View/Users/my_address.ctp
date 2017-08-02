@@ -71,26 +71,94 @@
 			<form action="" method="">
 				<ul>
 					<li>
-						<span>收件人</span><input type="text" name="user" placeholder="填写收件人"/>
+						<span>收件人</span><input id="user" type="text" name="user" placeholder="填写收件人" value="<?php echo $user['receiver_name'];?>" />
 					</li>
 					<li>
-						<span>联系电话</span><input type="tel" name="phone_num" placeholder="填写联系电话"/>
+						<span>联系电话</span><input id="phone_num" type="tel" name="phone_num" placeholder="填写联系电话" value="<?php echo $user['receiver_mobile'];?>" />
 					</li>
 					<li class="content-block">
-						<span>所在地区</span><input id="demo1" type="text" name="area" readonly="readonly" value="请选择，请选择，请选择"/>
+						<span>所在地区</span><input id="area" type="text" name="area" readonly="readonly" value="<?php echo $user['area'];?>"/>
 					</li>
 					<li>
-						<span>详细地址</span><input type="text" name="address" placeholder="填写详细地址"/>
+						<span>详细地址</span><input id="address" type="text" name="address" placeholder="填写详细地址"  value="<?php echo $user['receiver_address'];?>" />
 					</li>
 				</ul>
 			</form>
+			<!--8.2start-->
+			<style>
+				.home {
+					padding-bottom: 1rem;
+				}
+				.button {
+					background-color: #ff9601;
+				    display: block;
+				    margin: 2rem auto 0;
+				    width: 64%;
+				    height: 1.55rem;
+				    border-radius: 0.775rem;
+				    color: #FFFFFF;
+				    font-size: 0.85rem;
+				    font-family: "DFPHannotateW5-GB";
+				    text-align: center;
+				}
+			</style>
+			<?php if(!empty($user['receiver_address'])):?>
+			<div class="button" onclick="submitAddressInfo()">修改</div>
+			<?php else:?>
+			<div class="button" onclick="submitAddressInfo()">提交</div>
+			<?php endif;?>
+			<script type="text/javascript" src="/js/jquery-3.2.1.min.js" ></script>
+			<script type="text/javascript" src="/js/resize.js" ></script>
+			<script>
+				$(document).ready(function(){
+					$(".button").click(function(){
+						var per=$("#user").val();
+						var tele=$("#phone_num").val();
+						var are=$("#area").val();
+						var add=$("#address").val();
+						console.log(per,tele,are,add);
+					})
+				})
+
+				function submitAddressInfo() {
+					var per=$("#user").val();
+					var tele=$("#phone_num").val();
+					var are=$("#area").val();
+					var add=$("#address").val();
+					var url = '/users/submitAddressInfo';
+					var data = {
+						receiver_name:per,
+						receiver_mobile:tele,
+						area:are,
+						receiver_address:add,
+					};
+
+					$.ajax({
+						'url':url,
+						'type':'POST',
+						'dataType':'json',
+						'data':data,
+						success:function(res){
+							if (res.status == 1) {
+								alert('保存成功');
+							} else {
+								alert(res.msg);
+							}
+						},
+						error:function(res){
+
+						}
+					})
+				}
+			</script>
+			<!--8.2end-->
 		</section>
 	    <script src="/js/LAreaData1.js"></script>
 	    <script src="/js/LArea.js"></script>
 	    <script>
 		    var area1 = new LArea();
 		    area1.init({
-		        'trigger': '#demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+		        'trigger': '#area', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
 		        'valueTo': '#value1', //选择完毕后id属性输出到该位置
 		        'keys': {
 		            id: 'id',
@@ -99,7 +167,7 @@
 		        'type': 1, //数据源类型
 		        'data': LAreaData //数据源
 		    });
-		    area1.value=[27,13,3];//控制初始位置，注意：该方法并不会影响到input的value
+		    area1.value=[27,16,8];//控制初始位置，注意：该方法并不会影响到input的value
 	    </script>
 	</body>
 </html>

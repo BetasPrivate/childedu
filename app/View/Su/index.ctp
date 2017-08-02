@@ -13,17 +13,18 @@
 			<h2>
 				<img src="/img/logo.jpg" />
 				<span>后台设置</span>
+				<span><a href="/users/logout" style="font-size: 20px;">注销登录</a></span>
 			</h2>
 		</header>
 		<section class="content">
 			<nav>
 				<ul>
 					<li class="even active">账号管理</li>
-					<li class="odd">修改密码</li>
+					<li class="odd" style="display: none;">修改密码</li>
 					<li class="even">报名管理</li>
-					<li class="odd">报名管理</li>
+					<li class="odd" style="display: none;">报名管理</li>
 					<li class="even">打卡管理</li>
-					<li class="odd">打卡管理</li>
+					<li class="odd" style="display: none;">打卡管理</li>
 					<li class="even">商城管理</li>
 					<li class="odd"><a href="/su/productLogs" target="_blank">兑换详情</a></li>
 				</ul>

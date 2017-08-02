@@ -185,8 +185,8 @@
 					</li>
 				</ul>
 				<form action="/activity/respondToWelfareReg" method="post">
-					<input type="text" name="user" id="user" placeholder="姓名" onclick="checkLogIn()" />
-					<input type="tel" name="tel" id="mobile" placeholder="手机" onclick="checkLogIn()" />
+					<input type="text" name="user_name" id="user" placeholder="姓名" onclick="checkLogIn()" />
+					<input type="tel" name="mobile_phone" id="mobile" placeholder="手机" onclick="checkLogIn()" />
 					<button onclick="respondToWelfareReg()">提交</button>
 				</form>
 			</section>

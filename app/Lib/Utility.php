@@ -142,7 +142,7 @@ class Utility {
                         3 => [
                             'name' => urlencode('公益活动赚积分'),
                             'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/activity/view/2',
+                            'url' => 'http://childwelfare.zhanshen1.com/activity/welfare',
                         ],
                         4 => [
                             'name' => urlencode('玩子币兑换'),

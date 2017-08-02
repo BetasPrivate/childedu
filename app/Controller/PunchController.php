@@ -18,7 +18,47 @@ class PunchController extends AppController {
 			],
 		]);
 
-		$this->set(compact('punchTypes'));
+		$imgs = $this->PunchBgImg->find('all', [
+        ]);
+
+		foreach ($imgs as &$img) {
+            $img['PunchBgImg']['url'] = $this->PunchRecord->getUrl($img['PunchBgImg']['url']);
+            $img['PunchBgImg']['type_text'] = \PunchBgImg::text($img['PunchBgImg']['type']);
+        }
+
+        $bgImgUrl = $imgs[0]["PunchBgImg"]['url'];
+
+        unset($imgs[0]);
+
+        $util = new Utility();
+		$noncestr = 'zhanshenkeji';
+
+		$jsApiTicket = $this->Token->getToken(\Token::JS_API_TICKET);
+		$timeStamp = time();
+		$url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+		$tmpArr = [
+			'noncestr' => $noncestr,
+			'jsapi_ticket' => $jsApiTicket,
+			'timestamp' => $timeStamp,
+			'url' => $url,
+		];
+
+		ksort($tmpArr);
+		$tmpStr = $util->ToUrlParams($tmpArr);
+		$signature = sha1($tmpStr);
+
+		$result['nonceStr'] = $noncestr;
+		$result['jsApiTicket'] = $jsApiTicket;
+		$result['timeStamp'] = $timeStamp;
+		$result['signature'] = $signature;
+		$result['access_token'] = $this->Token->getToken(\Token::ACCESS_TOKEN);
+		$result['appId'] = APP_ID;
+
+        $result['imgs'] = $imgs;
+        $result['bg_img_url'] = $bgImgUrl;
+
+		$this->set(compact('punchTypes', 'result'));
 	}
 
 	public function view($punchId)
@@ -95,6 +135,8 @@ class PunchController extends AppController {
 			$result['qr_scene_url'] = $qrSceneUrlLocal;
 			$result['id'] = $saveResult['PunchRecord']['id'];
 			$result['punch_type'] = $punchType;
+			$result['punch_text'] = $punchText;
+			$result['share_link'] = ROOT_URL.'/punch/view/'.$punchId;
 		}
 
 		echo json_encode($result);

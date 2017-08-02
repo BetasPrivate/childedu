@@ -110,7 +110,45 @@ class UsersController extends AppController
 
     public function myAddress()
     {
+        $user = $this->User->find('first', [
+            'conditions' => [
+                'User.id' => AuthComponent::user('id'),
+            ],
+        ])['User'];
 
+        $user['area'] = '';
+        if ($user['receiver_province'] != '') {
+            $user['area'] .= $user['receiver_province'].','.$user['receiver_city'];
+        }
+        if($user['receiver_district'] != '') {
+            $user['area'] .= $user['receiver_district'];
+        }
+        $this->set(compact('user'));
+    }
+
+    public function submitAddressInfo()
+    {
+        $data = $this->request->data;
+        $area = $data['area'];
+
+        $areaArr = explode(',', $area);
+        $data['receiver_province'] = $areaArr[0];
+        $data['receiver_city'] = $areaArr[1];
+        $data['receiver_district'] = isset($areaArr[2]) ? $areaArr[2] : '';
+        $data['id'] = AuthComponent::user('id');
+
+        $saveRes = $this->User->save($data);
+
+        if ($saveRes) {
+            $result['status'] = 1;
+        } else {
+            $result = [
+                'status' => 0,
+                'msg' => '保存失败，请稍后重试',
+            ];
+        }
+        echo json_encode($result);
+        exit();
     }
 
     public function personalCode()

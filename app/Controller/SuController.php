@@ -285,6 +285,11 @@ class SuController extends AppController
     function beforeFilter()
     {
         parent::beforeFilter();
+    }
+
+    function afterFilter()
+    {
+        parent::afterFilter();
         if (AuthComponent::user('role') == 0) {
             $this->redirect('/users/noAuthentication');
         }

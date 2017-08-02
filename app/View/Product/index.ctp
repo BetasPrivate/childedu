@@ -60,11 +60,14 @@
 				color:#ffffff;
 			}
 			.main ul {
-				width:95%;
+				width:100%;
 				position:absolute;
 				top:2.2rem;
-				left:2.5%;
+				left:0;
+				padding:0 2.5%;
 				display:none;
+				box-sizing: border-box;
+				background-color: #FFFFFF;
 			}
 			.main ul.active {
 				display: block;

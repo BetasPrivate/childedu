@@ -124,12 +124,9 @@ class ActivityController extends AppController {
 		$data = $this->request->data;
 		$activityId = 2;
 
-		$saveData = [
-			'activity_id' => $activityId,
-			'data' => json_encode($data),
-		];
-		$this->RegInfo->create();
-		$saveResult = $this->RegInfo->save($saveData);
+		$data['activity_id'] = $activityId;
+		$this->ActivityInfo->create();
+		$saveResult = $this->ActivityInfo->save($data);
 
 		if ($saveResult) {
 			$this->Activity->saveActivityPointRecord(AuthComponent::user('id'), $activityId, \Activity::POINT_ON_SUBMIT);

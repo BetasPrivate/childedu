@@ -21,7 +21,7 @@
                 font-family: "DFPHannotateW5-GB";
             }
             
-            .home {
+            .home1 {
                 width: 90%;
                 margin: 0 auto;
                 margin-top: 0.8rem;
@@ -133,13 +133,13 @@
     <p id="saveImg" style="display: none;">长按保存图片到相册</p>
     <body>
         <img src="<?php echo $result['bg_img_url'];?>" />
-        <section class="home">
+        <section class="home1">
             <img class="whole_img" src="" id='whole_img' style="display: none;" />
         </section>
         <!-- <button onclick="uploadImage()">上传图片</button> -->
         <!-- <button onclick="selectImage()">选择图片</button> -->
         <!-- <input type="text" id="testUrl"> -->
-        <section class="home" id="canvasImg">
+        <section class="home1" id="canvasImg">
             <header>
                 <!-- <img src="/img/ten_header_pic.jpg" /> -->
                 <img src="<?php echo $result['url'];?>" id='punch_img'/>
