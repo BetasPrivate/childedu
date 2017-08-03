@@ -125,26 +125,21 @@ class Utility {
                     'key' => 'DO_NOTHING',
                     'sub_button' => [
                         0 => [
-                            'name' => urlencode('公司简介'),
-                            'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/company',
-                        ],
-                        1 => [
                             'name' => urlencode('玩子报名'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/registration',
                         ],
-                        2 => [
+                        1 => [
                             'name' => urlencode('陪伴打卡'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/punch',
                         ],
-                        3 => [
+                        2 => [
                             'name' => urlencode('公益活动赚积分'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/activity/welfare',
                         ],
-                        4 => [
+                        3 => [
                             'name' => urlencode('玩子币兑换'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/product',
@@ -171,18 +166,18 @@ class Utility {
                         0 => [
                             'name' => urlencode('公司简介'),
                             'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/pic5.jpg',
+                            'url' => 'http://childwelfare.zhanshen1.com/company',
                         ],
-                        1 => [
-                            'name' => urlencode('岗位招聘'),
-                            'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/pic3.jpg',
-                        ],
-                        2 => [
-                            'name' => urlencode('合作洽谈'),
-                            'type' => 'view',
-                            'url' => 'http://childwelfare.zhanshen1.com/pic4.jpg',
-                        ],
+                        // 1 => [
+                        //     'name' => urlencode('岗位招聘'),
+                        //     'type' => 'view',
+                        //     'url' => 'http://childwelfare.zhanshen1.com/pic3.jpg',
+                        // ],
+                        // 2 => [
+                        //     'name' => urlencode('合作洽谈'),
+                        //     'type' => 'view',
+                        //     'url' => 'http://childwelfare.zhanshen1.com/pic4.jpg',
+                        // ],
                     ],
                 ],
             ],

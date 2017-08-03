@@ -231,6 +231,7 @@
             var punchId;
             var punchType;
             var shareLink;
+            var hasUpLoad = false;
             function test(){
                 // $("#container").css("backgroundImage","url(/img/ten_body_bg.jpg)"); 
                 // document.body.background.image = '/img/ten_body_bg.jpg';
@@ -252,8 +253,9 @@
 	                    onrendered: function(canvas) {  
 	                        //把截取到的图片替换到a标签的路径下载  
 	                        localUrl = canvas.toDataURL();
-
-	                        saveImgToServer(localUrl);
+                            if (!hasUpLoad) {
+	                           saveImgToServer(localUrl); 
+                            }
 	                        //下载下来的图片名字  
 	                        // $("#download").attr('download','share.png');
 	                        // document.body.appendChild(canvas);
@@ -282,6 +284,7 @@
                     base_code:localUrl,
                     punch_id: punchId
                 };
+                hasUpLoad = true;
                 $.ajax({
                     'url': '/punch/uploadImage',
                     'method':'POST',
@@ -407,13 +410,17 @@
                     'chooseImage',
                 ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
-            wx.checkJsApi({
-                jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-                success: function(res) {
-                    console.log(res);
-                }
-            });
             wx.ready(function(){
+                wx.checkJsApi({
+                    jsApiList: [
+                        'chooseImage',
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                    ], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                    success: function(res) {
+                        console.log(res);
+                    }
+                });
                 // test();
             });
 

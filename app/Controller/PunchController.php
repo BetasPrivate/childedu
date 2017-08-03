@@ -136,7 +136,7 @@ class PunchController extends AppController {
 			$result['id'] = $saveResult['PunchRecord']['id'];
 			$result['punch_type'] = $punchType;
 			$result['punch_text'] = $punchText;
-			$result['share_link'] = ROOT_URL.'/punch/view/'.$punchId;
+			$result['share_link'] = 'http://'.ROOT_URL.'/punch/view/'.$punchId;
 		}
 
 		echo json_encode($result);
