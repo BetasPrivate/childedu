@@ -8,22 +8,22 @@ body {
 	margin:0 auto;
 	font-family: "DFPHannotateW5-GB";
 }
-.home {
+.sign .home {
 	width:90%;
 	margin:0 auto;
 }
-header {
+.sign header {
 	margin-top:1.3rem;
 	position:relative;
 }
-#imagePreview {
+.sign #imagePreview {
 	width:100%;
 	height:338px;
 	background: url(../img/five_pic_header.jpg);
 	background-size: 100%;
 	-webkit-background-size: 100%;
 }
-#imageInput {
+.sign #imageInput {
 	width:100%;
 	height:338px;
 	border:none;
@@ -36,7 +36,7 @@ header {
 	padding:0;
 	margin:0;
 }
-@media screen and (max-device-width:400px) {
+.sign @media screen and (max-device-width:400px) {
 	#imagePreview {
 		height:169px;	
 	}
@@ -44,7 +44,7 @@ header {
 		height:169px;
 	}
 	}
-@media screen and (min-device-width:400px) and (max-device-width:500px) {
+.sign @media screen and (min-device-width:400px) and (max-device-width:500px) {
 	#imagePreview {
 		height:188px;	
 	}
@@ -52,7 +52,7 @@ header {
 		height:188px;
 	}
 	}
-@media screen and (min-device-width:500px) and (max-device-width:600px) {
+.sign @media screen and (min-device-width:500px) and (max-device-width:600px) {
 	#imagePreview {
 		height:235px;	
 	}
@@ -60,7 +60,7 @@ header {
 		height:235px;
 	}
 	}
-@media screen and (min-device-width:600px) and (max-device-width:700px) {
+.sign @media screen and (min-device-width:600px) and (max-device-width:700px) {
 	#imagePreview {
 		height:282px;	
 	}
@@ -68,7 +68,7 @@ header {
 		height:282px;
 	}
 	}
-@media screen and (min-device-width:700px) {
+.sign @media screen and (min-device-width:700px) {
 	#imagePreview {
 		height:338px;	
 	}
@@ -76,14 +76,14 @@ header {
 		height:338px;
 	}
 }
-.main h2 {
+.sign .main h2 {
 	font-size:0.8rem;
 	line-height:2.7rem;
 	height:2.6rem;
 	color:#333333;
 }
-/*7.12*/
-.main h3 textarea {
+
+.sign .main h3 textarea {
 	height:5.25rem;
 	width:90%;
 	display:block;
@@ -95,19 +95,19 @@ header {
 	font-family: "DFPHannotateW5-GB";
 	padding:3%;
 }
-.main h4 {
+.sign .main h4 {
 	padding-top: 0.7rem;
 	padding-bottom: 0.7rem;
 	font-size:0.7rem;
 	line-height:2rem;
 	color:#676767;
 }
-.main h4 span {
+.sign .main h4 span {
 	display:block;
 	width:30%;
 	float: left;
 }
-.main h4 select {
+.sign .main h4 select {
 	display:block;
 	height:1.75rem;
 	width:68%;
@@ -122,7 +122,7 @@ header {
 	font-size:0.7rem;
 	color:#333333;
 }
-.main h4 select option {
+.sign .main h4 select option {
 	border:none;
 	outline: none;
 	box-sizing: border-box;
@@ -130,10 +130,10 @@ header {
 	padding:0;
 	font-size:0.7rem;
 }
-.main h5 {
+.sign .main h5 {
 	margin-top:2.85rem;
 }
-.main h5 button {
+.sign .main h5 button {
 	background-color: #ff9601;
 	display: block;
 	margin:0 auto;
@@ -147,4 +147,3 @@ header {
 	font-size: 0.85rem;
 	font-family:"DFPHannotateW5-GB";
 }
-/*7.12end*/
