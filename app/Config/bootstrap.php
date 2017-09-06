@@ -1,6 +1,6 @@
 <?php
 // require('../Lib/Constants.php');
-require('../Lib/Utility.php');
+require(ROOT.DS.APP_DIR.DS.'Lib'.DS.'Utility.php');
 /**
  * This file is loaded automatically by the app/webroot/index.php file after core.php
  *

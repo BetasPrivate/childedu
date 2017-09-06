@@ -120,6 +120,11 @@ class Utility {
           $data = [
             'button' => [
                 0 => [
+                    "name" => urlencode('玩趣精选'),
+                    'type' => 'view',
+                    'url' => 'http://mp.weixin.qq.com/mp/homepage?__biz=MzIwODY1NDI0MQ==&hid=1&sn=78abd5b277a448c7582acd02f1686660&scene=18#wechat_redirect',
+                ],
+                1 => [
                     "name" => urlencode('小玩子'),
                     'type' => 'click',
                     'key' => 'DO_NOTHING',
@@ -135,23 +140,16 @@ class Utility {
                             'url' => 'http://childwelfare.zhanshen1.com/punch',
                         ],
                         2 => [
-                            'name' => urlencode('公益活动赚积分'),
+                            'name' => urlencode('赚玩子币'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/activity/welfare',
                         ],
                         3 => [
-                            'name' => urlencode('玩子币兑换'),
+                            'name' => urlencode('兑换商城'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/product',
                         ],
-                    ],
-                ],
-                1 => [
-                    "name" => urlencode('玩趣活动'),
-                    'type' => 'click',
-                    'key' => 'DO_NOTHING',
-                    'sub_button' => [
-                        0 => [
+                        4 => [
                             'name' => urlencode('个人中心'),
                             'type' => 'view',
                             'url' => 'http://childwelfare.zhanshen1.com/',
@@ -159,7 +157,7 @@ class Utility {
                     ],
                 ],
                 2 => [
-                    "name" => urlencode('联系我们'),
+                    "name" => urlencode('关于我们'),
                     'type' => 'click',
                     'key' => 'DO_NOTHING',
                     'sub_button' => [
